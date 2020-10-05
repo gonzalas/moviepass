@@ -4,15 +4,15 @@
 
     class User
     {
-        private $name;
+        private $firstName;
         private $lastName;
         private $userName;
         private $password;
         private $email;
         
-        public  function getName()
+        public  function getFirstName()
         {
-            return $this->name;
+            return $this->firstName;
         }
 
         public function getLastName()
@@ -35,17 +35,16 @@
             return $this->email;
         }
 
-        public function setName($name)
+        public function setFirstName($firstName)
         {
-            $this->name = $name;
+            $this->firstName = $firstName;
         }
 
-        public function setlastName($lastName)
+        public function setLastName($lastName)
         {
             $this->lastName = $lastName;
         }
 
-        
         public function setUserName($userName)
         {
             $this->userName = $userName;
@@ -61,9 +60,4 @@
             $this->email = $email;
         }
     }
-
-
-
-
-
 ?>
