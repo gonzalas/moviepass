@@ -2,6 +2,7 @@
 
     namespace DAO;
     use Models\Cinema as Cinema;
+    use Models\Room as Room;
     use DAO\ICinemaDAO as ICinemaDAO;
 
     class CinemaDAO implements ICinemaDAO{
@@ -52,7 +53,6 @@
 
         private function RetrieveData() {
             $this-> cinemaList = array();
-            $roomsDAO = new RoomsDAO();
             if (file_exists($this-> fileName)){
                 $jsonContent = file_get_contents($this-> fileName);
                 if ($jsonContent){
@@ -63,6 +63,7 @@
                         $cinema-> setID ($arrayContent["ID"]);
                         $cinema-> setName ($arrayContent["name"]);
                         $cinema-> setTicketValue ($arrayContent["ticketValue"]);
+                        $cinema-> setMovieListing ($arrayContent["movieListing"]);
                         $cinemaCapacity = 0;
                         $roomsList = array();
 
@@ -97,6 +98,7 @@
                 $valuesArray["name"] = $cinema-> getName();
                 $valuesArray["ticketValue"] = $cinema-> getTicketValue();
                 $valuesArray["totalCapacity"] = $cinema-> getTotalCapacity();
+                $valuesArray["movieListing"] = $cinema-> getMovieListing();
 
                 //Rooms List
                 $valuesArray["roomsList"] = array();
