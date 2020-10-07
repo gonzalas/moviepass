@@ -6,7 +6,12 @@
 
     class CinemaController {
 
-        private $cinemaDAO = new CinemaDAO();
+        private $cinemaDAO;
+
+        public function __construct()
+        {
+            $this-> cinemaDAO = new CinemaDAO();
+        }
 
         function addCinema($name, $ticketValue) {
             $cinema = new Cinema();
