@@ -11,7 +11,8 @@
 
         function Add(Cinema $cinema) {
             $this-> RetrieveData();
-            $cinema-> setID (GetNextID());
+            $cinema-> setID ($this-> GetNextID());
+            $cinema-> setTotalCapacity (0);
             array_push($this-> cinemaList, $cinema);
             $this-> SaveData();
         }
@@ -43,8 +44,9 @@
         private function GetNextID() {
             $id = 0;
             if (count($this-> cinemaList)){ //Checks if cinemaList has at least 1 value
-                $cinema = array_pop($cinemaList);
+                $cinema = array_pop($this-> cinemaList);
                 $id = ($cinema-> getID()) + 1;
+                array_push($this-> cinemaList, $cinema);
             }
 
             return $id;
@@ -52,7 +54,6 @@
 
         private function RetrieveData() {
             $this-> cinemaList = array();
-            $roomsDAO = new RoomsDAO();
             if (file_exists($this-> fileName)){
                 $jsonContent = file_get_contents($this-> fileName);
                 if ($jsonContent){
@@ -78,7 +79,7 @@
                             array_push ($roomsList, $newRoom);
                         }
 
-                        $cinema-> setRoomsList ($roomsList);
+                        $cinema-> setRooms ($roomsList);
                         $cinema-> setTotalCapacity ($cinemaCapacity);
 
                         array_push ($this-> cinemaList, $cinema);
@@ -100,7 +101,7 @@
 
                 //Rooms List
                 $valuesArray["roomsList"] = array();
-                foreach($cinema->getRoomsList() as $room){
+                foreach($cinema->getRooms() as $room){
                     $valuesArray["roomsList"][] = array(
                         'ID' => $room-> getID(),
                         'name' => $room-> getName(),

@@ -1,0 +1,30 @@
+[
+    {
+        "ID": 0,
+        "name": "Aldrey",
+        "ticketValue": "200",
+        "totalCapacity": 0,
+        "roomsList": []
+    },
+    {
+        "ID": 1,
+        "name": "Ambassador",
+        "ticketValue": "150",
+        "totalCapacity": 0,
+        "roomsList": []
+    },
+    {
+        "ID": 2,
+        "name": "Cine3",
+        "ticketValue": "400",
+        "totalCapacity": 0,
+        "roomsList": []
+    },
+    {
+        "ID": 3,
+        "name": "Cine4",
+        "ticketValue": "500",
+        "totalCapacity": 0,
+        "roomsList": []
+    }
+]

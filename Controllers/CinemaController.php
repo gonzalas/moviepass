@@ -18,7 +18,7 @@
             $cinema-> setName($name);
             $ticketValue>0 ? $cinema-> setTicketValue($ticketValue) : $this-> showAddView("Try using a positive ticket value.");
             $this-> cinemaDAO-> Add($cinema);
-            $this-> showListView();
+            $this-> showAddView();
         }
 
         function removeCinema($id){
