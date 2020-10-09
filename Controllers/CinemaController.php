@@ -28,7 +28,7 @@
 
         function editCinema ($id){
             $cinema = $cinemaDAO-> getByID($id);
-            $this-> showAddView($cinema);
+            $this-> showAddView("", $cinema);
         }
 
         private function showListView (){
@@ -36,7 +36,7 @@
             require_once(VIEWS_PATH."cinema-list.php");
         }
 
-        private function showAddView ($message = ""){
+        private function showAddView ($message = "", $cinema = null){
             require_once(VIEWS_PATH."cinema-add.php");
         }
 
