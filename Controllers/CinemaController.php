@@ -26,6 +26,11 @@
             require_once(VIEWS_PATH."cinema-list.php");
         }
 
+        function editCinema ($id){
+            $cinema = $cinemaDAO-> getByID($id);
+            $this-> showAddView($cinema);
+        }
+
         private function showListView (){
             $cinemasList = $this-> cinemaDAO-> GetAll();
             require_once(VIEWS_PATH."cinema-list.php");
