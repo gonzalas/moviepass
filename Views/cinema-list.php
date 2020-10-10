@@ -23,7 +23,7 @@
                                                        <button type="submit" name="id" class="btn" value="<?php echo $cinema-> getID()?>"> Eliminar </button>
                                                   </td>
                                                   <td>
-                                                       <a href= "<?php echo FRONT_ROOT ?>Cinema/editCinema/?id=<?php echo $cinema->getID();?>" > Editar </a>
+                                                       <a href= "<?php echo FRONT_ROOT ?>Cinema/showEditView/?id=<?php echo $cinema->getID();?>" > Editar </a>
                                                   </td>
                                              </tr>
                                         <?php
