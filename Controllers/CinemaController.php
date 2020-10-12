@@ -13,7 +13,22 @@
             $this-> cinemaDAO = new CinemaDAO();
         }
 
+        function validateCinemaName($name){
+            $cinemasList = $this-> cinemaDAO-> GetAll();
+            foreach ($cinemasList as $cinema){
+                if ($cinema["name"] === $name){
+                    return true;
+                }
+            }
+            return false;
+        }
+
         function addCinema($name, $ticketValue) {
+            if ($this-> validateCinemaName($name)){
+                $this-> showAddView("Nombre de cine ya existente. Intente con otro.");
+            }
+
+            /**No neccesity to use an else sentence here */
             $cinema = new Cinema();
             $cinema-> setName($name);
             $ticketValue>0 ? $cinema-> setTicketValue($ticketValue) : $this-> showAddView("Try using a positive ticket value.");
@@ -44,7 +59,7 @@
             require_once(VIEWS_PATH."cinema-add.php");
         }
 
-        function showEditView ($message = "", $id){
+        function showEditView ($id, $message = ""){
             $cinema = $this-> cinemaDAO-> getByID($id);
             require_once(VIEWS_PATH."cinema-edit.php");
         }
