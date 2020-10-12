@@ -38,6 +38,7 @@
 
         function removeCinema($id){
             $this-> cinemaDAO-> Delete($id);
+            $cinemasList = $this-> cinemaDAO-> GetAll();
             require_once(VIEWS_PATH."cinema-list.php");
         }
 
@@ -48,7 +49,7 @@
             $this-> cinemaDAO-> Add($cinema);
             $this-> removeCinema($id);
         }
-
+      
         function showListView (){
             $cinemasList = $this-> cinemaDAO-> GetAll();
             require_once(VIEWS_PATH."cinema-list.php");
