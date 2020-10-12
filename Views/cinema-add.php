@@ -3,6 +3,9 @@
 ?>
 <main class="py-5">
      <section id="listado" class="mb-5">
+          <?php if ($message != ""){ ?>
+               <div class="alert alert-danger" role="alert"> <?php echo $message?> </div>
+          <?php } ?>
           <div class="container">
                <h2 class="mb-4">Agregar nuevo Cine</h2>
                <form action="<?php echo FRONT_ROOT ?>Cinema/addCinema" method="post" class="bg-light-alpha p-5">
