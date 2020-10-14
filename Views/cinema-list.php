@@ -26,13 +26,13 @@
                                              <a href= "<?php echo FRONT_ROOT ?>Cinema/showEditView/?id=<?php echo $cinema->getID();?>" > Editar </a>
                                         </td>
                                         <td>
-                                             <input type="button" value="Ver salas" class="btn" onclick="alert('Probando')"></input>
+                                             <input type="button" value="Ver salas" class="btn accordion-btn" onClick="toggleRoom()"></input>
                                         </td>
                                    </tr>
                                    <?php
                                         $roomsList = $cinema-> getRooms();
                                    ?>
-                                   <tr>
+                                   <tr class="accordion-child" id="accordion-info" style="display:none">
                                         <td>
                                              <table>
                                                   <thead>

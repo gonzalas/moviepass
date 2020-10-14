@@ -9,6 +9,9 @@
      <link rel="stylesheet" type="text/css" href="<?php echo CSS_PATH ?>bootstrap.min.css">
      <link rel="stylesheet" type="text/css" href="<?php echo CSS_PATH ?>estilos.css">
 
+     <!-- Javascript -->
+     <script src="<?php echo JS_PATH ?>functions.js"></script>
+
      <title>Framework Example</title>
 </head>
 <body>
