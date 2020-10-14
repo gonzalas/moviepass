@@ -4,13 +4,33 @@
         "name": "Aldrey",
         "ticketValue": "600",
         "totalCapacity": 0,
-        "roomsList": []
+        "roomsList": [
+            {
+                "name": "room1",
+                "capacity": 50,
+                "is3D": true,
+                "isAtmos": false
+            }
+        ]
     },
     {
         "ID": 10,
         "name": "Ambassador1234",
         "ticketValue": "200",
         "totalCapacity": 0,
-        "roomsList": []
+        "roomsList": [
+            {
+                "name": "room1",
+                "capacity": 50,
+                "is3D": true,
+                "isAtmos": false
+            },
+            {
+                "name": "room2",
+                "capacity": 100,
+                "is3D": false,
+                "isAtmos": true
+            }
+        ]
     }
 ]

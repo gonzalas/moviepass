@@ -2,6 +2,7 @@
 
     namespace DAO;
     use Models\Cinema as Cinema;
+    use Models\Room as Room;
     use DAO\ICinemaDAO as ICinemaDAO;
 
     class CinemaDAO implements ICinemaDAO{
@@ -69,7 +70,7 @@
 
                         foreach($arrayContent["roomsList"] as $room){
                             $newRoom = new Room();
-                            $newRoom-> setID($room["ID"]);
+                            /*$newRoom-> setID($room["ID"]);*/
                             $newRoom-> setName($room["name"]);
                             $newRoom-> setIs3D($room["is3D"]);
                             $newRoom-> setIsAtmos($room["isAtmos"]);
@@ -103,7 +104,7 @@
                 $valuesArray["roomsList"] = array();
                 foreach($cinema->getRooms() as $room){
                     $valuesArray["roomsList"][] = array(
-                        'ID' => $room-> getID(),
+                        /*'ID' => $room-> getID(),*/
                         'name' => $room-> getName(),
                         'is3D' => $room-> getIs3D(),
                         'isAtmos' => $room-> getIsAtmos(),
