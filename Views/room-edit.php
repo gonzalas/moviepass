@@ -3,8 +3,18 @@
 ?>
 <main class="py-5">
      <section id="listado" class="mb-5">
-          <?php if ($message != ""){ ?>
-               <div class="alert alert-danger" role="alert"> <?php echo $message?> </div>
+          <?php if ($message != ""){
+               if ($messageCode == 1){
+                    $text = "success";
+               } else{
+                    $text = "danger";
+               }
+          ?>
+               <div  class="alert alert-<?php echo $text?> alert-dismissible fade show" role="alert"> <strong> <?php echo $message?> </strong>
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                         <span aria-hidden="true">&times;</span>
+                    </button>
+               </div>
           <?php } ?>
           <div class="container">
                <h2 class="mb-4">Editar Sala</h2>
@@ -24,7 +34,12 @@
                               </div>
                          </div>
                     </div>
-                    <button type="submit" class="btn btn-dark ml-auto d-block">Editar</button>
+                    
+                    <div class="d-flex flex-row-reverse">
+                         <a class="btn btn-danger p-2" href= "<?php echo FRONT_ROOT ?>Cinema/showListView" > Cancelar </a>
+                         <button type="submit" class="btn btn-success ml-auto p-2 mr-4">Confirmar</button>
+                    </div>
+                    
                </form>
           </div>
      </section>

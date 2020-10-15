@@ -24,7 +24,10 @@
                               </div>
                          </div>
                     </div>
-                    <button type="submit" class="btn btn-dark ml-auto d-block">Editar</button>
+                    <div class="d-flex flex-row-reverse">
+                         <a class="btn btn-danger p-2" href= "<?php echo FRONT_ROOT ?>Cinema/showListView" > Cancelar </a>
+                         <button type="submit" class="btn btn-success ml-auto p-2 mr-4">Confirmar</button>
+                    </div>
                </form>
           </div>
      </section>

@@ -2,13 +2,13 @@
     {
         "ID": 0,
         "name": "Aldrey",
-        "ticketValue": "150",
+        "ticketValue": "200",
         "totalCapacity": 0,
         "roomsList": []
     },
     {
         "ID": 1,
-        "name": "Ambassador",
+        "name": "Los Gallegos",
         "ticketValue": "500",
         "totalCapacity": 0,
         "roomsList": []

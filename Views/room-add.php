@@ -3,8 +3,18 @@
 ?>
 <main class="py-5">
      <section id="listado" class="mb-5">
-          <?php if ($message != ""){ ?>
-               <div class="alert alert-danger" role="alert"> <?php echo $message?> </div>
+          <?php if ($message != ""){
+               if ($messageCode == 1){
+                    $text = "success";
+               } else{
+                    $text = "danger";
+               }
+          ?>
+               <div  class="alert alert-<?php echo $text?> alert-dismissible fade show" role="alert"> <strong> <?php echo $message?> </strong>
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                         <span aria-hidden="true">&times;</span>
+                    </button>
+               </div>
           <?php } ?>
           <div class="container">
                <h2 class="mb-4">Agregar nueva Sala</h2>
