@@ -22,7 +22,7 @@
                 $room-> setCinemaID($cinemaID);
                 $capacity>0 ? $room-> setCapacity($capacity) : $this-> showAddView("Intente usar una capacidad mayor a 0.");
                 $this-> roomDAO-> Add($room);
-                $this-> showListView();
+                $this-> showAddView();
             }
         }
 
