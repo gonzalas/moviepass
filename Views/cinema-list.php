@@ -10,6 +10,7 @@
                          <thead>
                               <th>Nombre</th>
                               <th>Precio de Entrada</th>
+                              <th>Capacidad Total</th>
                          </thead>
                          <tbody>
                               <?php
@@ -18,54 +19,20 @@
                               ?>
                                    <tr>
                                         <td><?php echo $cinema-> getName() ?></td>
-                                        <td><?php echo $cinema-> getTicketValue() ?></td>
+                                        <td>$<?php echo $cinema-> getTicketValue() ?></td>
+                                        <td><?php echo $cinema-> getTotalCapacity()?></td>
                                         <td>
-                                             <button type="submit" name="id" class="btn" value="<?php echo $cinema-> getID()?>"> Eliminar </button>
+                                             <input type="button" value="Ver salas" id="ac-btn" class="btn btn-info" onClick="toggleRoom(<?php echo $cinema-> getID()?>)"></input>
                                         </td>
                                         <td>
-                                             <a href= "<?php echo FRONT_ROOT ?>Cinema/showEditView/?id=<?php echo $cinema->getID();?>" > Editar </a>
+                                             <a class="btn btn-success" href= "<?php echo FRONT_ROOT ?>Cinema/showEditView/?id=<?php echo $cinema->getID();?>" > Editar </a>
                                         </td>
                                         <td>
-                                             <input type="button" value="Ver salas" id="ac-btn" class="btn" onClick="toggleRoom(<?php echo $cinema-> getID()?>)"></input>
+                                             <button type="submit" name="id" class="btn btn-danger" onClick="confirmDelete(<?php echo $cinema-> getID()?>)" id="btnDelete<?php echo $cinema-> getID()?>"> Eliminar </button>
                                         </td>
                                    </tr>
                                    <?php
-                                        $roomsList = $cinema-> getRooms();
-                                   ?>
-                                   <tr id="accordion" class="animate__animated animate__fadeIn accordion-child<?php echo $cinema-> getID()?>" style="display:none">
-                                        <td>
-                                             <table>
-                                                  <thead>
-                                                       <th>Nombre de sala</th>
-                                                       <th>Capacidad</th>
-                                                  </thead>
-                                                  <tbody>
-                                                       <?php
-                                                            foreach ($roomsList as $room){
-                                                       ?>
-                                                       <tr>
-                                                            <td><?php echo $room-> getName() ?></td>
-                                                            <td><?php echo $room-> getCapacity() ?></td>
-                                                            <td>
-                                                                 <a href= "<?php echo FRONT_ROOT ?>Cinema/showEditRoomView/" > Editar </a>
-                                                            </td>
-                                                            <td>
-                                                                 <a href= "<?php echo FRONT_ROOT ?>Cinema/showEditRoomView/" > Eliminar </a>
-                                                            </td>
-                                                       </tr>
-                                                       <?php
-                                                            }
-                                                       ?>
-                                                       <tr>
-                                                       <td>
-                                                            <a href= "<?php echo FRONT_ROOT ?>Cinema/showAddRoomView/"> Agregar sala </a>
-                                                       </td>
-                                                       </tr>
-                                                  </tbody>
-                                             </table>  
-                                        </td>
-                                   </tr>        
-                              <?php
+                                        require('room-list.php');
                                    }
                               ?>
                          </tbody>

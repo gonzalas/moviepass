@@ -13,5 +13,13 @@ function toggleRoom(id) {
             accordionChild[i].style.display = "none";
         }
     }
-
 }
+
+function confirmDelete(id) {
+    var answer = -1;
+    if (confirm("Por favor confirme el borrado.")) {
+        answer = id;
+    }
+    document.getElementById('btnDelete' + id.toString()).value = answer;
+    return;
+  }
