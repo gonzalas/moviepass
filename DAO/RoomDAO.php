@@ -13,7 +13,6 @@
         function Add(Room $room) {
             $this-> RetrieveData();
             $room-> setID ($this-> GetNextID());
-            $room-> setTotalCapacity (0);
             array_push($this-> roomList, $room);
             $this-> SaveData();
         }

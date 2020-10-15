@@ -20,7 +20,7 @@
                          <div class="col-lg-4">
                               <div class="form-group">
                                     <label for="">Capacidad de sala</label>
-                                    <input type="text" name="capacity" class="form-control" required>
+                                    <input type="number" name="capacity" class="form-control" required>
                               </div>
                          </div>
                     </div>

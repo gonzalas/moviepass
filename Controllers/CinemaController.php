@@ -52,10 +52,20 @@
       
         function showListView (){
             $cinemasList = $this-> cinemaDAO-> GetAll();
+            $roomsList = $this-> roomDAO-> GetAll();
             foreach ($cinemasList as $cinema){
                 $cinemaID = $cinema-> getID();
-                $roomsList = $roomDAO-> getByCinemaID($id);
-                $cinema-> setRoomsList($roomsList);
+                $newRoomsList = array();
+                $i = 0;
+                foreach ($roomsList as $room){
+                    if ($room-> getCinemaID() == $cinemaID){
+                        array_push($newRoomsList, $room);
+                        unset($roomsList[$i]);
+                    }
+                    $i++;
+                }
+                $roomsList = $newRoomsList;
+                $cinema-> setRooms($roomsList);
             }
             require_once(VIEWS_PATH."cinema-list.php");
         }

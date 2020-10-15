@@ -5,7 +5,7 @@
 
     interface IRoomDAO {
         function Add(Room $room);
-        function GetByCinemaID($id);
+        function GetAll();
         function GetByID($id);
         function Delete($id);
     }

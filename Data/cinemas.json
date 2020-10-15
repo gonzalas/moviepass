@@ -1,14 +1,16 @@
 [
     {
-        "ID": 2,
+        "ID": 0,
         "name": "Aldrey",
-        "ticketValue": "600",
-        "totalCapacity": 0
+        "ticketValue": "150",
+        "totalCapacity": 0,
+        "roomsList": []
     },
     {
-        "ID": 10,
-        "name": "Ambassador1234",
-        "ticketValue": "200",
-        "totalCapacity": 0
+        "ID": 1,
+        "name": "Ambassador",
+        "ticketValue": "500",
+        "totalCapacity": 0,
+        "roomsList": []
     }
 ]
