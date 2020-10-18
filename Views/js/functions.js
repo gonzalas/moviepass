@@ -22,4 +22,15 @@ function confirmDelete(id) {
     }
     document.getElementById('btnDelete' + id.toString()).value = answer;
     return;
-  }
+}
+
+
+/*****FOR LOGIN *******/
+function processLogin() {
+    const userName = document.getElementById("userName");
+    const userPass = document.getElementById("userPass");
+
+    /*TODO validate data in DB */
+
+    alert(`Bienvenido ${userName}`);
+}

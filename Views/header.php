@@ -13,6 +13,6 @@
      <!-- Javascript -->
      <script src="<?php echo JS_PATH ?>functions.js"></script>
 
-     <title>Framework Example</title>
+     <title>Cinema</title>
 </head>
 <body>
