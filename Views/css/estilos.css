@@ -6,7 +6,7 @@ body {
 
 body {
     font-family: 'Montserrat', sans-serif;
-    background: url(../img/bg.png) no-repeat center center fixed;
+    background: url(../img/back.png) no-repeat center center fixed;
     -webkit-background-size: cover;
     -moz-background-size: cover;
     -o-background-size: cover;
@@ -28,4 +28,12 @@ body {
 .login-form {
     width: 500px;
     border: 2px solid rgba(0, 0, 0, 0.2);
+}
+
+.card-image {
+    width: 5%;
+}
+
+.pelicula {
+    color: red;
 }
