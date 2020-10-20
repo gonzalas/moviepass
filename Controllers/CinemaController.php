@@ -1,7 +1,7 @@
 <?php
 
     namespace Controllers;
-    use DAO\CinemaDAO as CinemaDAO;
+    use DAO\JCinemaDAO as JCinemaDAO;
     use DAO\RoomDAO as RoomDAO;
     use Models\Cinema as Cinema;
     use Models\Room as Room;

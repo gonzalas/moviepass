@@ -5,7 +5,7 @@
     use Models\Room as Room;
     use DAO\ICinemaDAO as ICinemaDAO;
 
-    class CinemaDAO implements ICinemaDAO{
+    class JCinemaDAO implements ICinemaDAO{
 
         private $fileName = ROOT."Data/cinemas.json";
         private $cinemaList = array();
