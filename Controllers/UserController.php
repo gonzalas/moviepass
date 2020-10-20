@@ -27,7 +27,7 @@
 
                     $_SESSION['loggedUser'] = $user;
 
-                    $this->showMainMenu();
+                    $this->showCinemaListMenu();
 
                 } else {
                     require_once(VIEWS_PATH."login.php");
@@ -40,12 +40,12 @@
 
             if($_POST){
 
-                echo 'Usuario logeado';
+                $this->showCinemaListMenu();
             }
         }
 
-        private function showMainMenu(){
-
+        private function showCinemaListMenu(){
+            require_once(VIEWS_PATH."user-cinema-list.php");
         }
 
         private function validatePassword($password, $password2){
