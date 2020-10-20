@@ -1,6 +1,9 @@
 <!-- Admin NavBar -->
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
-  <a class="navbar-brand" href="<?php echo FRONT_ROOT ?>Home/Index">MoviePass</a>
+  <a class="navbar-brand" href="<?php echo FRONT_ROOT ?>Home/Index">
+    <img src="../Views/img/icon.png" width="27" height="27" class="d-inline-block align-top" alt="" loading="lazy">
+    MoviePass
+  </a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
@@ -23,7 +26,7 @@
           Películas
         </a>
         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-          <a class="nav-link" href="<?php echo FRONT_ROOT ?>Movie/showListView">Listar Películas API</a>
+          <a class="nav-link" href="<?php echo FRONT_ROOT ?>Movie/showNowPlaying">Listar Películas</a>
         </div>
       </li>
     </ul>

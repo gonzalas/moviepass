@@ -4,7 +4,7 @@
 <main class="py-5">
      <section id="listado" class="mb-5">
           <div class="container">
-               <h2 class="mb-4">Listado de cines</h2>
+               <h1 class="title">Listado de cines</h1>
                <form action="<?php echo FRONT_ROOT."Cinema/removeCinema"?>">
                     <table class="table bg-light-alpha">
                          <thead>

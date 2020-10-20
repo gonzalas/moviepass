@@ -9,16 +9,40 @@
         {
         }
 
-        function showListView (){
-            $apiMoviesList = 1;/**Pedir movies a la api */
-            $key = "1fda2c2ca096a563fb941fcfd34c718a";
-            $apiMoviesJSON = file_get_contents("https://api.themoviedb.org/3/movie/now_playing?api_key=$key&language=es&page=1");
+        public function showNowPlaying (){
+            $apiMoviesJSON = file_get_contents("https://api.themoviedb.org/3/movie/now_playing?api_key=".API_KEY."&language=es&page=1");
+            $apiGenresJSON = file_get_contents("https://api.themoviedb.org/3/genre/movie/list?api_key=".API_KEY."&language=es");
 
-            $result = json_decode($apiMoviesJSON, true);
-            $apiMoviesList = $result ["results"];
+            $genresResult = json_decode($apiGenresJSON, true);
+            $moviesResult = json_decode($apiMoviesJSON, true);
+
+            $apiGenresList = $genresResult ["genres"];
+            $apiMoviesList = $moviesResult ["results"];
+
+            if (isset($_GET['genreID'])){
+                $genreID = $_GET['genreID'];
+                $apiMoviesList = $this-> filterMoviesListByGenre($apiMoviesList, $genreID);
+            }
+
             require_once(VIEWS_PATH."movie-list.php");
-            
         }
+
+        private function filterMoviesListByGenre ($moviesList, $genreID){
+            $moviesList = array_filter($moviesList, function($movie) use ($genreID){
+                return $movie["genre_ids"][0] == $genreID;
+            });
+            return $moviesList;
+        }       
+
+        function Delete($id) {
+            $this-> RetrieveData();
+            $this-> cinemaList = 
+            array_filter ($this-> cinemaList, function($cinema) use($id){
+                return $cinema-> getID() != $id;
+            });
+            $this-> SaveData();
+        }
+
     }
 
 ?>

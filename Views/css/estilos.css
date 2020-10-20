@@ -6,7 +6,7 @@ body {
 
 body {
     font-family: 'Montserrat', sans-serif;
-    background: url(../img/back.png) no-repeat center center fixed;
+    background-color: black;
     -webkit-background-size: cover;
     -moz-background-size: cover;
     -o-background-size: cover;
@@ -30,10 +30,48 @@ body {
     border: 2px solid rgba(0, 0, 0, 0.2);
 }
 
-.card-image {
-    width: 5%;
+.title {
+    color: #fff;
+    font-size: 60px;
+    text-align: center;
+    padding: 10px;
+    margin-bottom: 20px;
 }
 
-.pelicula {
-    color: red;
+.card-movie {
+    margin-left: 20px;
+    width: 572px;
+}
+
+.card-image {
+    position: relative;
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    min-width: 0;
+    word-wrap: break-word;
+    background-color: #fff;
+    background-clip: border-box;
+    border: 1px solid rgba(0, 0, 0, 0.125);
+    border-radius: 0.25rem;
+}
+
+.movie-div{
+    width: 572px;
+}
+
+.nav-filters{
+    background-color: #fff;
+    height: 60px;
+    padding-top: 9px;
+    border-radius: 10px;
+    margin: 20px;
+}
+
+.custom-jumbotron{
+    background-color: #fff;
+    padding: 25px;
+    border-radius: 10px;
+    margin: 20px;
 }
