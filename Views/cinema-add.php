@@ -7,7 +7,7 @@
                <div class="alert alert-danger" role="alert"> <?php echo $message?> </div>
           <?php } ?>
           <div class="container">
-               <h2 class="mb-4">Agregar nuevo Cine</h2>
+               <h1 class="title">Agregar nuevo Cine</h1>
                <form action="<?php echo FRONT_ROOT ?>Cinema/addCinema" method="post" class="bg-light-alpha p-5">
                     <div class="row">                         
                          <div class="col-lg-4">
