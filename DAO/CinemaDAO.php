@@ -2,119 +2,115 @@
 
     namespace DAO;
     use Models\Cinema as Cinema;
-    use Models\Room as Room;
     use DAO\ICinemaDAO as ICinemaDAO;
+    use DAO\Connection as Connection;
 
     class CinemaDAO implements ICinemaDAO{
+        
+        
+        private $connection;
 
-        private $fileName = ROOT."Data/cinemas.json";
-        private $cinemaList = array();
+        public function Create(Cinema $cinema) {
+            
+            $sql = "INSERT INTO cinemas(name, ticketValue, address, isActive) VALUES (:name, :ticketValue, :address, :isActive)";
 
-        function Add(Cinema $cinema) {
-            $this-> RetrieveData();
-            $cinema-> setID ($this-> GetNextID());
-            $cinema-> setTotalCapacity (0);
-            array_push($this-> cinemaList, $cinema);
-            $this-> SaveData();
-        }
+            $parameters['name'] = $cinema->getName();
+            $parameters['ticketValue'] = $cinema->getTicketValue();
+            $parameters['address'] = $cinema->getAddress();
+            $parameters['isActive'] = $cinema->getIsActive();
 
-        function GetAll() {
-            $this-> RetrieveData();
-            return $this-> cinemaList;
-        }
 
-        function GetByID($id) {
-            $this-> RetrieveData();
-            foreach ($this-> cinemaList as $currentCinema){
-                if ($currentCinema-> getID() == $id){
-                    return $currentCinema;
-                }
+            try {
+                $this->connection = Connection::getInstance();
+                return $this->connection->executeNonQuery($sql,$parameters);
+            } catch ( PDOException $ex) {
+                throw $ex;
             }
-            return null;
+            
         }
 
-        function Delete($id) {
-            $this-> RetrieveData();
-            $this-> cinemaList = 
-            array_filter ($this-> cinemaList, function($cinema) use($id){
-                return $cinema-> getID() != $id;
-            });
-            $this-> SaveData();
-        }
 
-        private function GetNextID() {
-            $id = 0;
-            if (count($this-> cinemaList)){ //Checks if cinemaList has at least 1 value
-                $cinema = array_pop($this-> cinemaList);
-                $id = ($cinema-> getID()) + 1;
-                array_push($this-> cinemaList, $cinema);
+        public function ReadByID($id) {
+        
+            $sql = "SELECT * FROM cinemas WHERE id = :id";
+
+            $parameters['id'] = $id;
+
+            try {
+                $this->connection = Connection::getInstance();
+                $result = $this->connection->execute($sql, $parameters);
+            } catch ( PDOException $ex) {
+                throw $ex;
             }
 
-            return $id;
-        }
-
-        private function RetrieveData() {
-            $this-> cinemaList = array();
-            if (file_exists($this-> fileName)){
-                $jsonContent = file_get_contents($this-> fileName);
-                if ($jsonContent){
-                    $arrayToDecode = json_decode($jsonContent, true);
-
-                    foreach ($arrayToDecode as $arrayContent){
-                        $cinema = new Cinema();
-                        $cinema-> setID ($arrayContent["ID"]);
-                        $cinema-> setName ($arrayContent["name"]);
-                        $cinema-> setTicketValue ($arrayContent["ticketValue"]);
-                        $cinemaCapacity = 0;
-                        $roomsList = array();
-
-                        foreach($arrayContent["roomsList"] as $room){
-                            $newRoom = new Room();
-                            $newRoom-> setID($room["ID"]);
-                            $newRoom-> setCinemaID($room["cinemaID"]); /*En json no es necesario pero lo dejamos para sql*/
-                            $newRoom-> setName($room["name"]);
-                            $newRoom-> setCapacity($room["capacity"]);
-    
-                            $cinemaCapacity += $room["capacity"];
-                            array_push ($roomsList, $newRoom);
-                        }
-
-                        $cinema-> setRooms ($roomsList);
-                        $cinema-> setTotalCapacity ($cinemaCapacity);
-
-                        array_push ($this-> cinemaList, $cinema);
-                    }
-                }
-            }
-        }
-
-        private function SaveData() {
-            $arrayToEncode = array();
-
-            foreach($this-> cinemaList as $cinema)
+            if (!empty($result)) {
+                return $this->mapear($result);
+            }else
             {
-                //Cinema
-                $valuesArray["ID"] = $cinema-> getID();
-                $valuesArray["name"] = $cinema-> getName();
-                $valuesArray["ticketValue"] = $cinema-> getTicketValue();
-                $valuesArray["totalCapacity"] = $cinema-> getTotalCapacity();
+                return false;
+            }
+        }
 
-                //Rooms List
-                $valuesArray["roomsList"] = array();
-                foreach($cinema->getRooms() as $room){
-                    $valuesArray["roomsList"][] = array(
-                        'ID' => $room-> getID(),
-                        'cinemaID' => $room-> getCinemaID(),
-                        'isAtmos' => $room-> getIsAtmos(),
-                        'capacity' => $room-> getCapacity(),
-                    );
-                }
 
-                array_push($arrayToEncode, $valuesArray);
+        public function ReadAll() {
+            
+            $sql = "SELECT * FROM cinemas";
+
+            try {
+                $this->connection = Connection::getInstance();
+                $result = $this->connection->execute($sql);
+            } catch ( PDOException $ex) {
+                throw $ex;
             }
 
-            $jsonContent = json_encode($arrayToEncode, JSON_PRETTY_PRINT);
-            file_put_contents($this-> fileName, $jsonContent);
+            if (!empty($result)) {
+                return $this->mapear($result);
+            }else {
+                return false;
+            }
+        }
+
+
+        public function Update($cinema) {
+            
+            $sql = "UPDATE cinemas SET name = :name, ticketValue = :ticketValue, address = :address, isActive = :isActive";
+
+            $parameters['name'] = $cinema->getName();
+            $parameters['ticketValue'] = $cinema->getTicketValue();
+            $parameters['address'] = $cinema->getAddress();
+            $parameters['isActive'] = $cinema->getIsActive();
+
+            try {
+                $this->connection = Connection::getInstance();
+                return $this->connection->ExecuteNonQuery($sql, $parameters);
+            } catch ( PDOException $ex) {
+                throw $ex;
+            }
+        }
+
+        public function Delete($id){
+
+        }
+
+        public function GetNextID() {
+            
+        }
+
+        private function mapear($value) {
+           
+            $value = is_array($value) ? $value : [];
+
+            $resp = array_map(function($p){
+                $cinema = new Cinema();
+                $cinema->setID($p['id']);
+                $cinema->setName($p['name']);
+                $cinema->setTicketValue($p['ticketValue']);
+                $cinema->setAddress($p['address']);
+                $cinema->getIsActive($p['isActive']);
+                return $cinema;
+            },$value);
+
+            return count($resp) > 1 ? $resp : $resp['0'];
         }
 
     }

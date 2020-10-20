@@ -5,16 +5,21 @@
 
         private $id;
         private $name;
+        private $address;
         private $ticketValue;
         private $totalCapacity;
         private $rooms = array();
         private $movieListing;
+        private $isActive;
 
         public function setID($id){$this->id = $id;}
         public function getID(){return $this->id;}
 
         public function setName($name){$this->name = $name;}
         public function getName(){return $this->name;}
+
+        public function setAddress($address){$this->address = $address;}
+        public function getAddress(){return $this->address;}
 
         public function setTicketValue($ticketValue){$this->ticketValue = $ticketValue;}
         public function getTicketValue(){return $this->ticketValue;}
@@ -27,6 +32,9 @@
 
         public function setMovieListing($movieListing){$this->movieListing = $movieListing;}
         public function getMovieListing(){return $this->movieListing;}
+
+        public function setIsActive($isActive){$this->isActive = $isActive;}
+        public function getIsActive(){return $this->isActive;}
         
     }
 
