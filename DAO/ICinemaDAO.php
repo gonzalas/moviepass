@@ -4,9 +4,10 @@
     use Models\Cinema as Cinema;
 
     interface ICinemaDAO {
-        function Add(Cinema $cinema);
-        function GetAll();
-        function GetByID($id);
+        function Create(Cinema $cinema);
+        function ReadByID($id);
+        function ReadAll();
+        function Update($cinema);
         function Delete($id);
     }
 
