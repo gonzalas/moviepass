@@ -5,11 +5,15 @@
 
         private $id;
         private $title;
+        private $overview;
+        private $dateRelease;
         private $length;
         private $image;
+        private $trailer;
         private $language;
         private $genres;
         private $isActive;
+        private $voteAverage;
 
         public function setID($id){$this->id = $id;}
         public function getID(){return $this->id;}
@@ -31,6 +35,18 @@
 
         public function setIsActive($isActive){$this->isActive = $isActive;}
         public function getIsActive(){return $this->isActive;}
+
+        public function setTrailer($trailer){$this->trailer = $trailer;}
+        public function getTrailer(){return $this->trailer;}
+
+        public function setOverview($overview){$this->overview = $overview;}
+        public function getOverview(){return $this->overview;}
+
+        public function setDateRelease($dateRelease){$this->dateRelease = $dateRelease;}
+        public function getDateRelease(){return $this->dateRelease;}
+
+        public function setVoteAverage($voteAverage){$this->voteAverage = $voteAverage;}
+        public function getVoteAverage(){return $this->voteAverage;}
         
     }
 
