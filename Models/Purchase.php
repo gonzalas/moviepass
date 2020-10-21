@@ -3,17 +3,21 @@
 
     class Purchase {
 
-        private $id;
-        private $datePurchase;
+        private $purchaseID;
+        private $userID;
+        private $purchaseDate;
         private $subTotal;
         private $hasDiscount;
-        private $totalPurchase;
+        private $purchaseTotal;
 
-        public function setID($id){$this->id = $id;}
-        public function getID(){return $this->id;}
+        public function setPurchaseID($purchaseID){$this->purchaseID = $purchaseID;}
+        public function getPurchaseID(){return $this->purchaseID;}
 
-        public function setDatePurchase($datePurchase){$this->datePurchase = $datePurchase;}
-        public function getDatePurchase(){return $this->datePurchase;}
+        public function setUserID($userID){$this->userID = $userID;}
+        public function getUserID(){return $this->userID;}
+
+        public function setPurchaseDate($purchaseDate){$this->purchaseDate = $purchaseDate;}
+        public function getPurchaseDate(){return $this->purchaseDate;}
 
         public function setSubTotal($subTotal){$this->subTotal = $subTotal;}
         public function getSubTotal(){return $this->subTotal;}
@@ -21,8 +25,8 @@
         public function setHasDiscount($hasDiscount){$this->hasDiscount = $hasDiscount;}
         public function getHasDiscount(){return $this->hasDiscount;}
 
-        public function setTotalPurchase($totalPurchase){$this->totalPurchase = $totalPurchase;}
-        public function getTotalPurchase(){return $this->totalPurchase;}  
+        public function setPurchaseTotal($purchaseTotal){$this->purchaseTotal = $purchaseTotal;}
+        public function getPurchaseTotal(){return $this->purchaseTotal;}  
     }
 
 ?>
