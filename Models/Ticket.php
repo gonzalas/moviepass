@@ -3,18 +3,27 @@
 
     class Ticket {
 
-        private $id;
-        private $codeQR;
-        private $location;
+        private $ticketID;
+        private $showID;
+        private $purchaseID;
+        private $seatLocation;
+        private $qrCode;
 
-        public function setID($id){$this->id = $id;}
-        public function getID(){return $this->id;}
+        public function setTicketID($ticketID){$this->ticketID = $ticketID;}
+        public function getTicketID(){return $this->ticketID;}
 
-        public function setCodeQR($codeQR){$this->codeQR = $codeQR;}
-        public function getCodeQR(){return $this->codeQR;}
+        public function setShowID($showID){$this->showID = $showID;}
+        public function getShowID(){return $this->showID;}
 
-        public function setLocation($location){$this->location = $location;}
-        public function getLocation(){return $this->location;}
+        public function setPurchaseID($purchaseID){$this->purchaseID = $purchaseID;}
+        public function getPurchaseID(){return $this->purchaseID;}
+
+        public function setSeatLocation($seatLocation){$this->seatLocation = $seatLocation;}
+        public function getSeatLocation(){return $this->seatLocation;}
+
+        public function setQRCode($qrCode){$this->qrCode = $qrCode;}
+        public function getQRCode(){return $this->qrCode;}
+
         
     }
 
