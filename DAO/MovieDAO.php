@@ -4,24 +4,24 @@
     use DAO\Connection as Connection;
     use Models\Movie as Movie;
 
-    class UserDAO implements IMovieDAO{
+    class MovieDAO implements IMovieDAO{
         private $connection;
         
         public function Create($movie){
 
             $sql = "INSERT INTO movies (id, title, overview, dateRelease, length, image, trailer, language, genres, voteAverage, isActive) VALUES (:id, :title, :overview, :dateRelease, :length, :image, :trailer, :language, :genres, :voteAverage, :isActive)";
             
-            $parameters['id'] = $user->getID();
-            $parameters['title'] = $user->getTitle();
-            $parameters['overview'] = $user->getOverview();
-            $parameters['dateRelease'] = $user->getDateRelease();
-            $parameters['length'] = $user->getLength();
-            $parameters['image'] = $user->getImage();
-            $parameters['trailer'] = $user->getTrailer();
-            $parameters['language'] = $user->getLanguage();
-            $parameters['genres'] = $user->getGenres();
-            $parameters['voteAverage'] = $user->getVoteAverage();
-            $parameters['isActive'] = $user->getisActive();
+            $parameters['id'] = $movie->getID();
+            $parameters['title'] = $movie->getTitle();
+            $parameters['overview'] = $movie->getOverview();
+            $parameters['dateRelease'] = $movie->getDateRelease();
+            $parameters['length'] = $movie->getLength();
+            $parameters['image'] = $movie->getImage();
+            $parameters['trailer'] = $movie->getTrailer();
+            $parameters['language'] = $movie->getLanguage();
+            $parameters['genres'] = $movie->getGenres();
+            $parameters['voteAverage'] = $movie->getVoteAverage();
+            $parameters['isActive'] = $movie->getisActive();
 
             try {
 
@@ -77,21 +77,21 @@
 
         }
 
-        public function Update($user){
+        public function Update($movie){
 
             $sql = "UPDATE movies SET id = :id, title = :title, overview = :overview, dateRelease = :dateRelease, length = :length, image = :image, trailer = :trailer, language = :language, genres = :genres, voteAverage = :voteAverage, isActive = :isActive";
             
-            $parameters['id'] = $user->getID();
-            $parameters['title'] = $user->getTitle();
-            $parameters['overview'] = $user->getOverview();
-            $parameters['dateRelease'] = $user->getDateRelease();
-            $parameters['length'] = $user->getLength();
-            $parameters['image'] = $user->getImage();
-            $parameters['trailer'] = $user->getTrailer();
-            $parameters['language'] = $user->getLanguage();
-            $parameters['genres'] = $user->getGenres();
-            $parameters['voteAverage'] = $user->getVoteAverage();
-            $parameters['isActive'] = $user->getisActive();
+            $parameters['id'] = $movie->getID();
+            $parameters['title'] = $movie->getTitle();
+            $parameters['overview'] = $movie->getOverview();
+            $parameters['dateRelease'] = $movie->getDateRelease();
+            $parameters['length'] = $movie->getLength();
+            $parameters['image'] = $movie->getImage();
+            $parameters['trailer'] = $movie->getTrailer();
+            $parameters['language'] = $movie->getLanguage();
+            $parameters['genres'] = $movie->getGenres();
+            $parameters['voteAverage'] = $movie->getVoteAverage();
+            $parameters['isActive'] = $movie->getisActive();
 
             try {
 

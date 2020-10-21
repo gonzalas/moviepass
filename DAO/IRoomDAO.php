@@ -4,9 +4,10 @@
     use Models\Room as Room;
 
     interface IRoomDAO {
-        function Add(Room $room);
-        function GetAll();
-        function GetByID($id);
+        function Create(Room $room);
+        function ReadByID($id);
+        function ReadAll();
+        function Update($room);
         function Delete($id);
     }
 
