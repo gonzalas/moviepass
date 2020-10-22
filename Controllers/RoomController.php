@@ -14,7 +14,7 @@
         }
 
         function addRoom($cinemaID, $name, $capacity, $ticketValue) {
-            if ($this-> validateRoomName($name, $cinemaID)){
+            if (!empty($this-> roomDAO-> ReadByName($cinemaID, $name))){
                 $this-> showAddView($cinemaID, "Nombre de sala ya existente en el cine elegido. Intente con otro.", 0);
             } else {
                 $room = new Room();
@@ -24,6 +24,7 @@
                     $room-> setCapacity($capacity);
                     if ($ticketValue > 0){
                         $room-> setTicketValue($ticketValue);
+                        $room-> setIsActive(true);
                         $this-> roomDAO-> Create($room);
                     } else {
                         $this-> showAddView("Intente usar un precio mayor a 0.");
@@ -36,28 +37,27 @@
         }
 
         function removeRoom($id){
-            $this-> roomDAO-> Delete($id);
-            $roomsList = $this-> roomDAO-> ReadAll();
+            if ($id!=-1){
+                $room = $this-> roomDAO-> ReadByID($id);
+                $room-> setIsActive(false);
+                $this-> roomDAO-> Update($room);
+            }
             $message = "Sala eliminada con éxito.";
             require_once(VIEWS_PATH."index.php");
         }
 
         function editRoom ($id, $name, $capacity, $ticketValue){
-            $room = new Room();
             $room = $this-> roomDAO-> ReadByID($id);
             $cinemaID = $room-> getCinemaID();
             if ($this-> validateRoomEdit($id, $name, $cinemaID)){
                 $this-> showEditView($id, "Nombre de sala ya existente en el cine elegido. Intente con otro.", 0);
             } else {
                 if ($capacity>=0) {
-                    $room = new Room();
-                    $room-> setName($name);
                     if ($ticketValue>=0) {
+                        $room-> setName($name);
                         $room-> setTicketValue($ticketValue);
                         $room-> setCapacity($capacity);
-                        $room-> setCinemaID($cinemaID);
-                        $this-> roomDAO-> Create($room);
-                        $this-> roomDAO-> Delete($id);
+                        $this-> roomDAO-> Update($room);
                         $this-> showEditView($room-> getID(), "Sala editada con éxito.", 1);
                     } else {
                         $this-> showEditView($id, "Intente usar un valor de entrada positivo.");
@@ -67,12 +67,6 @@
                 }
             }
         }
-      
-        /*
-        function showListView (){
-            $cinemasList = $this-> cinemaDAO-> GetAll();
-            require_once(VIEWS_PATH."cinema-list.php");
-        }*/
 
         function showAddView ($cinemaId, $message = "", $messageCode = 0, Room $room = null){
             require_once(VIEWS_PATH."room-add.php");
@@ -83,21 +77,13 @@
             require_once(VIEWS_PATH."room-edit.php");
         }
         
-        private function validateRoomName($name, $cinemaID){
-            $roomList = $this-> roomDAO-> ReadAll();
-            foreach ($roomList as $room){
-                if ($room-> getCinemaID() == $cinemaID && $room-> getName() === $name){
+        private function validateRoomEdit($roomID, $name, $cinemaID){
+            $room = array();
+            $roomsList = $this-> roomDAO-> ReadByCinemaID($cinemaID);
+            foreach ($roomsList as $room){
+                if ($room-> getName() == $name && $room-> getID() != $roomID){
                     return true;
                 }
-            }
-            return false;
-        }
-        
-        private function validateRoomEdit($id, $name, $cinemaID){
-            $room = new Room();
-            $room = $this-> roomDAO-> ReadByID($id);
-            if ($room-> getName() != $name){
-                return $this-> validateRoomName($name, $cinemaID);
             }
             return false;
         }
