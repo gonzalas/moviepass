@@ -6,10 +6,9 @@ create table if not exists cinemas (
     cinemaID int AUTO_INCREMENT,
     name varchar(50) not null,
     address varchar(50) not null unique,
-    totalCapacity int /Forma parte de php, no de sql?/
     isActive boolean,
 
-    constraint pkCinemaID primary key (cinemaID),
+    constraint pkCinemaID primary key (cinemaID)
 
 ) ENGINE = InnoDB;
 
@@ -51,7 +50,7 @@ create table if not exists shows (
 
     constraint pkShowID primary key (showID),
     constraint fkRoomID foreign key (roomID) references rooms (roomID),
-    constraint fkMovieID foreign key (movieID) references movies (movieID)
+    constraint fkShowMovieID foreign key (movieID) references movies (movieID)
 
 ) ENGINE = InnoDB;
 
@@ -82,8 +81,8 @@ create table if not exists genresXMovies (
     genreID int not null,
 
     constraint pkGenreXMovie primary key (genreXMovieID),
-    constraint fkMovieID foreign key (movieID) references movies (movieID),
-    constraint fkGenreID foreign key (genreID) references genres (genreID)
+    constraint fkGenreXMovieMovieID foreign key (movieID) references movies (movieID),
+    constraint fkGenreXMovieGenreID foreign key (genreID) references genres (genreID)
 
 ) ENGINE = InnoDB;
 
@@ -104,11 +103,11 @@ create table if not exists tickets (
     ticketID int AUTO_INCREMENT,
     showID int not null,
     purchaseID int not null,
-    seatLocation UNSIGNED smallInt,
-    qrCodeURL varchar(100)
+    seatLocation smallInt UNSIGNED,
+    qrCodeURL varchar(100),
 
     constraint pkTicketID primary key (ticketID),
-    constraint fkShowID foreign key (showID) references shows (showID),
+    constraint fkTicketShowID foreign key (showID) references shows (showID),
     constraint fkPurchaseID foreign key (purchaseID) references purchases (purchaseID)
 
 ) ENGINE = InnoDB;
