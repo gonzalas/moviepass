@@ -30,9 +30,51 @@
 
         public function ReadByID($id) {
         
-            $sql = "SELECT * FROM cinemas WHERE id = :id";
+            $sql = "SELECT * FROM cinemas WHERE cinemaID = :id";
 
             $parameters['id'] = $id;
+
+            try {
+                $this->connection = Connection::getInstance();
+                $result = $this->connection->execute($sql, $parameters);
+            } catch ( PDOException $ex) {
+                throw $ex;
+            }
+
+            if (!empty($result)) {
+                return $this->mapear($result);
+            }else
+            {
+                return false;
+            }
+        }
+
+        public function ReadByName($name) {
+        
+            $sql = "SELECT * FROM cinemas WHERE name = :name";
+
+            $parameters['name'] = $name;
+
+            try {
+                $this->connection = Connection::getInstance();
+                $result = $this->connection->execute($sql, $parameters);
+            } catch ( PDOException $ex) {
+                throw $ex;
+            }
+
+            if (!empty($result)) {
+                return $this->mapear($result);
+            }else
+            {
+                return false;
+            }
+        }
+
+        public function ReadByAddress($address) {
+        
+            $sql = "SELECT * FROM cinemas WHERE address = :address";
+
+            $parameters['address'] = $address;
 
             try {
                 $this->connection = Connection::getInstance();
@@ -102,7 +144,7 @@
                 $cinema->setID($p['cinemaID']);
                 $cinema->setName($p['name']);
                 $cinema->setAddress($p['address']);
-                $cinema->getIsActive($p['isActive']);
+                $cinema->setIsActive($p['isActive']);
                 return $cinema;
             },$value);
 

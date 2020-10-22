@@ -11,6 +11,7 @@
                               <th>Nombre</th>
                               <th>Dirección</th>
                               <th>Capacidad Total</th>
+                              <th>Active</th>
                          </thead>
                          <tbody>
                               <?php

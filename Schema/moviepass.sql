@@ -6,7 +6,7 @@ create table if not exists cinemas (
     cinemaID int AUTO_INCREMENT,
     name varchar(50) not null,
     address varchar(50) not null unique,
-    isActive boolean,
+    isActive boolean not null default true,
 
     constraint pkCinemaID primary key (cinemaID)
 
@@ -17,7 +17,7 @@ create table if not exists rooms (
     cinemaID int not null,
     name varchar(50) unique,
     capacity int UNSIGNED not null,
-    isActive boolean,
+    isActive boolean not null default true,
 
     constraint pkRoomID primary key (roomID),
     constraint fkCinemaID foreign key (cinemaID) references cinemas (cinemaID)
@@ -34,7 +34,7 @@ create table if not exists movies (
     trailerPath varchar(60),
     language varchar(10),
     voteAverage float,
-    isActive boolean,
+    isActive boolean not null default true,
 
     constraint pkMovieID primary key (movieID)
 
@@ -46,7 +46,7 @@ create table if not exists shows (
     movieID int not null,
     showDate date not null,
     showTime time not null,
-    isActive boolean,
+    isActive boolean not null default true,
 
     constraint pkShowID primary key (showID),
     constraint fkRoomID foreign key (roomID) references rooms (roomID),
