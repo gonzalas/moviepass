@@ -11,11 +11,12 @@
 
 
         public function Create(Room $room) {
-            $sql = "INSERT INTO rooms (cinemaID, name, capacity, isActive) VALUES (:id, :cinemaID, :name, :capacity, :isActive)";
+            $sql = "INSERT INTO rooms (cinemaID, name, capacity, ticketValue, isActive) VALUES (:cinemaID, :name, :capacity, :ticketValue, :isActive)";
         
             $parameters['cinemaID'] = $room->getcinemaID();
             $parameters['name'] = $room->getName();
             $parameters['capacity'] = $room->getCapacity();
+            $parameters['ticketValue'] = $room->getTicketValue();
             $parameters['isActive'] = $room->getIsActive();
 
             try {
@@ -83,11 +84,12 @@
 
 
         public function Update($room){
-            $sql = "UPDATE rooms SET id = :id, cinemaID = :cinemaID, name = :name, capacity = :capacity, isActive = :isActive";
+            $sql = "UPDATE rooms SET id = :id, cinemaID = :cinemaID, name = :name, ticketValue = :ticketValue, capacity = :capacity, isActive = :isActive";
 
             $parameters['id'] = $room->getID();
             $parameters['cinemaID'] = $room->getCinemaID();
             $parameters['name'] = $room->getName();
+            $parameters['ticketValue'] = $room->getTicketValue();
             $parameters['capacity'] = $room->getCapacity();
             $parameters['isActive'] = $room->getIsActive();
 
@@ -128,14 +130,15 @@
             $value = is_array($value) ? $value : [];
         
             $resp = array_map(function($p){
-                $room = new Room();
-                $room->setID($p["id"]);
-                $room->setCinemaID($p["cinemaID"]);
-                $room->setName($p["name"]);
-                $room->setCapacity($p["capacity"]);
-                $room->setIsActive($p["isActive"]);
-                return $room;
-                },$value);   
+                    $room = new Room();
+                    $room->setID($p["id"]);
+                    $room->setCinemaID($p["cinemaID"]);
+                    $room->setName($p["name"]);
+                    $room->setTicketValue($p['ticketValue']);
+                    $room->setCapacity($p["capacity"]);
+                    $room->setIsActive($p["isActive"]);
+                    return $room;
+                },$value);
 
                 return count($resp) > 1 ? $resp : $resp['0'];
         }

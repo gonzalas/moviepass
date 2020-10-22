@@ -2,14 +2,14 @@
     {
         "ID": 0,
         "name": "Aldrey",
-        "ticketValue": "200",
+        "address": "Sarmiento 123",
         "totalCapacity": 0,
         "roomsList": []
     },
     {
         "ID": 1,
-        "name": "Los Gallegos",
-        "ticketValue": "500",
+        "name": "Ambassador",
+        "address": "Sarmiento 123",
         "totalCapacity": 0,
         "roomsList": []
     }

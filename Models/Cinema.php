@@ -6,7 +6,6 @@
         private $id;
         private $name;
         private $address;
-        private $ticketValue;
         private $totalCapacity;
         private $rooms = array();
         private $movieListing;
@@ -20,9 +19,6 @@
 
         public function setAddress($address){$this->address = $address;}
         public function getAddress(){return $this->address;}
-
-        public function setTicketValue($ticketValue){$this->ticketValue = $ticketValue;}
-        public function getTicketValue(){return $this->ticketValue;}
 
         public function setRooms($rooms){$this->rooms = $rooms;}
         public function getRooms(){return $this->rooms;}

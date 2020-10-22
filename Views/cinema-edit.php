@@ -6,7 +6,7 @@
           <?php if ($message != ""){ ?>
                <div class="alert alert-danger" role="alert"> <?php echo $message?> </div>
           <?php } ?>
-          <div class="container">
+          <div class="container white-font">
                <h2 class="mb-4">Editar Cine</h2>
                <form action="<?php echo FRONT_ROOT ?>Cinema/editCinema" method="post" class="bg-light-alpha p-5">
                     <div class="row">                         
@@ -19,8 +19,8 @@
                          </div>
                          <div class="col-lg-4">
                               <div class="form-group">
-                                   <label for="">Precio de entrada (actual: <?php echo $cinema-> getTicketValue()?>)</label>
-                                   <input type="text" name="ticketValue" value="<?php echo $cinema-> getTicketValue()?>" class="form-control" required>
+                                   <label for="">Dirección (actual: <?php echo $cinema-> getAddress()?>)</label>
+                                   <input type="text" name="address" value="<?php echo $cinema-> getAddress()?>" class="form-control" required autofocus>
                               </div>
                          </div>
                     </div>

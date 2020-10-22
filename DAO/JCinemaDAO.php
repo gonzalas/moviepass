@@ -5,7 +5,7 @@
     use Models\Room as Room;
     use DAO\ICinemaDAO as ICinemaDAO;
 
-    class JCinemaDAO implements ICinemaDAO{
+    class JCinemaDAO /* implements ICinemaDAO */{
 
         private $fileName = ROOT."Data/cinemas.json";
         private $cinemaList = array();
@@ -64,7 +64,7 @@
                         $cinema = new Cinema();
                         $cinema-> setID ($arrayContent["ID"]);
                         $cinema-> setName ($arrayContent["name"]);
-                        $cinema-> setTicketValue ($arrayContent["ticketValue"]);
+                        $cinema-> setAddress($arrayContent["address"]);
                         $cinemaCapacity = 0;
                         $roomsList = array();
 
@@ -73,6 +73,7 @@
                             $newRoom-> setID($room["ID"]);
                             $newRoom-> setCinemaID($room["cinemaID"]); /*En json no es necesario pero lo dejamos para sql*/
                             $newRoom-> setName($room["name"]);
+                            $newRoom-> setTicketValue($room['ticketValue']);
                             $newRoom-> setCapacity($room["capacity"]);
     
                             $cinemaCapacity += $room["capacity"];
@@ -96,7 +97,7 @@
                 //Cinema
                 $valuesArray["ID"] = $cinema-> getID();
                 $valuesArray["name"] = $cinema-> getName();
-                $valuesArray["ticketValue"] = $cinema-> getTicketValue();
+                $valuesArray["address"] = $cinema-> getAddress();
                 $valuesArray["totalCapacity"] = $cinema-> getTotalCapacity();
 
                 //Rooms List
@@ -105,7 +106,7 @@
                     $valuesArray["roomsList"][] = array(
                         'ID' => $room-> getID(),
                         'cinemaID' => $room-> getCinemaID(),
-                        'isAtmos' => $room-> getIsAtmos(),
+                        'ticketValue' => $room-> getTicketValue(),
                         'capacity' => $room-> getCapacity(),
                     );
                 }

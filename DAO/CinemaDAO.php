@@ -12,13 +12,11 @@
 
         public function Create(Cinema $cinema) {
             
-            $sql = "INSERT INTO cinemas(name, ticketValue, address, isActive) VALUES (:name, :ticketValue, :address, :isActive)";
+            $sql = "INSERT INTO cinemas(name, address, isActive) VALUES (:name, :address, :isActive)";
 
             $parameters['name'] = $cinema->getName();
-            $parameters['ticketValue'] = $cinema->getTicketValue();
             $parameters['address'] = $cinema->getAddress();
             $parameters['isActive'] = $cinema->getIsActive();
-
 
             try {
                 $this->connection = Connection::getInstance();
@@ -73,12 +71,12 @@
 
         public function Update($cinema) {
             
-            $sql = "UPDATE cinemas SET name = :name, ticketValue = :ticketValue, address = :address, isActive = :isActive";
+            $sql = "UPDATE cinemas SET name = :name, address = :address, isActive = :isActive WHERE cinemaID = :cinemaID";
 
             $parameters['name'] = $cinema->getName();
-            $parameters['ticketValue'] = $cinema->getTicketValue();
             $parameters['address'] = $cinema->getAddress();
             $parameters['isActive'] = $cinema->getIsActive();
+            $parameters['cinemaID'] = $cinema->getID();
 
             try {
                 $this->connection = Connection::getInstance();
@@ -104,7 +102,6 @@
                 $cinema = new Cinema();
                 $cinema->setID($p['id']);
                 $cinema->setName($p['name']);
-                $cinema->setTicketValue($p['ticketValue']);
                 $cinema->setAddress($p['address']);
                 $cinema->getIsActive($p['isActive']);
                 return $cinema;

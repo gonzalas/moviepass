@@ -8,7 +8,7 @@
           <?php } ?>
           <div class="container">
                <h1 class="title">Agregar nuevo Cine</h1>
-               <form action="<?php echo FRONT_ROOT ?>Cinema/addCinema" method="post" class="bg-light-alpha p-5">
+               <form action="<?php echo FRONT_ROOT ?>Cinema/addCinema" method="post" class="bg-light-alpha white-font p-5">
                     <div class="row">                         
                          <div class="col-lg-4">
                               <div class="form-group">
@@ -18,8 +18,8 @@
                          </div>
                          <div class="col-lg-4">
                               <div class="form-group">
-                                   <label for="">Precio de entrada</label>
-                                   <input type="text" name="ticketValue" class="form-control" required>
+                                   <label for="">Dirección del Cine</label>
+                                   <input type="text" name="address" class="form-control" required>
                               </div>
                          </div>
                     </div>

@@ -6,6 +6,7 @@
             <table>
                 <thead>
                     <th>Nombre de sala</th>
+                    <th>Valor de Entrada</th>
                     <th>Capacidad</th>
                 </thead>
                 <tbody>
@@ -15,6 +16,7 @@
                     ?>
                     <tr>
                         <td><?php echo $room-> getName() ?></td>
+                        <td>$<?php echo $room-> getTicketValue() ?></td>
                         <td><?php echo $room-> getCapacity() ?></td>
                         <td>
                             <a class="btn btn-success" href= "<?php echo FRONT_ROOT ?>Room/showEditView/?id=<?php echo $room->getID();?>" > Editar </a>

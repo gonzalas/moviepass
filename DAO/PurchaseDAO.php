@@ -10,9 +10,8 @@
 
         public function Create($purchase){
 
-            $sql = "INSERT INTO purchases (purchaseID, userID, purchaseDate, subTotal, hasDiscount, purchaseTotal) VALUES (:purchaseID, :userID, :purchaseDate, :subTotal, :hasDiscount, :purchaseTotal)";
+            $sql = "INSERT INTO purchases (userID, purchaseDate, subTotal, hasDiscount, purchaseTotal) VALUES (:userID, :purchaseDate, :subTotal, :hasDiscount, :purchaseTotal)";
 
-            $parameters['purchaseID'] = $purchase->getPurchaseID(); 
             $parameters['userID'] = $purchase->getUserID(); 
             $parameters['purchaseDate'] = $purchase->getPurchaseDate(); 
             $parameters['subTotal'] = $purchase->getSubTotal(); 

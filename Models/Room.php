@@ -7,6 +7,7 @@
         private $cinemaID;
         private $name;
         private $capacity;
+        private $ticketValue;
         private $isActive;
 
         public function setID($id){
@@ -40,6 +41,10 @@
         public function setCapacity($capacity) {
             $this->capacity = $capacity;
         }
+
+        public function setTicketValue($ticketValue){$this->ticketValue = $ticketValue;}
+        public function getTicketValue(){return $this->ticketValue;}
+
 
         public function setIsActive($isActive){$this->isActive = $isActive;}
         public function getIsActive(){return $this->isActive;}

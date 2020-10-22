@@ -1,8 +1,8 @@
 <?php
 
     namespace Controllers;
-    use DAO\JCinemaDAO as JCinemaDAO;
-    use DAO\RoomDAO as RoomDAO;
+    use DAO\JCinemaDAO as CinemaDAO;
+    use DAO\JRoomDAO as RoomDAO;
     use Models\Cinema as Cinema;
     use Models\Room as Room;
 
@@ -17,64 +17,61 @@
             $this-> roomDAO = new RoomDAO();
         }
 
-        function addCinema($name, $ticketValue) {
+        function addCinema($name, $address) {
             if ($this-> validateCinemaName($name)){
                 $this-> showAddView("Nombre de cine ya existente. Intente con otro.");
             } else {
                 $cinema = new Cinema();
                 $cinema-> setName($name);
-                $ticketValue>0 ? $cinema-> setTicketValue($ticketValue) : $this-> showAddView("Try using a positive ticket value.");
-                $this-> cinemaDAO-> Add($cinema);
+                $cinema-> setAddress($address);
+                $this-> cinemaDAO-> Create($cinema);
                 $this-> showListView();
             }
         }
 
         function removeCinema($id){
-            if ($id!=-1)
-                $cinema = $this-> cinemaDAO-> GetByID($id);
-                $roomsList = $this-> roomDAO-> GetAll(); /**Borramos los cinemaID de los rooms que tengan el ID del cine modificado */
+            if ($id!=-1){
+                $cinema = $this-> cinemaDAO-> ReadByID($id);
+                $roomsList = $this-> roomDAO-> ReadAll(); /**Borramos los cinemaID de los rooms que tengan el ID del cine modificado */
                     foreach($roomsList as $room){ /**Como después se simplifica con sql, por el momento dejamos este foreach sin modularizar */
                         if ($room-> getCinemaID() == $id){
                             $this-> roomDAO-> Delete($room-> getID());
                         }
                     }
                 $this-> cinemaDAO-> Delete($id);
-            $cinemasList = $this-> cinemaDAO-> GetAll();
+            }
+            $cinemasList = $this-> cinemaDAO-> ReadAll();
             $this-> showListView();
         }
 
-        function editCinema ($id, $name, $ticketValue){
+        function editCinema ($id, $name, $address){
             if ($this-> validateCinemaEdit($id, $name)){
                 $this-> showEditView($id, "Nombre de cine ya existente. Intente con otro.");
             } else {
                 $cinema = new Cinema();
                 $cinema-> setName($name);
-                if ($ticketValue>=0) {
-                    $cinema-> setTicketValue($ticketValue);
-                    $this-> cinemaDAO-> Add($cinema);
-                    $newID = $cinema-> getID();
-                    $roomsList = $this-> roomDAO-> GetAll(); /**Actualizamos los cinemaID de los rooms que tengan el ID del cine modificado */
-                    foreach($roomsList as $room){ /**Como después se simplifica con sql, por el momento dejamos este foreach sin modularizar */
-                        if ($room-> getCinemaID() == $id){
-                            $newRoom = new Room();
-                            $newRoom-> setName($room-> getName());
-                            $newRoom-> setCapacity($room-> getCapacity());
-                            $newRoom-> setCinemaID($newID);
-                            $this-> roomDAO-> Add($newRoom);
-                            $this-> roomDAO-> Delete($room-> getID());
-                        }
+                $cinema-> setAddress ($address);
+                $this-> cinemaDAO-> Create($cinema);
+                $newID = $cinema-> getID();
+                $roomsList = $this-> roomDAO-> ReadAll(); /**Actualizamos los cinemaID de los rooms que tengan el ID del cine modificado */
+                foreach($roomsList as $room){ /**Como después se simplifica con sql, por el momento dejamos este foreach sin modularizar */
+                    if ($room-> getCinemaID() == $id){
+                        $newRoom = new Room();
+                        $newRoom-> setName($room-> getName());
+                        $newRoom-> setCapacity($room-> getCapacity());
+                        $newRoom-> setCinemaID($newID);
+                        $this-> roomDAO-> Create($newRoom);
+                        $this-> roomDAO-> Delete($room-> getID());
                     }
-                    $this-> cinemaDAO-> Delete($id);
-                    $this-> showListView();
-                } else {
-                    $this-> showEditView($id, "Intente usar un valor de entrada positivo.");
                 }
+                $this-> cinemaDAO-> Delete($id);
+                $this-> showListView();
             }
         }
       
         function showListView (){
-            $cinemasList = $this-> cinemaDAO-> GetAll();
-            $roomsList = $this-> roomDAO-> GetAll();
+            $cinemasList = $this-> cinemaDAO-> ReadAll();
+            $roomsList = $this-> roomDAO-> ReadAll();
 
             foreach ($cinemasList as $cinema){
                 $cinemaID = $cinema-> getID();
@@ -98,12 +95,12 @@
         }
 
         function showEditView ($id, $message = ""){
-            $cinema = $this-> cinemaDAO-> getByID($id);
+            $cinema = $this-> cinemaDAO-> ReadByID($id);
             require_once(VIEWS_PATH."cinema-edit.php");
         }
         
         private function validateCinemaName($name){
-            $cinemasList = $this-> cinemaDAO-> GetAll();
+            $cinemasList = $this-> cinemaDAO-> ReadAll();
             foreach ($cinemasList as $cinema){
                 if ($cinema-> getName() === $name){
                     return true;
@@ -114,7 +111,7 @@
         
         private function validateCinemaEdit($id, $name){
             $cinema = new Cinema();
-            $cinema = $this-> cinemaDAO-> GetByID($id);
+            $cinema = $this-> cinemaDAO-> ReadByID($id);
             if ($cinema-> getName() != $name){
                 return $this-> validateCinemaName($name);
             }

@@ -9,9 +9,8 @@
         
         public function Create($movie){
 
-            $sql = "INSERT INTO movies (id, title, overview, dateRelease, length, image, trailer, language, genres, voteAverage, isActive) VALUES (:id, :title, :overview, :dateRelease, :length, :image, :trailer, :language, :genres, :voteAverage, :isActive)";
+            $sql = "INSERT INTO movies (title, overview, dateRelease, length, image, trailer, language, genres, voteAverage, isActive) VALUES (:title, :overview, :dateRelease, :length, :image, :trailer, :language, :genres, :voteAverage, :isActive)";
             
-            $parameters['id'] = $movie->getID();
             $parameters['title'] = $movie->getTitle();
             $parameters['overview'] = $movie->getOverview();
             $parameters['dateRelease'] = $movie->getDateRelease();

@@ -16,7 +16,7 @@
                     </button>
                </div>
           <?php } ?>
-          <div class="container">
+          <div class="container white-font">
                <h2 class="mb-4">Agregar nueva Sala</h2>
                <form action="<?php echo FRONT_ROOT ?>Room/addRoom" method="post" class="bg-light-alpha p-5">
                     <div class="row">                         
@@ -31,6 +31,12 @@
                               <div class="form-group">
                                     <label for="">Capacidad de sala</label>
                                     <input type="number" name="capacity" class="form-control" required>
+                              </div>
+                         </div>
+                         <div class="col-lg-4">
+                              <div class="form-group">
+                                    <label for="">Precio único de entrada</label>
+                                    <input type="text" name="ticketValue" class="form-control" required autofocus>
                               </div>
                          </div>
                     </div>

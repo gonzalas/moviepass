@@ -16,7 +16,7 @@
                     </button>
                </div>
           <?php } ?>
-          <div class="container">
+          <div class="container white-font">
                <h2 class="mb-4">Editar Sala</h2>
                <form action="<?php echo FRONT_ROOT ?>Room/editRoom" method="post" class="bg-light-alpha p-5">
                     <div class="row">
@@ -31,6 +31,12 @@
                               <div class="form-group">
                                    <label for="">Capacidad (actual: <?php echo $room-> getCapacity()?>)</label>
                                    <input type="text" name="capacity" value="<?php echo $room-> getCapacity()?>" class="form-control" required>
+                              </div>
+                         </div>
+                         <div class="col-lg-4">
+                              <div class="form-group">
+                                   <label for="">Precio de entrada (actual: <?php echo $room-> getTicketValue()?>)</label>
+                                   <input type="text" name="ticketValue" value="<?php echo $room-> getTicketValue()?>" class="form-control" required>
                               </div>
                          </div>
                     </div>

@@ -1,14 +1,9 @@
 [
     {
-        "ID": 3,
-        "cinemaID": "1",
-        "name": "Sala 2",
-        "capacity": "200"
-    },
-    {
-        "ID": 4,
+        "ID": 0,
         "cinemaID": "0",
-        "name": "Sala Niembro",
-        "capacity": "200"
+        "ticketValue": "200",
+        "name": "Sala1",
+        "capacity": "1000"
     }
 ]

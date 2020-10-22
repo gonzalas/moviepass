@@ -5,7 +5,7 @@
     use Models\Cinema as Cinema;
     use DAO\IRoomDAO as IRoomDAO;
 
-    class JRoomDAO implements IRoomDAO{
+    class JRoomDAO /* implements IRoomDAO */{
 
         private $fileName = ROOT."Data/rooms.json";
         private $roomList = array();
@@ -64,6 +64,7 @@
                         $room-> setID ($arrayContent["ID"]);
                         $room-> setCinemaID ($arrayContent["cinemaID"]);
                         $room-> setName ($arrayContent["name"]);
+                        $room-> setTicketValue ($arrayContent["ticketValue"]);
                         $room-> setCapacity ($arrayContent["capacity"]);
 
                         array_push ($this-> roomList, $room);
@@ -79,6 +80,7 @@
             {
                 $valuesArray["ID"] = $room-> getID();
                 $valuesArray["cinemaID"] = $room-> getCinemaID();
+                $valuesArray["ticketValue"] = $room-> getTicketValue();
                 $valuesArray["name"] = $room-> getName();
                 $valuesArray["capacity"] = $room-> getCapacity();
 

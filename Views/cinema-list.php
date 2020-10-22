@@ -6,10 +6,10 @@
           <div class="container">
                <h1 class="title">Listado de cines</h1>
                <form action="<?php echo FRONT_ROOT."Cinema/removeCinema"?>">
-                    <table class="table bg-light-alpha">
+                    <table class="table bg-light-alpha white-font">
                          <thead>
                               <th>Nombre</th>
-                              <th>Precio de Entrada</th>
+                              <th>Dirección</th>
                               <th>Capacidad Total</th>
                          </thead>
                          <tbody>
@@ -19,7 +19,7 @@
                               ?>
                                    <tr>
                                         <td><?php echo $cinema-> getName() ?></td>
-                                        <td>$<?php echo $cinema-> getTicketValue() ?></td>
+                                        <td><?php echo $cinema-> getAddress() ?></td>
                                         <td><?php echo $cinema-> getTotalCapacity()?></td>
                                         <td>
                                              <input type="button" value="Ver salas" id="ac-btn" class="btn btn-info" onClick="toggleRoom(<?php echo $cinema-> getID()?>)"></input>
