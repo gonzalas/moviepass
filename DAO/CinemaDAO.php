@@ -51,7 +51,6 @@
 
 
         public function ReadAll() {
-            
             $sql = "SELECT * FROM cinemas";
 
             try {
@@ -100,14 +99,14 @@
 
             $resp = array_map(function($p){
                 $cinema = new Cinema();
-                $cinema->setID($p['id']);
+                $cinema->setID($p['cinemaID']);
                 $cinema->setName($p['name']);
                 $cinema->setAddress($p['address']);
                 $cinema->getIsActive($p['isActive']);
                 return $cinema;
             },$value);
 
-            return count($resp) > 1 ? $resp : $resp['0'];
+            return $resp;
         }
 
     }

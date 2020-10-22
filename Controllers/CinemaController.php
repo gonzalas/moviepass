@@ -1,8 +1,8 @@
 <?php
 
     namespace Controllers;
-    use DAO\JCinemaDAO as CinemaDAO;
-    use DAO\JRoomDAO as RoomDAO;
+    use DAO\CinemaDAO as CinemaDAO;
+    use DAO\RoomDAO as RoomDAO;
     use Models\Cinema as Cinema;
     use Models\Room as Room;
 
@@ -72,20 +72,10 @@
         function showListView (){
             $cinemasList = $this-> cinemaDAO-> ReadAll();
             $roomsList = $this-> roomDAO-> ReadAll();
-
             foreach ($cinemasList as $cinema){
-                $cinemaID = $cinema-> getID();
-                $newRoomsList = array();
-                $i = 0;
-                foreach ($roomsList as $room){
-                    if ($room-> getCinemaID() == $cinemaID){
-                        array_push($newRoomsList, $room);
-                    }
-                    $i++;
-                }
-                $cinema-> setRooms($newRoomsList);
-                $totalCapacity = $this-> countTotalCapacity($cinema-> getRooms());
-                $cinema-> setTotalCapacity($totalCapacity);
+                $newRooms = $this-> roomDAO-> ReadByCinemaID($cinema-> getID());
+                $cinema-> setRooms($newRooms);
+                $cinema-> setTotalCapacity ($this-> countTotalCapacity($newRooms));
             }
             require_once(VIEWS_PATH."cinema-list.php");
         }

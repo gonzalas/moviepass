@@ -21,11 +21,11 @@
 
         public static function getInstance(){
             if (self::$instance == null)
-                self::$instance == new Connection();
+                self::$instance = new Connection();
             return self::$instance;
         }
 
-        public static function execute($query, $parameters = array(), $queryType = QueryType::Query){
+        public function execute($query, $parameters = array(), $queryType = QueryType::Query){
             try{
                 $this-> prepare($query);
                 $this-> bindParameters($parameters, $queryType);
@@ -39,7 +39,7 @@
             }
         }
 
-        public static function executeNonQuery($query, $parameters = array(), $queryType = QueryType::Query){
+        public function executeNonQuery($query, $parameters = array(), $queryType = QueryType::Query){
             try{
                 $this-> prepare($query);                
                 $this-> bindParameters($parameters, $queryType);
@@ -62,7 +62,7 @@
             }
         }
 
-        private function bindParamaters($parameters = array(), $queryType = QueryType::Query){
+        private function bindParameters($parameters = array(), $queryType = QueryType::Query){
             $i = 0;
 
             foreach($parameters as $parameterName => $value)

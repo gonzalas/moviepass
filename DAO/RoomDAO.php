@@ -47,7 +47,7 @@
 
         public function ReadByID($id) {
             
-            $sql = "SELECT * FROM rooms WHERE id = :id";
+            $sql = "SELECT * FROM rooms WHERE roomID = :id";
 
             $parameters['id'] = $id;
             
@@ -59,7 +59,7 @@
             }
 
             if(!empty($result)) {
-                return $this->mapear($result);
+                return $this->mapear($result)[0];
             } else
                 return false;
         }
@@ -67,7 +67,7 @@
         public function ReadByCinemaID($cinemaID){
             $sql = "SELECT * FROM rooms WHERE cinemaID = :cinemaID";
 
-            $parameters['cinemaID'] = $id;
+            $parameters['cinemaID'] = $cinemaID;
             
             try {
                 $this->connection = Connection::getInstance();
@@ -84,7 +84,7 @@
 
 
         public function Update($room){
-            $sql = "UPDATE rooms SET id = :id, cinemaID = :cinemaID, name = :name, ticketValue = :ticketValue, capacity = :capacity, isActive = :isActive";
+            $sql = "UPDATE rooms SET roomID = :id, cinemaID = :cinemaID, name = :name, ticketValue = :ticketValue, capacity = :capacity, isActive = :isActive WHERE roomID = :id";
 
             $parameters['id'] = $room->getID();
             $parameters['cinemaID'] = $room->getCinemaID();
@@ -106,7 +106,7 @@
 
 
         public function Delete($id) {
-            $sql = "DELETE FROM rooms WHERE id = :id";
+            $sql = "DELETE FROM rooms WHERE roomID = :id";
 
             $parameters['id'] = $room->getID();
 
@@ -131,7 +131,7 @@
         
             $resp = array_map(function($p){
                     $room = new Room();
-                    $room->setID($p["id"]);
+                    $room->setID($p["roomID"]);
                     $room->setCinemaID($p["cinemaID"]);
                     $room->setName($p["name"]);
                     $room->setTicketValue($p['ticketValue']);
@@ -140,7 +140,7 @@
                     return $room;
                 },$value);
 
-                return count($resp) > 1 ? $resp : $resp['0'];
+                return $resp;
         }
     } 
 

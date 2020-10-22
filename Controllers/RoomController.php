@@ -1,7 +1,7 @@
 <?php
 
     namespace Controllers;
-    use DAO\JRoomDAO as RoomDAO;
+    use DAO\RoomDAO as RoomDAO;
     use Models\Room as Room;
 
     class RoomController {
