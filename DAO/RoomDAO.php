@@ -82,6 +82,24 @@
                 return false;
         }
 
+        public function ReadByCinemaIDValid($cinemaID){
+            $sql = "SELECT * FROM rooms WHERE cinemaID = :cinemaID and isActive = 1";
+
+            $parameters['cinemaID'] = $cinemaID;
+            
+            try {
+                $this->connection = Connection::getInstance();
+                $result = $this->connection->execute($sql, $parameters);
+            } catch ( PDOException $ex) {
+                throw $ex;
+            }
+
+            if(!empty($result)) {
+                return $this->mapear($result);
+            } else
+                return false;
+        }
+
         public function ReadByName($cinemaID, $name) {
         
             $sql = "SELECT * FROM rooms WHERE name = :name AND cinemaID = :cinemaID";
@@ -127,18 +145,7 @@
 
 
         public function Delete($id) {
-            $sql = "DELETE FROM rooms WHERE roomID = :id";
-
-            $parameters['id'] = $room->getID();
-
-            try {
-
-                $this->connection = Connection::getInstance();
-                return $this->connection->ExecuteNonQuery($sql, $parameters);
-
-            } catch (PDOException $ex) {
-                throw $ex;
-            }
+            
         }
 
         protected function mapear($value){

@@ -15,8 +15,9 @@ create table if not exists cinemas (
 create table if not exists rooms (
     roomID int AUTO_INCREMENT,
     cinemaID int not null,
-    name varchar(50) unique,
+    name varchar(50) not null,
     capacity int UNSIGNED not null,
+    ticketValue int UNSIGNED not null,
     isActive boolean not null default true,
 
     constraint pkRoomID primary key (roomID),

@@ -71,7 +71,7 @@
                 });
                 $roomsList = $this-> roomDAO-> ReadAll();
                 foreach ($cinemasList as $cinema){
-                    $newRooms = $this-> roomDAO-> ReadByCinemaID($cinema-> getID());
+                    $newRooms = $this-> roomDAO-> ReadByCinemaIDValid($cinema-> getID());
                     if ($newRooms != null){
                         $cinema-> setRooms($newRooms);
                         $cinema-> setTotalCapacity ($this-> countTotalCapacity($newRooms));

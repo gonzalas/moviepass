@@ -37,8 +37,11 @@
         }
 
         function removeRoom($id){
-            $this-> roomDAO-> Delete($id);
-            $roomsList = $this-> roomDAO-> ReadAll();
+            if ($id!=-1){
+                $room = $this-> roomDAO-> ReadByID($id);
+                $room-> setIsActive(false);
+                $this-> roomDAO-> Update($room);
+            }
             $message = "Sala eliminada con éxito.";
             require_once(VIEWS_PATH."index.php");
         }
