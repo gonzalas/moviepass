@@ -38,19 +38,22 @@
         <?php
             if (count($apiMoviesList)){
                 ?>
-                <div class="row row-cols-1 row-cols-md-3">
+                <div class="row row-cols row-cols-md-2">
                 <?php
                 foreach ($apiMoviesList as $movie){
                     ?>
-                    <div class="col mb-4 movie-div">
+                    <div class="col mb-3 movie-div">
                         <div class="card card-movie">
-                            <img src="https://image.tmdb.org/t/p/w500<?=$movie["poster_path"]?>" class="card-image">
+                        <a href="" class="image-movie">
+                        <img src="https://image.tmdb.org/t/p/w500<?=$movie["poster_path"]?>" class="card-image">
+                        </a>
                             <div class="card-body">
                                 <h5 class="card-title"><?=$movie["title"]?></h5>
                                 <p class="pelicula"><?=$movie["overview"]?></p>
                                 <p class="card-text"><small class="text-muted">Idioma: <?=$movie["original_language"]?></small></p>
                                 <p class="card-text"><small class="text-muted">Género: <?=$movie["genre_ids"][0]?></small></p>
                             </div>
+                            <div class="btn btn-block btn-dark">Añadir</div>
                         </div>
                     </div>
             
