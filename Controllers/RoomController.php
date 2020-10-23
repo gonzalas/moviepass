@@ -19,13 +19,12 @@
             } else {
                 $room = new Room();
                 $room-> setName($name);
-                $room-> setCinemaID($cinemaID);
                 if ($capacity >0){
                     $room-> setCapacity($capacity);
                     if ($ticketValue > 0){
                         $room-> setTicketValue($ticketValue);
                         $room-> setIsActive(true);
-                        $this-> roomDAO-> Create($room);
+                        $this-> roomDAO-> Create($room, $cinemaID);
                     } else {
                         $this-> showAddView("Intente usar un precio mayor a 0.");
                     }
@@ -48,7 +47,7 @@
 
         function editRoom ($id, $name, $capacity, $ticketValue){
             $room = $this-> roomDAO-> ReadByID($id);
-            $cinemaID = $room-> getCinemaID();
+            $cinemaID = $this-> roomDAO-> ReadCinemaID($id);
             if ($this-> validateRoomEdit($id, $name, $cinemaID)){
                 $this-> showEditView($id, "Nombre de sala ya existente en el cine elegido. Intente con otro.", 0);
             } else {

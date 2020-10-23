@@ -8,11 +8,11 @@
     
         private $connection;
 
-        public function Create($purchase){
+        public function Create(Purchase $purchase, $userID){
 
             $sql = "INSERT INTO purchases (userID, purchaseDate, subTotal, hasDiscount, purchaseTotal) VALUES (:userID, :purchaseDate, :subTotal, :hasDiscount, :purchaseTotal)";
 
-            $parameters['userID'] = $purchase->getUserID(); 
+            $parameters['userID'] = $userID; 
             $parameters['purchaseDate'] = $purchase->getPurchaseDate(); 
             $parameters['subTotal'] = $purchase->getSubTotal(); 
             $parameters['hasDiscount'] = $purchase->getHasDiscount(); 
@@ -48,11 +48,8 @@
 
         public function Update($purchase){
 
-            $sql = "UPDATE purchases SET purchaseID = :purchaseID, userID = :userID, purchaseDate = :purchaseDate, subTotal = :subTotal, hasDiscount = :hasDiscount, purchaseTotal = :purchaseTotal WHERE purchaseID = :purchaseID";
+            $sql = "UPDATE purchases SET subTotal = :subTotal, hasDiscount = :hasDiscount, purchaseTotal = :purchaseTotal WHERE purchaseID = :purchaseID";
 
-            $parameters['purchaseID'] = $purchase->getPurchaseID(); 
-            $parameters['userID'] = $purchase->getUserID(); 
-            $parameters['purchaseDate'] = $purchase->getPurchaseDate(); 
             $parameters['subTotal'] = $purchase->getSubTotal(); 
             $parameters['hasDiscount'] = $purchase->getHasDiscount(); 
             $parameters['purchaseTotal'] = $purchase->getPurchaseTotal(); 
@@ -65,6 +62,21 @@
             }catch(PDOException $ex){
                 throw $ex;
             }
+        }
+
+        public function ReadUserID($purchaseID){
+            $sql = "SELECT userID FROM purchases WHERE purchaseID = :purchaseID";
+
+            $parameters['shpurchaseID'] = $purchaseID;
+            
+            try {
+                $this->connection = Connection::getInstance();
+                $result = $this->connection->execute($sql, $parameters);
+            } catch ( PDOException $ex) {
+                throw $ex;
+            }
+
+            return $result[0][0];
         }
 
         public function Delete($purchaseID){
@@ -89,7 +101,6 @@
             $resp = array_map(function($p){
                 $purchase = new Purchase();
                 $purchase->setPurchaseID($p['purchaseID']);
-                $purchase->setUserID($p['userID']);
                 $purchase->setPurchaseDate($p['purchaseDate']);
                 $purchase->setSubTotal($p['subTotal']);
                 $purchase->setHasDiscount($p['hasDiscount']);

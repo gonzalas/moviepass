@@ -71,7 +71,6 @@
                         foreach($arrayContent["roomsList"] as $room){
                             $newRoom = new Room();
                             $newRoom-> setID($room["ID"]);
-                            $newRoom-> setCinemaID($room["cinemaID"]); /*En json no es necesario pero lo dejamos para sql*/
                             $newRoom-> setName($room["name"]);
                             $newRoom-> setTicketValue($room['ticketValue']);
                             $newRoom-> setCapacity($room["capacity"]);
@@ -105,7 +104,6 @@
                 foreach($cinema->getRooms() as $room){
                     $valuesArray["roomsList"][] = array(
                         'ID' => $room-> getID(),
-                        'cinemaID' => $room-> getCinemaID(),
                         'ticketValue' => $room-> getTicketValue(),
                         'capacity' => $room-> getCapacity(),
                     );

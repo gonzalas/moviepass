@@ -4,7 +4,6 @@
     class Purchase {
 
         private $purchaseID;
-        private $userID;
         private $purchaseDate;
         private $subTotal;
         private $hasDiscount;
@@ -12,9 +11,6 @@
 
         public function setPurchaseID($purchaseID){$this->purchaseID = $purchaseID;}
         public function getPurchaseID(){return $this->purchaseID;}
-
-        public function setUserID($userID){$this->userID = $userID;}
-        public function getUserID(){return $this->userID;}
 
         public function setPurchaseDate($purchaseDate){$this->purchaseDate = $purchaseDate;}
         public function getPurchaseDate(){return $this->purchaseDate;}

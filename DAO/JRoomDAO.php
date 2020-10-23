@@ -62,7 +62,6 @@
                     foreach ($arrayToDecode as $arrayContent){
                         $room = new Room();
                         $room-> setID ($arrayContent["ID"]);
-                        $room-> setCinemaID ($arrayContent["cinemaID"]);
                         $room-> setName ($arrayContent["name"]);
                         $room-> setTicketValue ($arrayContent["ticketValue"]);
                         $room-> setCapacity ($arrayContent["capacity"]);
