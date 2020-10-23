@@ -1,8 +1,12 @@
 @import url('https://fonts.googleapis.com/css?family=Montserrat:400,500,600');
+
+
+
 html,
 body {
     height: 100%;
 }
+
 
 body {
     font-family: 'Montserrat', sans-serif;
@@ -43,8 +47,10 @@ body {
 }
 
 .card-movie {
-    margin-left: 20px;
-    width: 572px;
+    margin-left: 10%;
+    width: 508px; 
+    border: ridge white ;
+    border-radius: 10px;
 }
 
 .card-image {
@@ -59,6 +65,11 @@ body {
     background-clip: border-box;
     border: 1px solid rgba(0, 0, 0, 0.125);
     border-radius: 0.25rem;
+}
+
+.card-title{
+    font-size: 30px;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
 }
 
 .movie-div{
@@ -78,5 +89,18 @@ body {
     padding: 25px;
     border-radius: 10px;
     margin: 20px;
+}
+
+a.image-movie{
+    width: 502px;
+    height: 752px;
+}
+
+.image-movie :hover{
+    filter: opacity(.5);
+}
+
+html{
+    overflow-x: hidden;
 }
 
