@@ -104,3 +104,22 @@ html{
     overflow-x: hidden;
 }
 
+table{
+    border: hidden;
+}
+
+thead{
+    border: hidden;
+}
+
+tr{
+    border: hidden;
+}
+
+td{
+    border: hidden;
+}
+
+form{
+    border: hidden;
+}
