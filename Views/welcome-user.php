@@ -4,9 +4,9 @@
         document.getElementById("welcome-modal").style.display = "none";
     }
 </script>
-<div id="welcome-modal" class="modal animate__animated animate__fadeInDown" tabindex="-1" role="dialog" style="display: block; background-color: rgba(0,0,0,0.9); padding-top: 150px;">
+<div id="welcome-modal" class="modal" tabindex="-1" role="dialog" style="display: block; background-color: rgba(0,0,0,0.9); padding-top: 150px;">
   <div class="modal-dialog" role="document">
-    <div class="modal-content">
+    <div class="modal-content animate__animated animate__fadeInDown">
       <div class="modal-header">
         <h5 class="modal-title">¡Gracias por registrarse!</h5>
       </div>
