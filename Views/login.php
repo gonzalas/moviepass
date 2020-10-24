@@ -27,11 +27,11 @@
             border-radius: 5px;
             width: 150px;
         }
-        .btn {
+        .btn-login {
             height: 40px;
             outline: none;
         }
-        .btn:hover{
+        .btn-login:hover {
             cursor: pointer;
             background-color: #fad4d9;
             transition: 1s; 
@@ -51,7 +51,7 @@
                 <input type="password" id="userPass" name="userPassword">
             </div>
             <div class="nav-list">
-                <input type="submit" value="Ingresar" class="btn">
+                <input type="submit" value="Ingresar" class="btn-login">
             </div>
         </nav>
     </form>

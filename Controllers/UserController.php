@@ -1,14 +1,14 @@
 <?php
     namespace Controllers;
 
-    // use DAO\UserDAO as UserDAO;
+    use DAO\UserDAO as UserDAO;
     use Models\User as User;
 
     class UserController {
-        // private $userDAO;
+        private $userDAO;
 
         public function __construct(){
-            // $this->userDAO = new UserDAO();
+            $this->userDAO = new UserDAO();
         }
 
         function registerUser(){
@@ -25,8 +25,13 @@
                     $user->setPassword($_POST['password']);
                     $user->setRole(1); // Role = 0 for Admin, Role = 1 for Regular User
 
+                    //Add user into DB
+                    $this->userDAO->Create($user);
+
+                    //Create session with user data
                     $_SESSION['loggedUser'] = $user;
 
+                    //Show first view for user logged
                     $this->showCinemaListMenu();
 
                 } else {

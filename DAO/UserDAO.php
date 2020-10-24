@@ -8,13 +8,14 @@
         private $connection;
         
         public function Create($user){
-            $sql = "INSERT INTO users (firstName, lastName, email, userName, password) VALUES (:firstName, :lastName, :email, :userName, :password)";
+            $sql = "INSERT INTO users (firstName, lastName, email, userName, password, role) VALUES (:firstName, :lastName, :email, :userName, :password, :role)";
             
             $parameters['firstName'] = $user->getFirstName();
-            $parameters['lastName'] = $user->getaLastName();
+            $parameters['lastName'] = $user->getLastName();
             $parameters['email'] = $user->getEmail();
             $parameters['userName'] = $user->getUserName();
             $parameters['password'] = $user->getPassword();
+            $parameters['role'] = $user->getRole();
 
             try {
 
