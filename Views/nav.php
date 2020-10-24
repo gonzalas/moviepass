@@ -27,6 +27,7 @@
         </a>
         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
           <a class="nav-link" href="<?php echo FRONT_ROOT ?>Movie/showNowPlaying">Listar Películas</a>
+          <a class="nav-link" href="<?php echo FRONT_ROOT ?>Movie/showGenreManagement">Gestionar Géneros</a>
         </div>
       </li>
     </ul>

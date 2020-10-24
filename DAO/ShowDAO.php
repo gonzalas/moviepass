@@ -8,12 +8,12 @@
     
         private $connection;
 
-        public function Create($show){
+        public function Create(Show $show, $roomID, $movieID){
 
             $sql = "INSERT INTO shows (roomID, movieID, date, time, isActive) VALUES (:roomID, :movieID, :date, :time, :isActive)";
 
-            $parameters['roomID'] = $show->getRoomID(); 
-            $parameters['movieID'] = $show->getMovieID(); 
+            $parameters['roomID'] = $roomID; 
+            $parameters['movieID'] = $movieID; 
             $parameters['date'] = $show->getDate(); 
             $parameters['time'] = $show->getTime(); 
             $parameters['isActive'] = $show->getIsActive(); 
@@ -46,6 +46,36 @@
                 return false;    
         }
 
+        public function ReadMovieID($showID){
+            $sql = "SELECT movieID FROM shows WHERE showID = :showID";
+
+            $parameters['showID'] = $showID;
+            
+            try {
+                $this->connection = Connection::getInstance();
+                $result = $this->connection->execute($sql, $parameters);
+            } catch ( PDOException $ex) {
+                throw $ex;
+            }
+
+            return $result[0][0];
+        }
+
+        public function ReadRoomID($showID){
+            $sql = "SELECT roomID FROM shows WHERE showID = :showID";
+
+            $parameters['showID'] = $showID;
+            
+            try {
+                $this->connection = Connection::getInstance();
+                $result = $this->connection->execute($sql, $parameters);
+            } catch ( PDOException $ex) {
+                throw $ex;
+            }
+
+            return $result[0][0];
+        }
+
         public function ReadAllByRoomID($roomID){
             $sql = "SELECT * FROM shows WHERE roomID = :roomID";
 
@@ -67,13 +97,12 @@
                 return false;
         }
 
-        public function Update($show){
+        public function Update($show, $roomID, $movieID){
 
-            $sql = "UPDATE shows SET id = :id, roomID = :roomID, movieID = :movieID, date = :date, time = :time, isActive = :isActive";
+            $sql = "UPDATE shows SET roomID = :roomID, movieID = :movieID, date = :date, time = :time, isActive = :isActive";
 
-            $parameters['id'] = $show->getID();
-            $parameters['roomID'] = $show->getRoomID(); 
-            $parameters['movieID'] = $show->getMovieID(); 
+            $parameters['roomID'] = $roomID; 
+            $parameters['movieID'] = $movieID; 
             $parameters['date'] = $show->getDate(); 
             $parameters['time'] = $show->getTime(); 
             $parameters['isActive'] = $show->getIsActive(); 
@@ -110,8 +139,6 @@
             $resp = array_map(function($p){
                 $show = new Show();
                 $show->setID($p['id']);
-                $show->setRoomID($p['roomID']);
-                $show->setMovieID($p['movieID']);
                 $show->setDate($p['date']);
                 $show->setTime($p['time']);
                 $show->setIsActive($p['isActive']);

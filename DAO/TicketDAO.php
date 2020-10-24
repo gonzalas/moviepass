@@ -8,13 +8,13 @@
     
         private $connection;
 
-        public function Create($ticket){
+        public function Create(Ticket $ticket, $showID, $purchaseID){
 
             $sql = "INSERT INTO tickets (ticketID, showID, purchaseID, seatLocation, qrCodeURL) VALUES (:ticketID, :showID, :purchaseID, :seatLocation, :qrCodeURL)";
 
             $parameters['ticketID'] = $ticket->getTicketID(); 
-            $parameters['showID'] = $ticket->getShowID(); 
-            $parameters['purchaseID'] = $ticket->getPurchaseID(); 
+            $parameters['showID'] = $showID;
+            $parameters['purchaseID'] = $purchaseID;
             $parameters['seatLocation'] = $ticket->getSeatLocation(); 
             $parameters['qrCodeURL'] = $ticket->getQRCode(); 
 
@@ -46,6 +46,36 @@
                 return false;    
         }
 
+        public function ReadShowID($ticketID){
+            $sql = "SELECT showID FROM tickets WHERE ticketID = :ticketID";
+
+            $parameters['ticketID'] = $ticketID;
+            
+            try {
+                $this->connection = Connection::getInstance();
+                $result = $this->connection->execute($sql, $parameters);
+            } catch ( PDOException $ex) {
+                throw $ex;
+            }
+
+            return $result[0][0];
+        }
+
+        public function ReadPurchaseID($ticketID){
+            $sql = "SELECT purchaseID FROM tickets WHERE ticketID = :ticketID";
+
+            $parameters['ticketID'] = $ticketID;
+            
+            try {
+                $this->connection = Connection::getInstance();
+                $result = $this->connection->execute($sql, $parameters);
+            } catch ( PDOException $ex) {
+                throw $ex;
+            }
+
+            return $result[0][0];
+        }
+
         public function ReadAllByShowID($showID){
             $sql = "SELECT * FROM tickets WHERE showID = :showID";
 
@@ -69,11 +99,8 @@
 
         public function Update($ticket){
 
-            $sql = "UPDATE tickets SET ticketID = :ticketID, showID = :showID, purchaseID = :purchaseID, seatLocation = :seatLocation, qrCodeURL = :qrCodeURL";
+            $sql = "UPDATE tickets SET seatLocation = :seatLocation, qrCodeURL = :qrCodeURL";
 
-            $parameters['ticketID'] = $show->getTciketID();
-            $parameters['showID'] = $show->getShowID(); 
-            $parameters['purchaseID'] = $show->getPurchaseID(); 
             $parameters['seatLocation'] = $show->getSeatLocation(); 
             $parameters['qrCodeURL'] = $show->getQRCode(); 
 
@@ -109,8 +136,6 @@
             $resp = array_map(function($p){
                 $ticket = new Ticket();
                 $ticket->setTicketID($p['ticketID']);
-                $ticket->setRoomShowID($p['showID']);
-                $ticket->setPurchaseID($p['purchaseID']);
                 $ticket->setSeatLocation($p['seatLocation']);
                 $ticket->setQRCode($p['qrCodeURL']);
                 return $ticket;

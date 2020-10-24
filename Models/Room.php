@@ -4,7 +4,6 @@
     class Room {
 
         private $id;
-        private $cinemaID;
         private $name;
         private $capacity;
         private $ticketValue;
@@ -16,14 +15,6 @@
 
         public function getID(){
             return $this->id;
-        }
-
-        public function setCinemaID($id){
-            $this->cinemaID = $id;
-        }
-
-        public function getCinemaID(){
-            return $this->cinemaID;
         }
 
         public function getName() {

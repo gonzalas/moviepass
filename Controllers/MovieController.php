@@ -27,6 +27,14 @@
             require_once(VIEWS_PATH."movie-list.php");
         }
 
+        public function showGenreManagement(){
+            $apiGenresJSON = file_get_contents("https://api.themoviedb.org/3/genre/movie/list?api_key=".API_KEY."&language=es");
+            $genresResult = json_decode($apiGenresJSON, true);
+            $apiGenresList = $genresResult ["genres"];
+
+            require_once(VIEWS_PATH."genre-management.php");
+        }
+
         private function filterMoviesListByGenre ($moviesList, $genreID){
             $moviesList = array_filter($moviesList, function($movie) use ($genreID){
                 return $movie["genre_ids"][0] == $genreID;
