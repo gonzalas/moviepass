@@ -4,7 +4,7 @@
 
     interface IUserDAO {
         function Create(User $user);
-        function Read($userEmail);
+        function Read($userName, $userPassword);
         function ReadAll();
         function GetByID($id);
         function Update(User $user);

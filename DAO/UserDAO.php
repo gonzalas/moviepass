@@ -8,13 +8,14 @@
         private $connection;
         
         public function Create($user){
-            $sql = "INSERT INTO users (firstName, lastName, email, userName, password) VALUES (:firstName, :lastName, :email, :userName, :password)";
+            $sql = "INSERT INTO users (firstName, lastName, email, userName, password, isAdmin) VALUES (:firstName, :lastName, :email, :userName, :password, :isAdmin)";
             
             $parameters['firstName'] = $user->getFirstName();
-            $parameters['lastName'] = $user->getaLastName();
+            $parameters['lastName'] = $user->getLastName();
             $parameters['email'] = $user->getEmail();
             $parameters['userName'] = $user->getUserName();
             $parameters['password'] = $user->getPassword();
+            $parameters['isAdmin'] = $user->getIsAdmin();
 
             try {
 
@@ -26,11 +27,12 @@
             }
         }
 
-        public function Read($userEmail){
+        public function Read($userName, $userPassword){
  
-            $sql = "SELECT * FROM users where email = :email";
+            $sql = "SELECT * FROM users where userName = :userName and password = :password";
 
-            $parameters['email'] = $userEmail;
+            $parameters['userName'] = $userName;
+            $parameters['password'] = $userPassword;
 
             try {
 
@@ -43,9 +45,9 @@
 
             if(!empty($result)){
                 return $this->mapear($result);
-            } else
+            } else {
                 return false;
-
+            }
         }
 
         public function ReadAll(){
@@ -108,6 +110,7 @@
                 $user->setEmail($p['email']);
                 $user->setUserName($p['userName']);
                 $user->setPassword($p['password']);
+                $user->setIsAdmin($p['isAdmin']);
                 return $user;
             }, $value);
 
