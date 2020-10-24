@@ -1,3 +1,6 @@
+<?php
+    require_once("nav-client.php"); 
+?>
 <style>
     body {
         background-image: linear-gradient(to right, #ba001f, red);

@@ -9,7 +9,7 @@
         private $userName;
         private $password;
         private $email;
-        private $role;
+        private $isAdmin;
         
         public  function getFirstName()
         {
@@ -36,9 +36,9 @@
             return $this->email;
         }
 
-        public function getRole()
+        public function getIsAdmin()
         {
-            return $this->role;
+            return $this->isAdmin;
         }
 
         public function setFirstName($firstName)
@@ -66,9 +66,9 @@
             $this->email = $email;
         }
 
-        public function setRole($role)
+        public function setIsAdmin($isAdmin)
         {
-            $this->role = $role;
+            $this->isAdmin = $isAdmin;
         }
     }
 ?>

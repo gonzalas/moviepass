@@ -62,7 +62,7 @@ create table if not exists users (
     firstName varchar(50) not null,
     lastName varchar(50) not null,
     email varchar(50) not null,
-    role smallInt not null,
+    isAdmin boolean not null,
 
     constraint pkUserID primary key (userID)
 
