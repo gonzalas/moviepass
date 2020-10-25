@@ -2,13 +2,19 @@
     namespace Controllers;
 
     use DAO\UserDAO as UserDAO;
+    use DAO\CinemaDAO as CinemaDAO;
+    use DAO\RoomDAO as RoomDAO;
     use Models\User as User;
 
     class UserController {
         private $userDAO;
+        private $cinemaDAO;
+        private $roomDAO;
 
         public function __construct(){
             $this->userDAO = new UserDAO();
+            $this->cinemaDAO = new CinemaDAO();
+            $this->roomDAO = new RoomDAO();
         }
 
         function registerUser(){
@@ -68,7 +74,23 @@
             }
         }
 
+        public function showRoomsToUser(){
+            if($_POST){
+                $cinemaSelected = $_POST['cinemaSelected'];
+
+                //Retrive all rooms from one cinema
+                $roomList = $this->roomDAO->ReadByCinemaID($cinemaSelected);
+
+                //Restore all cinemas to choose again before load views
+                $cinemasList = $this->cinemaDAO->ReadAll();
+
+                require_once(VIEWS_PATH."user-cinema-list.php");
+                require_once(VIEWS_PATH."user-room-list.php");
+            }
+        }
+
         private function showCinemaListMenu(){
+            $cinemasList = $this->cinemaDAO->ReadAll();
             require_once(VIEWS_PATH."user-cinema-list.php");            
         }
 
