@@ -98,7 +98,7 @@
                         <input type="password" name="password2" class="form-control" placeholder="Repita contraseña" required>
                     </div>
                 </div>
-                <div class="form-group mt-5 float-right">
+                <div class="form-group mt-4 mr-3 float-right">
                     <button type="submit" class="btn btn-primary mb-2">Registarme</button>
                 </div>
             </form>
