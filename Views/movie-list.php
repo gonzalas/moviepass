@@ -2,6 +2,23 @@
     require_once('nav.php');
 ?>
 <main class="py-5">
+    <?php if ($message != ""){
+        if ($messageCode > 0){
+            $text = "danger";
+        } else{
+            $text = "success";
+        }
+        ?>
+        <div  class="alert alert-<?php echo $text?> alert-dismissible fade show" role="alert"> <strong> <?php echo $message?> </strong>
+            <?php if ($messageCode == 2){
+                ?>
+                <a href="<?php echo FRONT_ROOT ?>Movie/retrieveMovie/?movieId=<?php echo $_GET['movieId']?>" type="button" class="btn btn-success btn-center" style="left-border-radius:20px;">Dar de alta</button></a>
+            <?php }?>
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    <?php } ?>
     <h1 class="title">Películas Actuales</h1>
     <ul class="nav justify-content-center nav-filters">
         <li class="nav-item">
@@ -53,7 +70,13 @@
                                 <p class="card-text"><small class="text-muted">Idioma: <?=$movie["original_language"]?></small></p>
                                 <p class="card-text"><small class="text-muted">Género: <?=$movie["genre_ids"][0]?></small></p>
                             </div>
-                            <div class="btn btn-block btn-dark">Añadir</div>
+                            <div class="row" >
+                                <div class="col-md-12 text-center" >
+                                    <div class="btn-group btn-group-lg" style="width:95%;">
+                                        <a class="btn btn-block btn-dark" href= "<?php echo FRONT_ROOT ?>Movie/showAddView/?movieId=<?php echo $movie["id"]?>">Añadir al sistema </a>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
             

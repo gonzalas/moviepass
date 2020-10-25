@@ -16,6 +16,7 @@
         </a>
         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
           <a class="nav-link" href="<?php echo FRONT_ROOT ?>Cinema/showAddView">Agregar Cine</a>
+          <div class="dropdown-divider"></div>
           <a class="nav-link" href="<?php echo FRONT_ROOT ?>Cinema/showListView">Listar Cines</a>
           <!--<div class="dropdown-divider"></div>
           <a class="dropdown-item" href="#">Something else here</a>-->
@@ -26,7 +27,10 @@
           Películas
         </a>
         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-          <a class="nav-link" href="<?php echo FRONT_ROOT ?>Movie/showNowPlaying">Listar Películas</a>
+          <a class="nav-link" href="<?php echo FRONT_ROOT ?>Movie/showNowPlaying">Películas API</a>
+          <div class="dropdown-divider"></div>
+          <a class="nav-link" href="<?php echo FRONT_ROOT ?>Movie/showSavedMovies">Películas Guardadas</a>
+          <div class="dropdown-divider"></div>
           <a class="nav-link" href="<?php echo FRONT_ROOT ?>Movie/showGenreManagement">Gestionar Géneros</a>
         </div>
       </li>

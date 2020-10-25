@@ -6,7 +6,7 @@
         private $id;
         private $title;
         private $overview;
-        private $dateRelease;
+        private $releaseDate;
         private $length;
         private $image;
         private $trailer;
@@ -42,8 +42,8 @@
         public function setOverview($overview){$this->overview = $overview;}
         public function getOverview(){return $this->overview;}
 
-        public function setDateRelease($dateRelease){$this->dateRelease = $dateRelease;}
-        public function getDateRelease(){return $this->dateRelease;}
+        public function setReleaseDate($releaseDate){$this->releaseDate = $releaseDate;}
+        public function getReleaseDate(){return $this->releaseDate;}
 
         public function setVoteAverage($voteAverage){$this->voteAverage = $voteAverage;}
         public function getVoteAverage(){return $this->voteAverage;}
