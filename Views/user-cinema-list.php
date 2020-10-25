@@ -12,20 +12,24 @@
         <div class="pt-5 pb-5">
             <h1 style="color: #e88e9d; font-weight: 700;">Listado de cines</h1>
         </div>
+            <form action="<?php echo FRONT_ROOT ?>User/showRoomsToUser" method="post" id="cinema-list-form">
+                <div class="input-group mb-3" style="width: 50%;" id="options">
+                    <div class="input-group-prepend">
+                        <label class="input-group-text" for="inputGroupSelect01">Cines</label>
+                    </div>
+                    <select class="custom-select" id="inputGroupSelect01" name="cinemaSelected">
+                        <option selected id="cine-selected">Elija...</option>
 
-        <div class="mt-2 mb-2">
-            <div class="card-deck">
-                <div class="card">
-                    <div class="card-body">
-                        <h5 class="card-title">Ambassador</h5>
-                        <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-                    </div>
-                    <div class="card-footer" style="display: flex; justify-content: space-between; align-items: center;">
-                        <small class="text-muted">Mar del Plata</small>
-                        <button type="text" class="btn btn-primary mb-2">Entrar</button>
-                    </div>
-                </div>
-            </div>
-        </div>
+                        <?php 
+                            foreach($cinemasList as $cinema){
+                        ?>
+                        <option value="<?php echo $cinema->getID();?>"><?php echo $cinema->getName();?></option>
+                        <?php
+                            }
+                        ?>
+                    </select>
+                    <button type="submit" class="btn btn-dark">Buscar</button>
+                </div>                
+            </form>
     </section>
 </main>
