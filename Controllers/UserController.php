@@ -105,7 +105,17 @@
             }
         }
 
-        private function showCinemaListMenu(){
+        public function showUserProfile(){
+            $user = $_SESSION['loggedUser'];
+            require_once(VIEWS_PATH."user-info-profile.php");
+        }
+
+        public function userLogOut(){
+            session_destroy();
+            require_once(VIEWS_PATH."login.php");
+        }
+
+        public function showCinemaListMenu(){
             $cinemasList = $this->cinemaDAO->ReadAll();
             require_once(VIEWS_PATH."user-cinema-list.php");            
         }
