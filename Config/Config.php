@@ -11,6 +11,9 @@
     //API
     define("API_KEY", "1fda2c2ca096a563fb941fcfd34c718a");
 
+    //ADMIN HARCODE
+    define("ADMIN_USERNAME", "admin");
+    define("ADMIN_PASSWORD", "1234");
 
     //DATABASE
     define("DB_HOST", "localhost");

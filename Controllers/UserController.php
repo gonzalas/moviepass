@@ -58,18 +58,27 @@
                 $user->setUserName($_POST['userName']);
                 $user->setPassword($_POST['userPassword']);
 
-                //Verify user in DB
-                $userValidated = $this->userDAO->Read($user->getUserName(), $user->getPassword());
+                //Verify if user is Admin and redirect
+                if($user->getUserName() == ADMIN_USERNAME && $user->getPassword() == ADMIN_PASSWORD){
 
-                if($userValidated){
-                    //Initiate session
-                    $_SESSION['loggedUser'] = $userValidated;
-
-                    //Redirect user
-                    $this->showCinemaListMenu();
+                    require_once(VIEWS_PATH."cinema-add.php");
 
                 } else {
-                    require_once(VIEWS_PATH."login.php");
+
+                    //Verify user in DB
+                    $userValidated = $this->userDAO->Read($user->getUserName(), $user->getPassword());
+
+                    if($userValidated){
+                        //Initiate session
+                        $_SESSION['loggedUser'] = $userValidated;
+
+                        //Redirect user
+                        $this->showCinemaListMenu();
+
+                    } else {
+                        require_once(VIEWS_PATH."login.php");
+                    }
+
                 }
             }
         }
