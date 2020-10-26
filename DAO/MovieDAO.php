@@ -9,18 +9,18 @@
         
         public function Create($movie){
 
-            $sql = "INSERT INTO movies (title, overview, dateRelease, length, image, trailer, language, genres, voteAverage, isActive) VALUES (:title, :overview, :dateRelease, :length, :image, :trailer, :language, :genres, :voteAverage, :isActive)";
+            $sql = "INSERT INTO movies (movieID, title, overview, dateRelease, length, posterPath, trailerPath, language, voteAverage, isActive) VALUES (:movieID, :title, :overview, :dateRelease, :length, :posterPath, :trailerPath, :language, :voteAverage, :isActive)";
             
+            $parameters['movieID'] = $movie->getID();
             $parameters['title'] = $movie->getTitle();
             $parameters['overview'] = $movie->getOverview();
-            $parameters['dateRelease'] = $movie->getDateRelease();
+            $parameters['dateRelease'] = $movie->getReleaseDate();
             $parameters['length'] = $movie->getLength();
-            $parameters['image'] = $movie->getImage();
-            $parameters['trailer'] = $movie->getTrailer();
+            $parameters['posterPath'] = $movie->getImage();
+            $parameters['trailerPath'] = $movie->getTrailer();
             $parameters['language'] = $movie->getLanguage();
-            $parameters['genres'] = $movie->getGenres();
             $parameters['voteAverage'] = $movie->getVoteAverage();
-            $parameters['isActive'] = $movie->getisActive();
+            $parameters['isActive'] = true;
 
             try {
 
@@ -34,9 +34,9 @@
 
         public function ReadById($id){
  
-            $sql = "SELECT * FROM movies WHERE id = :id";
+            $sql = "SELECT * FROM movies WHERE movieID = :movieID";
 
-            $parameters['id'] = $id;
+            $parameters['movieID'] = $id;
 
             try {
                 $this->connection = Connection::getInstance();
@@ -49,7 +49,40 @@
                 return $this->mapear($result);
             } else
                 return false;
+        }
 
+        public function ReadActiveMovies(){
+ 
+            $sql = "SELECT * FROM movies WHERE isActive = true";
+
+            try {
+                $this->connection = Connection::getInstance();
+                $result = $this->connection->execute($sql);
+            } catch ( PDOException $ex) {
+                throw $ex;
+            }
+
+            if(!empty($result)) {
+                return $this->mapear($result);
+            } else
+                return false;
+        }
+
+        public function ReadDeletedMovies(){
+ 
+            $sql = "SELECT * FROM movies WHERE isActive = false";
+
+            try {
+                $this->connection = Connection::getInstance();
+                $result = $this->connection->execute($sql);
+            } catch ( PDOException $ex) {
+                throw $ex;
+            }
+
+            if(!empty($result)) {
+                return $this->mapear($result);
+            } else
+                return false;
         }
 
         public function ReadAll(){
@@ -72,23 +105,18 @@
 
         }
 
-        public function GetByID($id){
-
-        }
-
         public function Update($movie){
 
-            $sql = "UPDATE movies SET id = :id, title = :title, overview = :overview, dateRelease = :dateRelease, length = :length, image = :image, trailer = :trailer, language = :language, genres = :genres, voteAverage = :voteAverage, isActive = :isActive";
+            $sql = "UPDATE movies SET title = :title, overview = :overview, dateRelease = :dateRelease, length = :length, posterPath = :posterPath, trailerPath = :trailerPath, language = :language, voteAverage = :voteAverage, isActive = :isActive WHERE movieID = :movieID";
             
-            $parameters['id'] = $movie->getID();
+            $parameters['movieID'] = $movie->getID();
             $parameters['title'] = $movie->getTitle();
             $parameters['overview'] = $movie->getOverview();
-            $parameters['dateRelease'] = $movie->getDateRelease();
+            $parameters['dateRelease'] = $movie->getReleaseDate();
             $parameters['length'] = $movie->getLength();
-            $parameters['image'] = $movie->getImage();
-            $parameters['trailer'] = $movie->getTrailer();
+            $parameters['posterPath'] = $movie->getImage();
+            $parameters['trailerPath'] = $movie->getTrailer();
             $parameters['language'] = $movie->getLanguage();
-            $parameters['genres'] = $movie->getGenres();
             $parameters['voteAverage'] = $movie->getVoteAverage();
             $parameters['isActive'] = $movie->getisActive();
 
@@ -113,15 +141,14 @@
 
             $resp = array_map(function($p){
                 $movie = new Movie();
-                $movie->setID($p['id']);
+                $movie->setID($p['movieID']);
                 $movie->setTitle($p['title']);
                 $movie->setOverview($p['overview']);
-                $movie->setImage($p['image']);
-                $movie->setDateRelease($p['dateRelease']);
-                $movie->setTrailer($p['trailer']);
+                $movie->setImage($p['posterPath']);
+                $movie->setReleaseDate($p['dateRelease']);
+                $movie->setTrailer($p['trailerPath']);
                 $movie->setLength($p['length']);
                 $movie->setLanguage($p['language']);
-                $movie->setGenres($p['genres']);
                 $movie->setVoteAverage($p['voteAverage']);
                 $movie->setIsActive($p['isActive']);
                 return $movie;

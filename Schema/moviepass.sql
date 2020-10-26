@@ -26,7 +26,7 @@ create table if not exists rooms (
 ) ENGINE = InnoDB;
 
 create table if not exists movies (
-    movieID int AUTO_INCREMENT,
+    movieID int,
     title varchar(50) not null,
     overview varchar(300),
     dateRelease date,
@@ -69,7 +69,7 @@ create table if not exists users (
 ) ENGINE = InnoDB;
 
 create table if not exists genres (
-    genreID int AUTO_INCREMENT,
+    genreID int,
     name varchar(20),
 
     constraint pkGenreID primary key (genreID)
