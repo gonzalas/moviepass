@@ -53,9 +53,9 @@
                 <?php
                 foreach ($moviesList as $movie){
                     ?>
-                    <tr class="col mb-3" style="margin: 10px;">
+                    <tr class="tr-movie">
                         <td class="wi62">
-                            <div stlye="height: 35px;">
+                            <div stlye="height: 35px; border: 2px solid white(0, 0, 0, 0.125);">
                                 <div class="img_top_div">
                                     <img src="https://image.tmdb.org/t/p/w500<?=$movie-> getImage()?>" class="img_top_img">
                                 </div>
