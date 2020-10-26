@@ -115,6 +115,25 @@
                 return false;
         }
 
+        public function ReadRoomByCinemaIDValid($cinemaID, $roomID){
+            $sql = "SELECT * FROM rooms WHERE cinemaID = :cinemaID and roomID = :roomID and isActive = 1";
+
+            $parameters['cinemaID'] = $cinemaID;
+            $parameters['roomID'] = $roomID;
+            
+            try {
+                $this->connection = Connection::getInstance();
+                $result = $this->connection->execute($sql, $parameters);
+            } catch ( PDOException $ex) {
+                throw $ex;
+            }
+
+            if(!empty($result)) {
+                return $this->mapear($result);
+            } else
+                return false;
+        }
+
         public function ReadByName($cinemaID, $name) {
         
             $sql = "SELECT * FROM rooms WHERE name = :name AND cinemaID = :cinemaID";

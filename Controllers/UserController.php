@@ -89,6 +89,22 @@
             }
         }
 
+        public function showRoomMovieListing(){
+            if($_GET){
+
+               $cinemaID = $_GET['cinema'];
+               $roomID = $_GET['room'];
+
+               //Search on database the room selected
+               $cinema = $this->cinemaDAO->ReadByID($cinemaID);
+
+               //Getting this room movie listing to show on view
+               $movieListing = $cinema['0']->getMovieListing();
+
+               require_once(VIEWS_PATH."room-movielisting.php");
+            }
+        }
+
         private function showCinemaListMenu(){
             $cinemasList = $this->cinemaDAO->ReadAll();
             require_once(VIEWS_PATH."user-cinema-list.php");            
