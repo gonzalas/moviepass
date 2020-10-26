@@ -76,6 +76,16 @@ body {
     width: 572px;
 }
 
+.movie-table{
+    width: 100%;
+    margin: 20px;
+    border-collapse:separate;
+    border-spacing:0 15px;
+}
+
+.movie-table tr:nth-child(even) {background: rgb(0, 0, 0)}
+.movie-table tr:nth-child(odd) {background:rgb(128, 128, 128)}
+
 .nav-filters{
     background-color: #fff;
     height: 60px;
@@ -98,6 +108,38 @@ a.image-movie{
 
 .image-movie :hover{
     filter: opacity(.5);
+}
+
+.img_top_div {
+    width: 48px;
+    height: 33px;
+    overflow: hidden;
+    position: relative;
+    left: 2px;
+    top: 1px;
+}
+
+.img_top_img {
+    margin: -4px 0 -5px 0;
+    background-color: #222;
+    text-indent: -2000px;
+    width: 48px;
+    height: 40px;
+}
+
+.img_top_span {
+    width: 52px;
+    height: 35px;
+    display: block;
+    position: relative;
+    top: -33px;
+    background: url(https://i.3djuegos.com/img3/piezas/mascaras/48x40/tipo_02.png);
+}
+
+.table-movie-title {
+    font-size: 1.25rem;
+    color: #FFF;
+    font-weight: 500 !important;
 }
 
 html{

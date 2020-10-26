@@ -48,32 +48,84 @@
         <?php
             if (!$emptyList){
                 ?>
-                <div class="row row-cols row-cols-md-2">
+                <table class= "movie-table">
+                <tbody>
                 <?php
                 foreach ($moviesList as $movie){
                     ?>
-                    <div class="col mb-3 movie-div">
-                        <div class="card card-movie">
-                        <a href="" class="image-movie">
-                        <img src="https://image.tmdb.org/t/p/w500<?=$movie-> getImage()?>" class="card-image">
-                        </a>
-                            <div class="card-body">
-                                <h5 class="card-title"><?=$movie-> getTitle()?></h5>
-                                <p class="pelicula"><?=$movie-> getOverview()?></p>
-                                <p class="card-text"><small class="text-muted">Idioma: <?=$movie-> getLanguage()?></small></p>
+                    <tr class="col mb-3" style="margin: 10px;">
+                        <td class="wi62">
+                            <div stlye="height: 35px;">
+                                <div class="img_top_div">
+                                    <img src="https://image.tmdb.org/t/p/w500<?=$movie-> getImage()?>" class="img_top_img">
+                                </div>
+                                </a>
                             </div>
+                        </td>
+                        <td>
+                            <div class="table-movie-title">
+                                <?=$movie-> getTitle()?>
+                            </div>
+                        </td>
+                        <td class="tac dn600 wi74">
                             <div class="row" >
                                 <div class="col-md-12 text-center" >
-                                    <div class="btn-group btn-group-lg" style="width:95%;">
+                                    <div class="btn-group btn-group-lg" style="width:80%;">
                                         <?php
                                         if (!$movie->getIsActive()){ ?>
-                                            <a href="<?php echo FRONT_ROOT ?>Movie/retrieveMovie/?movieId=<?php echo $movie-> getID()?>" type="button" class="btn btn-success btn-center" style="left-border-radius:20px;">Dar de alta</button></a>
+                                            <a href="<?php echo FRONT_ROOT ?>Movie/retrieveMovie/?movieId=<?php echo $movie-> getID()?>" type="button" class="btn btn-success btn-center" style="left-border-radius:20px; width:33%;">Dar de alta</button></a>
                                         <?php } else { ?>
-                                            <a href="<?php echo FRONT_ROOT ?>Movie/removeMovie/?movieId=<?php echo $movie-> getID()?>" type="button" class="btn btn-danger btn-center" style="left-border-radius:20px;">Eliminar</button></a>
+                                            <a href="<?php echo FRONT_ROOT ?>Movie/removeMovie/?movieId=<?php echo $movie-> getID()?>" type="button" class="btn btn-danger btn-center" style="left-border-radius:20px; width:33%;">Eliminar</button></a>
                                         <?php } ?>
-                                        <a href="<?php echo FRONT_ROOT ?>Movie/showEditView/?movieId=<?php echo $movie-> getID()?>" type="button" class="btn btn-primary btn-center" style="right-border-radius:20px;">Editar</button></a>
+                                        <button type="button" class="btn btn-secondary btn-center" data-toggle="modal" data-target="#exampleModalCenteredScrollable<?=$movie->getID()?>" style="right-border-radius:20px; width:33%;">Ver detalles</button>
+                                        <a href="<?php echo FRONT_ROOT ?>Movie/showEditView/?movieId=<?php echo $movie-> getID()?>" type="button" class="btn btn-primary btn-center" style="right-border-radius:20px; width:33%;">Editar</button></a>
                                     </div>
                                 </div>
+                            </div>
+                        </td>
+                    </tr>
+                    <div class="modal fade show" id="exampleModalCenteredScrollable<?=$movie->getID()?>" tabindex="-1" aria-labelledby="exampleModalCenteredScrollableTitle" style="display: none; padding-right: 17px;" aria-modal="true" role="dialog">
+                        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                            <div class="modal-content" style="width: 700px;">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalCenteredScrollableTitle"><?=$movie->getTitle()?></h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">×</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="col mb-3 movie-div">
+                                    <div class="card card-movie">
+                                    <img src="https://image.tmdb.org/t/p/w500<?=$movie-> getImage()?>" class="card-image">
+                                        <div class="card-body">
+                                            <h5 class="card-title"><?=$movie-> getTitle()?></h5>
+                                            <p class="pelicula"><?=$movie-> getOverview()?></p>
+                                            <p class="card-text"><small class="text-muted">Fecha de lanzamiento: <?=$movie-> getReleaseDate()?></small></p>
+                                            <p class="card-text"><small class="text-muted">Idioma: <?=$movie-> getLanguage()?></small></p>
+                                            <p class="card-text"><small class="text-muted">Géneros: 
+                                            <?php
+                                                foreach($movie-> getGenres() as $genre){
+                                                    echo $genre-> getName();
+                                                    echo ". ";
+                                                }
+                                            ?>
+                                            </small></p>
+                                            <p class="card-text"><small class="text-muted">Duración: <?=$movie-> getLength()?> minutos</small></p>
+                                            <p class="card-text"><small class="text-muted">Promedio de votos: <?=$movie-> getVoteAverage()?></small></p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <a href="<?php echo FRONT_ROOT ?>Movie/showEditView/?movieId=<?php echo $movie-> getID()?>" type="button" class="btn btn-primary">Editar</button></a>
+                                <?php if ($movie-> getTrailer() != null){
+                                    ?>
+                                    <a href="<?=$movie->getTrailer()?>" target="_blank" type="button" class="btn btn-danger"> Ver trailer </a>
+                                    <?php
+                                }
+                                ?>
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                            </div>
                             </div>
                         </div>
                     </div>
@@ -81,7 +133,8 @@
                 <?php
                 }
             ?>
-            </div>
+            </tbody>
+            </table>
             <?php
             } else {
             ?>
