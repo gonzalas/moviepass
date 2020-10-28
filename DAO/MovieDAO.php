@@ -63,7 +63,14 @@
             }
 
             if(!empty($result)) {
-                return $this->mapear($result);
+                if (count($result)>1){
+                    return $this->mapear($result);
+                } else {
+                    $mappedResult = $this->mapear($result);
+                    $finalResult = array();
+                    array_push($finalResult, $mappedResult);
+                    return $finalResult;
+                }
             } else
                 return false;
         }
@@ -80,7 +87,14 @@
             }
 
             if(!empty($result)) {
-                return $this->mapear($result);
+                if (count($result)>1){
+                    return $this->mapear($result);
+                } else {
+                    $mappedResult = $this->mapear($result);
+                    $finalResult = array();
+                    array_push($finalResult, $mappedResult);
+                    return $finalResult;
+                }
             } else
                 return false;
         }
@@ -98,8 +112,15 @@
                 throw $err;
             }
 
-            if(!empty($result)){
-                return $this->mapear($result);
+            if(!empty($result)) {
+                if (count($result)>1){
+                    return $this->mapear($result);
+                } else {
+                    $mappedResult = $this->mapear($result);
+                    $finalResult = array();
+                    array_push($finalResult, $mappedResult);
+                    return $finalResult;
+                }
             } else
                 return false;
 

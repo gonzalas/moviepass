@@ -81,52 +81,44 @@
             require_once(VIEWS_PATH."movie-list.php");
         }
 
+        private function setMoviesGenres($moviesList){
+            foreach ($moviesList as $movie){
+                $movieGenres = $this-> genreMovieDAO-> ReadByMovieID($movie-> getID());
+                $movieGenresArray = array();
+                foreach ($movieGenres as $genre){
+                    $newGenre = new Genre();
+                    $newGenre-> setID($genre["genreID"]);
+                    $newGenre-> setName($genre["name"]);
+                    array_push ($movieGenresArray, $newGenre);
+                }
+                $movie-> setGenres($movieGenresArray);
+            }
+            return $moviesList;
+        }
+
         public function showSavedMovies ($message = "", $messageCode = 0){
             if (isset($_GET['validity'])){
                 $validity = $_GET['validity'];
                 switch ($validity) {
                     case "active":
                         $moviesList = $this-> movieDAO-> ReadActiveMovies();
+                        if (is_array($moviesList)) $moviesList = $this-> setMoviesGenres ($moviesList);
                         break;
                     case "deleted":
                         $moviesList = $this-> movieDAO-> ReadDeletedMovies();
+                        if (is_array($moviesList)) $moviesList = $this-> setMoviesGenres ($moviesList);
                         break;
                     default:
                         $moviesList = $this-> movieDAO-> ReadAll();
+                        if (is_array($moviesList)) $moviesList = $this-> setMoviesGenres ($moviesList);
                 }
             } else {
                 $moviesList = $this-> movieDAO-> ReadAll();
-                foreach ($moviesList as $movie){
-                    $movieGenres = $this-> genreMovieDAO-> ReadByMovieID($movie-> getID());
-                    $movieGenresArray = array();
-                    foreach ($movieGenres as $genre){
-                        $newGenre = new Genre();
-                        $newGenre-> setID($genre["genreID"]);
-                        $newGenre-> setName($genre["name"]);
-                        array_push ($movieGenresArray, $newGenre);
-                    }
-                    $movie-> setGenres($movieGenresArray);
-                }
+                if (is_array($moviesList)) $moviesList = $this-> setMoviesGenres ($moviesList);
             }
             $emptyList = true;
-            if (is_array($moviesList) && count($moviesList)){
+            if (is_array($moviesList)){
                 $emptyList = false;
-            } else {
-                if ($moviesList instanceof Movie){ /**Object to array conversion */
-                    $movieGenres = $this-> genreMovieDAO-> ReadByMovieID($moviesList-> getID());
-                    $movieGenresArray = array();
-                    foreach ($movieGenres as $genre){
-                        $newGenre = new Genre();
-                        $newGenre-> setID($genre["genreID"]);
-                        $newGenre-> setName($genre["name"]);
-                        array_push ($movieGenresArray, $newGenre);
-                    }
-                    $moviesList-> setGenres($movieGenresArray);
-                    $emptyList = false;
-                    $moviesListCopy = $moviesList;
-                    $moviesList = array();
-                    $moviesList[0] = $moviesListCopy;
-                }
             }
             require_once(VIEWS_PATH."movie-list-saved.php");
         }

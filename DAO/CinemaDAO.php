@@ -109,6 +109,43 @@
             }
         }
 
+        public function ReadActiveCinemas(){
+ 
+            $sql = "SELECT * FROM cinemas WHERE isActive = true";
+
+            try {
+                $this->connection = Connection::getInstance();
+                $result = $this->connection->execute($sql);
+            } catch ( PDOException $ex) {
+                throw $ex;
+            }
+
+            if(!empty($result)) {
+                return $this->mapear($result);
+            } else
+                return false;
+        }
+
+        public function ReadActiveCinemasWithRooms(){
+ 
+            $sql = "SELECT c.cinemaID as cinemaID, c.name as name, c.isActive as isActive, c.address as address FROM
+                    cinemas c
+                    INNER JOIN rooms r
+                    ON r.cinemaID = c.cinemaID AND r.isActive = true AND c. isActive = true
+                    GROUP BY c.cinemaID;";
+
+            try {
+                $this->connection = Connection::getInstance();
+                $result = $this->connection->execute($sql);
+            } catch ( PDOException $ex) {
+                throw $ex;
+            }
+
+            if(!empty($result)) {
+                return $this->mapear($result);
+            } else
+                return false;
+        }
 
         public function Update($cinema) {
             
@@ -127,13 +164,7 @@
             }
         }
 
-        public function Delete($id){
-
-        }
-
-        public function GetNextID() {
-            
-        }
+        public function Delete($id){}
 
         private function mapear($value) {
            

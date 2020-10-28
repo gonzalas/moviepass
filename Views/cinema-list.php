@@ -4,6 +4,11 @@
 <main class="py-5">
      <section id="listado" class="mb-5">
           <div class="container">
+          <?php 
+               if ($messageCode > 0){
+          ?>
+                    <div  class="alert alert-success alert-dismissible fade show" role="alert"> <strong> <?php echo $message?> </strong></div>
+          <?php } ?>
                <h1 class="title">Listado de cines</h1>
                <form action="<?php echo FRONT_ROOT."Cinema/removeCinema"?>">
                     <table class="table bg-light-alpha white-font">

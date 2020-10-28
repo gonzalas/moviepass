@@ -34,6 +34,16 @@
           <a class="nav-link" href="<?php echo FRONT_ROOT ?>Movie/showGenreManagement">Gestionar Géneros</a>
         </div>
       </li>
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          Funciones
+        </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+          <a class="nav-link" href="<?php echo FRONT_ROOT ?>Show/showAddView">Agregar función</a>
+          <div class="dropdown-divider"></div>
+          <a class="nav-link" href="<?php echo FRONT_ROOT ?>Show/showUpcomingShows">Próximas funciones</a>
+        </div>
+      </li>
     </ul>
   </div>
 </nav>

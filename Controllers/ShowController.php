@@ -2,23 +2,31 @@
 
     namespace Controllers;
     use \Exception as Exception;
-    use DAO\CinemaDAO as CinemaDAO;
+    use DAO\ShowDAO as ShowDAO;
     use DAO\RoomDAO as RoomDAO;
-    use Models\Cinema as Cinema;
+    use DAO\MovieDAO as MovieDAO;
+    use DAO\CinemaDAO as CinemaDAO;
+    use Models\Show as Show;
     use Models\Room as Room;
+    use Models\Movie as Movie;
+    use Models\Cinema as Cinema;
 
-    class CinemaController {
+    class ShowController {
 
-        private $cinemaDAO;
+        private $showDAO;
         private $roomDAO;
+        private $movieDAO;
+        private $cinemaDAO;
 
         public function __construct()
         {
-            $this-> cinemaDAO = new CinemaDAO();
+            $this-> showDAO = new ShowDAO();
             $this-> roomDAO = new RoomDAO();
+            $this-> movieDAO = new MovieDAO();
+            $this-> cinemaDAO = new CinemaDAO();
         }
 
-        function addCinema($name, $address) {
+        function addShow($name, $address) {
             if (!empty($this-> cinemaDAO-> ReadByName($name))){
                 $this-> showAddView("Nombre de cine ya existente. Intente con otro.");
             } else {
@@ -42,7 +50,7 @@
                 $this-> cinemaDAO-> Update($cinema);
             }
             $cinemasList = $this-> cinemaDAO-> ReadAll();
-            $this-> showListView("Cine eliminado con éxito.", 2);
+            $this-> showListView();
         }
 
         function editCinema ($id, $name, $address){
@@ -61,11 +69,7 @@
             }
         }
       
-        function showListView ($message = "", $messageCode = 0){
-            if (isset($_GET["success"]) && $_GET["success"]==1){
-                $messageCode = 1;
-                $message = "Sala eliminada con éxito.";
-            }
+        function showListView (){
             $cinemasList = $this-> cinemaDAO-> ReadAll();
             $roomsList = array();
             if (!empty($cinemasList)){
@@ -90,8 +94,10 @@
             require_once(VIEWS_PATH."cinema-list.php");
         }
 
-        function showAddView ($message = "", Cinema $cinema = null){
-            require_once(VIEWS_PATH."cinema-add.php");
+        function showAddView ($message = ""){
+            $moviesList = $this-> movieDAO-> ReadActiveMovies();
+            $cinemasList = $this-> cinemaDAO-> ReadActiveCinemasWithRooms();
+            require_once(VIEWS_PATH."show-add.php");
         }
 
         function showEditView ($id, $message = ""){

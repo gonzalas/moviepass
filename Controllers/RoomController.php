@@ -42,7 +42,7 @@
                 $this-> roomDAO-> Update($room);
             }
             $message = "Sala eliminada con éxito.";
-            require_once(VIEWS_PATH."index.php");
+            header ("location: ".FRONT_ROOT."Cinema/showListView/?success=1");
         }
 
         function editRoom ($id, $name, $capacity, $ticketValue){
