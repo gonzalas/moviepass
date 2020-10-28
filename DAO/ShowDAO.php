@@ -10,13 +10,14 @@
 
         public function Create(Show $show, $roomID, $movieID){
 
-            $sql = "INSERT INTO shows (roomID, movieID, date, time, isActive) VALUES (:roomID, :movieID, :date, :time, :isActive)";
+            $sql = "INSERT INTO shows (roomID, movieID, showDate, startTime, endTime, isActive) VALUES (:roomID, :movieID, :showDate, :startTime, :endTime, :isActive)";
 
             $parameters['roomID'] = $roomID; 
             $parameters['movieID'] = $movieID; 
-            $parameters['date'] = $show->getDate(); 
-            $parameters['time'] = $show->getTime(); 
-            $parameters['isActive'] = $show->getIsActive(); 
+            $parameters['showDate'] = $show->getDate(); 
+            $parameters['startTime'] = $show->getStartTime(); 
+            $parameters['endTime'] = $show->getEndTime();
+            $parameters['isActive'] = true; 
 
             try {
 
@@ -42,6 +43,26 @@
 
             if(!empty($result)) {
                 return $this->mapear($result);
+            } else
+                return false;    
+        }
+
+        /**Returns a room ID if the date is already in use, 0 if not */
+        public function ReadByDateAndMovie($showDate, $movieID){
+            
+            $sql = "SELECT roomID FROM shows WHERE showDate = :showDate AND movieID = :movieID GROUP BY roomID";
+
+            $parameters['showDate'] = $showDate;
+            $parameters['movieID'] = $movieID;
+            try {
+                $this->connection = Connection::getInstance();
+                $result = $this->connection->execute($sql, $parameters);
+            } catch(PDOException $ex){
+                throw $ex;
+            }
+
+            if(!empty($result)) {
+                return $result[0][0];
             } else
                 return false;    
         }
@@ -99,12 +120,13 @@
 
         public function Update($show, $roomID, $movieID){
 
-            $sql = "UPDATE shows SET roomID = :roomID, movieID = :movieID, date = :date, time = :time, isActive = :isActive";
+            $sql = "UPDATE shows SET roomID = :roomID, movieID = :movieID, showDate = :showDate, startTime = :startTime, endTime = :endTime, isActive = :isActive";
 
             $parameters['roomID'] = $roomID; 
             $parameters['movieID'] = $movieID; 
-            $parameters['date'] = $show->getDate(); 
-            $parameters['time'] = $show->getTime(); 
+            $parameters['showDate'] = $show->getDate(); 
+            $parameters['startTime'] = $show->getStartTime();
+            $parameters['endTime'] = $show->getEndTime();  
             $parameters['isActive'] = $show->getIsActive(); 
 
             try {
@@ -139,8 +161,9 @@
             $resp = array_map(function($p){
                 $show = new Show();
                 $show->setID($p['id']);
-                $show->setDate($p['date']);
-                $show->setTime($p['time']);
+                $show->setDate($p['showDate']);
+                $show->setStartTime($p['startTime']);
+                $show->setEndTime($p['endTime']);
                 $show->setIsActive($p['isActive']);
                 return $show;
             }, $value);

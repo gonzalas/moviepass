@@ -143,28 +143,11 @@ a.image-movie{
     color: #FFF;
     font-weight: 500 !important;
 }
-/* 
-html{
-    overflow-x: hidden;
+
+.cinema-card-title {
+    font-size: 18px;
+    vertical-align: middle;
 }
-
-table{
-    border: hidden;
-}
-
-thead{
-    border: hidden;
-}
-
-
-
-td{
-    border: hidden;
-}
-
-form{
-    border: hidden;
-} */
 
 .tr-movie{
     border: 5px solid yellow;

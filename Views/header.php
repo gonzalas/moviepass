@@ -11,7 +11,6 @@
 
      <!--Due to the site being dynamically created, we used timestamp to avoid the cache-ed css to be used-->
      <link rel="stylesheet" type="text/css" href="<?php echo CSS_PATH ?>estilos.css?<?php echo time()?>">
-     
 
      <!-- Javascript -->
      <script src="<?php echo JS_PATH ?>functions.js"></script>

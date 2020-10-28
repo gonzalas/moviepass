@@ -15,6 +15,9 @@
     define("ADMIN_USERNAME", "admin");
     define("ADMIN_PASSWORD", "1234");
 
+    //TIME BETWEEN SHOWS CONSTANTS IN SECONDS
+    define("TIME_AFTER_SHOW", 900);
+
     //DATABASE
     define("DB_HOST", "localhost");
     define("DB_NAME", "moviepass");

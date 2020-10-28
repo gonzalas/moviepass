@@ -46,7 +46,8 @@ create table if not exists shows (
     roomID int not null,
     movieID int not null,
     showDate date not null,
-    showTime time not null,
+    startTime time not null,
+    endTime time not null,
     isActive boolean not null default true,
 
     constraint pkShowID primary key (showID),

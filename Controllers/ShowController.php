@@ -96,8 +96,64 @@
 
         function showAddView ($message = ""){
             $moviesList = $this-> movieDAO-> ReadActiveMovies();
-            $cinemasList = $this-> cinemaDAO-> ReadActiveCinemasWithRooms();
             require_once(VIEWS_PATH."show-add.php");
+        }
+
+        function addShowSecondForm (){
+            if (isset($_POST['movieID']) && isset($_POST['showDate'])){
+                $movieID = $_POST['movieID'];
+                $showDate = $_POST['showDate'];
+            }
+            $dateOccupied = $this-> showDAO-> ReadByDateAndMovie($showDate, $movieID);
+            if ($dateOccupied){
+                $roomID = $dateOccupied;
+                $cinemaID = $this-> roomDAO-> ReadCinemaID($roomID);
+                $movie = $this-> movieDAO-> ReadByID($movieID);
+                $room = $this-> roomDAO-> ReadByID($roomID);
+                $cinema = $this-> cinemaDAO-> ReadByID($cinemaID);
+                require_once(VIEWS_PATH."show-add-third.php");
+            } else {
+                $cinemasList = $this-> cinemaDAO-> ReadActiveCinemasWithRooms();
+                foreach ($cinemasList as $cinema){
+                    $cinema-> setRooms($this-> roomDAO-> ReadByCinemaID($cinema-> getID()));
+                }
+                require_once(VIEWS_PATH."show-add-second.php");
+            }
+        }
+
+        function addShowThirdForm (){
+            if (isset($_POST['movieID']) && isset($_POST['showDate']) && isset($_POST['roomID'])){
+                $movieID = $_POST['movieID'];
+                $showDate = $_POST['showDate'];
+                $roomID = $_POST['roomID'];
+            }
+            $cinemaID = $this-> roomDAO-> ReadCinemaID($roomID);
+            $movie = $this-> movieDAO-> ReadByID($movieID);
+            $room = $this-> roomDAO-> ReadByID($roomID);
+            $cinema = $this-> cinemaDAO-> ReadByID($cinemaID);
+            require_once(VIEWS_PATH."show-add-third.php");
+        }
+
+        function horario(){
+            $showTime = $_POST['showTime'];
+            $endTime = date('H:i', strtotime($showTime) + 900);
+            var_dump($endTime);
+        }
+
+        function validateAddShow(){
+            if (isset($_POST['movieID']) && isset($_POST['showDate']) && isset($_POST['roomID']) && isset($_POST['showTime'])){
+                $roomID = $_POST['roomID'];
+                $movieID = $_POST['movieID'];
+                $showDate = $_POST['showDate'];
+                $showTime = $_POST['showTime'];
+            }
+            $movie = $this-> movieDAO-> ReadByID($movieID);
+            $endTime = date('H:i', strtotime($showTime) + TIME_AFTER_SHOW + $movie-> getLength() * 60);
+            $show = new Show();
+            $show-> setDate($showDate);
+            $show-> setStartTime($showTime);
+            $show-> setEndTime($endTime);
+            $this-> showDAO-> Create($show, $roomID, $movieID);
         }
 
         function showEditView ($id, $message = ""){
