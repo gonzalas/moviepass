@@ -9,7 +9,7 @@
         <span class="navbar-toggler-icon"></span>
       </button>
 
-    <div class="collapse navbar-collapse" id="navbarSupportedContent" style="margin-left: 70%;">
+    <div class="collapse navbar-collapse" id="navbarSupportedContent" style="margin-left: 69%;">
 
       <ul class="navbar-nav mr-auto">
 
