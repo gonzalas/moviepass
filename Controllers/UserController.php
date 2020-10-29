@@ -144,9 +144,28 @@
                     $this->showCinemaListMenu();
                 }
             }
-
         }
 
+        public function showMovieDetails(){
+
+            if($_POST){
+                $movieSelected = new Movie();
+                $movieSelected->setID($_POST['movieID']);
+                $movieSelected->setTitle($_POST['movieTitle']);
+                $movieSelected->setOverview($_POST['movieOverview']);
+                $movieSelected->setReleaseDate($_POST['movieReleaseDate']);
+                $movieSelected->setLength($_POST['movieLength']);
+                $movieSelected->setImage($_POST['movieImage']);
+                $movieSelected->setTrailer($_POST['movieTrailer']);
+                $movieSelected->setLanguage($_POST['movieLanguage']);
+                $movieSelected->setGenres($_POST['movieGenres']);
+                $movieSelected->setVoteAverage($_POST['movieVoteAverage']);
+                $movieSelected->setIsActive(true);
+
+                require_once(VIEWS_PATH."movie-details.php");
+            }
+        }
+        
         public function showRoomsToUser(){
             if($_POST){
                 $cinemaSelected = $_POST['cinemaSelected'];

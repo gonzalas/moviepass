@@ -35,10 +35,10 @@
         height: 560px;
         object-fit: cover;
     }
-    .movieListing:hover{
+    #myCarousel:hover{
         cursor: pointer;
-        opacity: 0.7;
-        transition: 0.5s;
+        opacity: 0.9;
+        transition: 0.2s;
     }
 </style>
 
@@ -56,7 +56,7 @@
             <li data-target="#myCarousel" data-slide-to="1"></li>
             <li data-target="#myCarousel" data-slide-to="2"></li>
         </ol>
-        <div class="carousel-inner" style="border-radius: 5px;">
+        <div class="carousel-inner img-hover" style="border-radius: 5px;">
 
             <?php
                 foreach($carrousel as $movieCarrousel){
@@ -110,18 +110,35 @@
         ?>
     
         <div class="card mb-3 col-5" style="max-width: 540px; background-color: rgba(10, 0, 0, 0.8); color: #ffffff;">
-            <div class="row no-gutters movieListing">
-                <div class="col-md-4" style="top: 12%;">
-                    <img src="<?php echo $movie->getImage(); ?>" class="card-img" alt="...">
+            <form action="<?php echo FRONT_ROOT ?>User/showMovieDetails" method="post">
+
+                <!-- GET MOVIE ATTRIBUTES TO SEND BY FORM -->
+                <input type="hidden" name="movieID" value="<?php echo $movie->getID(); ?>">
+                <input type="hidden" name="movieTitle" value="<?php echo $movie->getTitle(); ?>">
+                <input type="hidden" name="movieOverview" value="<?php echo $movie->getOverview(); ?>">
+                <input type="hidden" name="movieReleaseDate" value="<?php echo $movie->getReleaseDate(); ?>">
+                <input type="hidden" name="movieLength" value="<?php echo $movie->getLength(); ?>">
+                <input type="hidden" name="movieImage" value="<?php echo $movie->getImage(); ?>">
+                <input type="hidden" name="movieTrailer" value="<?php echo $movie->getTrailer(); ?>">
+                <input type="hidden" name="movieLanguage" value="<?php echo $movie->getLanguage(); ?>">
+                <input type="hidden" name="movieGenres" value="<?php echo $movie->getGenres(); ?>">
+                <input type="hidden" name="movieVoteAverage" value="<?php echo $movie->getVoteAverage(); ?>">
+                <!-- --- -->
+
+                <div class="row no-gutters movieListing">
+                    <div class="col-md-4" style="top: 12%;">
+                        <img src="<?php echo $movie->getImage(); ?>" class="card-img" alt="Poster" style="margin-top: 20px;">
+                    </div>
+                    <div class="col-md-8">
+                    <div class="card-body">
+                        <h5 class="card-title"><?php echo $movie->getTitle(); ?></h5>
+                        <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+                        <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+                    </div>
+                    </div>
                 </div>
-                <div class="col-md-8">
-                <div class="card-body">
-                    <h5 class="card-title"><?php echo $movie->getTitle(); ?></h5>
-                    <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-                    <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
-                </div>
-                </div>
-            </div>
+                <button type="submit" class="btn btn-success" style="width: 120px; left: 5%; bottom: 5%; position: absolute;">Ver detalle</button>
+            </form>
         </div>
 
         <div class="p-4"></div> 
