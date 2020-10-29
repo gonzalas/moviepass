@@ -99,7 +99,7 @@
                                     <img src="https://image.tmdb.org/t/p/w500<?=$movie-> getImage()?>" class="card-image">
                                         <div class="card-body">
                                             <h5 class="card-title"><?=$movie-> getTitle()?></h5>
-                                            <p class="pelicula"><?=$movie-> getOverview()?></p>
+                                            <p><?=$movie-> getOverview()?></p>
                                             <p class="card-text"><small class="text-muted">Fecha de lanzamiento: <?=$movie-> getReleaseDate()?></small></p>
                                             <p class="card-text"><small class="text-muted">Idioma: <?=$movie-> getLanguage()?></small></p>
                                             <p class="card-text"><small class="text-muted">Géneros: 

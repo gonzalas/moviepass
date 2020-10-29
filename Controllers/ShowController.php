@@ -154,11 +154,62 @@
             $show-> setStartTime($showTime);
             $show-> setEndTime($endTime);
             $this-> showDAO-> Create($show, $roomID, $movieID);
+            $this-> showAddView();
         }
 
         function showEditView ($id, $message = ""){
             $cinema = $this-> cinemaDAO-> ReadByID($id)[0];
             require_once(VIEWS_PATH."cinema-edit.php");
+        }
+
+        function showUpcomingShows (){
+            if (isset($_GET['time'])){
+                $filter = $_GET['time'];
+                if (strcmp($filter, "previous") == 0){
+                    $showsList = $this-> showDAO-> ReadPrevious();
+                    if ($showsList instanceof Show){
+                        $aux = $showsList;
+                        $showsList = array();
+                        array_push($showsList, $aux);
+                    }
+                } else {
+                    $showsList = $this-> showDAO-> ReadUpcoming();
+                    if ($showsList instanceof Show){
+                        $aux = $showsList;
+                        $showsList = array();
+                        array_push($showsList, $aux);
+                    }
+                }
+            } else {
+                $showsList = $this-> showDAO-> ReadAll();
+                if ($showsList instanceof Show){
+                    $aux = $showsList;
+                    $showsList = array();
+                    array_push($showsList, $aux);
+                }
+            }
+
+
+            $moviesList = array();
+            foreach($showsList as $show){
+                $movieID = $this-> showDAO-> ReadMovieID($show-> getID());
+                array_push($moviesList, $this-> movieDAO-> ReadByID($movieID));
+            }
+
+            $roomsList = array();
+            foreach($showsList as $show){
+                $roomID = $this-> showDAO-> ReadRoomID($show-> getID());
+                array_push($roomsList, $this-> roomDAO-> ReadByID($roomID));
+            }
+
+            $cinemasList = array();
+            foreach($roomsList as $room){
+                $cinemaID = $this-> roomDAO-> ReadCinemaID($room-> getID());
+                array_push($cinemasList, $this-> cinemaDAO-> ReadByID($cinemaID));
+            }
+
+            $emptyList = empty($showsList);
+            require_once (VIEWS_PATH."show-list.php");
         }
 
         private function validateCinemaName($id, $name){

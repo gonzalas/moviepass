@@ -8,7 +8,7 @@
         private $address;
         private $totalCapacity;
         private $rooms = array();
-        private $movieListing;
+        private $movieListing = array();
         private $isActive;
 
         public function setID($id){$this->id = $id;}
