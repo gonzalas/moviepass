@@ -20,6 +20,17 @@
         filter: opacity(0.2) grayscale(1) contrast(200%) blur(3.5px);
         object-fit: cover;
     }
+    img#back-img-3 {
+        position: absolute;
+        width: 100%;
+        z-index: -1;
+        top: 199vh;
+        height: 100vh;
+        max-height: 200vh;
+        left: 0;
+        filter: opacity(0.1) grayscale(1) contrast(120%) blur(4px);
+        object-fit: cover;
+    }
     .movie img {
         height: 560px;
         object-fit: cover;
@@ -53,7 +64,7 @@
             ?>
             
             <div class="carousel-item active movie">
-                <h1 style="position: absolute; top: 25%; left: 20%; color: #ffffff;"><?php echo $movieCarrousel->getTitle(); ?></h1>
+                <h1 style="position: absolute; top: 15%; color: #ffffff; background-color: rgba(0,0,0,0.7); padding: 20px 100px;"><?php echo $movieCarrousel->getTitle(); ?></h1>
                 <img src="<?php echo $movieCarrousel->getImage(); ?>" class="d-block w-100" alt="Poster">
             </div>
 
@@ -62,7 +73,7 @@
             ?>
 
             <div class="carousel-item movie">
-                <h1 style="position: absolute; top: 25%; left: 20%; color: #ffffff;"><?php echo $movieCarrousel->getTitle(); ?></h1>
+                <h1 style="position: absolute; top: 15%; color: #ffffff; background-color: rgba(0,0,0,0.7); padding: 20px 100px;"><?php echo $movieCarrousel->getTitle(); ?></h1>
                 <img src="<?php echo $movieCarrousel->getImage(); ?>" class="d-block w-100" alt="Poster">
             </div>
 
@@ -125,4 +136,5 @@
         }
     ?>
     
+    <img id="back-img-3" src="<?php echo IMG_PATH."poster00.jpg" ?>" alt="Poster">
 </section>
