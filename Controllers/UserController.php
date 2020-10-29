@@ -5,6 +5,8 @@
     use DAO\CinemaDAO as CinemaDAO;
     use DAO\RoomDAO as RoomDAO;
     use Models\User as User;
+    use Models\Movie as Movie;
+    use Models\MovieListing as MovieListing;
 
     class UserController {
         private $userDAO;
@@ -83,6 +85,68 @@
             }
         }
 
+        public function showMovieListing(){
+
+            if($_POST){
+                $cinemaSelected = $_POST['cinemaSelected'];
+
+                //If cinemaSelected == -1, was selected the default 'Elija' option on select
+                if($cinemaSelected != -1){
+
+                    //Retrive cinema selected on database
+                    $cinema = $this->cinemaDAO->ReadByID($cinemaSelected);
+
+                    //Restore all cinemas to choose again before load views
+                    $cinemasList = $this->cinemaDAO->ReadAll();
+
+                    //Get movie listing
+                    // $movieListing = $cinema->getMovieListing();
+                    $poster = IMG_PATH."poster00.jpg";
+                    $movieListing = new MovieListing();
+                    $movie1 = new Movie();
+                    $movie1->setID(1);
+                    $movie1->setTitle("Deadpool");
+                    $movie1->setImage($poster);    
+                    $movie2 = new Movie();    
+                    $movie2->setID(2);
+                    $movie2->setTitle("Batman");
+                    $movie2->setImage($poster);
+                    $movie3 = new Movie(); 
+                    $movie3->setID(3);   
+                    $movie3->setTitle("Fight Club");
+                    $movie3->setImage($poster);
+                    $movie4 = new Movie();  
+                    $movie4->setID(4);  
+                    $movie4->setTitle("Pulp Fiction");
+                    $movie4->setImage($poster);
+                    $movie5 = new Movie();
+                    $movie5->setID(5);
+                    $movie5->setTitle("Green Mile");
+                    $movie5->setImage($poster);
+                    $movies = array();
+                    array_push($movies, $movie1);
+                    array_push($movies, $movie2);
+                    array_push($movies, $movie3);
+                    array_push($movies, $movie4);
+                    array_push($movies, $movie5);
+
+                    $movieListing->setMovies($movies);
+
+                    $moviesOnListing = $movieListing->getMovies();
+                    //Carrousel
+                    $moviesOnCarrousel = 3;
+                    $carrousel = $this->generateCarrouselMovies($moviesOnListing, $moviesOnCarrousel);
+
+                    require_once(VIEWS_PATH."user-cinema-list.php");
+                    require_once(VIEWS_PATH."user-movie-listing.php");
+
+                } else {
+                    $this->showCinemaListMenu();
+                }
+            }
+
+        }
+
         public function showRoomsToUser(){
             if($_POST){
                 $cinemaSelected = $_POST['cinemaSelected'];
@@ -135,6 +199,36 @@
 
         private function validatePassword($password, $password2){
             return ($password === $password2) ? true : false;
+        }
+
+        private function generateCarrouselMovies($movies, $moviesOnCarrousel){
+            $carrouselListing = array();
+            if(count($movies) >= $moviesOnCarrousel){
+
+                for($i = 0; $i < $moviesOnCarrousel; $i++){  
+                    array_push($carrouselListing, $movies[$i]);
+                }
+            } else {
+                $carrouselListing = [];
+            }                        
+            return $carrouselListing;
+        }   
+
+        private function getArrayRandom($movies, $number){
+            $i = 0;
+            $random = array();
+            while($i < $number){
+                $random[$i] = rand(0, count($movies) - 1);
+                while(in_array($random[$i], $random)){
+                    $random[$i] = rand(0, count($movies) - 1);
+                }
+                var_dump($random[$i]);
+                array_push($random, $random[$i]);
+                $i++;
+            }
+            array_pop($random);
+            var_dump($random);
+            return $random;
         }
     }
 
