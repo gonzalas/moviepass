@@ -63,7 +63,7 @@
                 //Verify if user is Admin and redirect
                 if($user->getUserName() == ADMIN_USERNAME && $user->getPassword() == ADMIN_PASSWORD){
 
-                    require_once(VIEWS_PATH."cinema-add.php");
+                    header("location:".FRONT_ROOT."Cinema/ShowAddView");
 
                 } else {
 
