@@ -62,9 +62,15 @@
         }
       
         function showListView ($message = "", $messageCode = 0){
-            if (isset($_GET["success"]) && $_GET["success"]==1){
-                $messageCode = 1;
-                $message = "Sala eliminada con éxito.";
+            if (isset($_GET["success"])){
+                $messageCode = $_GET["success"];
+                if ($messageCode == 1){
+                    $message = "Sala eliminada con éxito.";
+                } else {
+                    if ($messageCode == 2){
+                        $message = "No se pudo eliminar la sala, porque hay funciones próximas.";
+                    }
+                }
             }
             $cinemasList = $this-> cinemaDAO-> ReadAll();
             $roomsList = array();

@@ -10,6 +10,7 @@
         private $password;
         private $email;
         private $isAdmin;
+        private $purchases = array();
         
         public  function getFirstName()
         {
@@ -41,6 +42,11 @@
             return $this->isAdmin;
         }
 
+        public function getPurchases()
+        {
+            return $this->purchases;
+        }
+
         public function setFirstName($firstName)
         {
             $this->firstName = $firstName;
@@ -69,6 +75,11 @@
         public function setIsAdmin($isAdmin)
         {
             $this->isAdmin = $isAdmin;
+        }
+
+        public function setPurchases($purchases)
+        {
+            $this->purchases = $purchases;
         }
     }
 ?>

@@ -8,6 +8,7 @@
         private $subTotal;
         private $hasDiscount;
         private $purchaseTotal;
+        private $user;
 
         public function setPurchaseID($purchaseID){$this->purchaseID = $purchaseID;}
         public function getPurchaseID(){return $this->purchaseID;}
@@ -23,6 +24,9 @@
 
         public function setPurchaseTotal($purchaseTotal){$this->purchaseTotal = $purchaseTotal;}
         public function getPurchaseTotal(){return $this->purchaseTotal;}  
+
+        public function setUser($user){$this->user = $user;}
+        public function getUser(){return $this->user;}  
     }
 
 ?>

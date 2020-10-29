@@ -97,8 +97,8 @@
             return $result[0][0];
         }
 
-        public function ReadAllByRoomID($roomID){
-            $sql = "SELECT * FROM shows WHERE roomID = :roomID";
+        public function ReadAll(){
+            $sql = "SELECT * FROM shows";
 
             $this->connection = Connection::getInstance();
             $result = $this->connection->execute($sql);
@@ -107,6 +107,81 @@
 
                 $this->connection = Connection::getInstance();
                 $result = $this->connection->execute($sql);
+
+            } catch(PDOException $ex){
+                throw $ex;
+            }
+
+            if(!empty($result)){
+                return $this->mapear($result);
+            } else
+                return false;
+        }
+
+        public function ReadPrevious(){
+            $sql = "SELECT * FROM shows WHERE (showDate < CURDATE() OR (showDate = CURDATE() AND startTime <= CURTIME()));";
+
+            $this->connection = Connection::getInstance();
+            $result = $this->connection->execute($sql);
+
+            try {
+
+                $this->connection = Connection::getInstance();
+                $result = $this->connection->execute($sql);
+
+            } catch(PDOException $ex){
+                throw $ex;
+            }
+
+            if(!empty($result)){
+                return $this->mapear($result);
+            } else
+                return false;
+        }
+
+        public function ReadUpcoming(){
+            $sql = "SELECT * FROM shows WHERE (showDate > CURDATE() OR (showDate = CURDATE() AND startTime >= CURTIME()));";
+
+            try {
+
+                $this->connection = Connection::getInstance();
+                $result = $this->connection->execute($sql);
+
+            } catch(PDOException $ex){
+                throw $ex;
+            }
+
+            if(!empty($result)){
+                return $this->mapear($result);
+            } else
+                return false;
+        }
+
+        public function ReadAllByRoomID($roomID){
+            $sql = "SELECT * FROM shows WHERE roomID = :roomID";
+
+            try {
+
+                $this->connection = Connection::getInstance();
+                return $this->connection->ExecuteNonQuery($sql, $parameters);
+
+            } catch(PDOException $ex){
+                throw $ex;
+            }
+
+            if(!empty($result)){
+                return $this->mapear($result);
+            } else
+                return false;
+        }
+
+        public function ReadUpcomingByRoomID($roomID){
+            $sql = "SELECT * FROM shows WHERE ((showDate > CURDATE() AND roomID = :roomID) OR (showDate = CURDATE() AND startTime >= CURTIME() AND roomID = :roomID));";
+            $parameters['roomID'] = $roomID;
+
+            try {
+                $this->connection = Connection::getInstance();
+                return $this->connection->Execute($sql, $parameters);
 
             } catch(PDOException $ex){
                 throw $ex;
@@ -130,10 +205,8 @@
             $parameters['isActive'] = $show->getIsActive(); 
 
             try {
-
                 $this->connection = Connection::getInstance();
                 return $this->connection->ExecuteNonQuery($sql, $parameters);
-
             }catch(PDOException $ex){
                 throw $ex;
             }
@@ -160,7 +233,7 @@
 
             $resp = array_map(function($p){
                 $show = new Show();
-                $show->setID($p['id']);
+                $show->setID($p['showID']);
                 $show->setDate($p['showDate']);
                 $show->setStartTime($p['startTime']);
                 $show->setEndTime($p['endTime']);

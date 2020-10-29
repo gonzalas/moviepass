@@ -2,7 +2,9 @@
 
     namespace Controllers;
     use DAO\RoomDAO as RoomDAO;
+    use DAO\ShowDAO as ShowDAO;
     use Models\Room as Room;
+    use Models\Show as Show;
 
     class RoomController {
 
@@ -11,6 +13,7 @@
         public function __construct()
         {
             $this-> roomDAO = new RoomDAO();
+            $this-> showDAO = new ShowDAO();
         }
 
         function addRoom($cinemaID, $name, $capacity, $ticketValue) {
@@ -38,11 +41,15 @@
         function removeRoom($id){
             if ($id!=-1){
                 $room = $this-> roomDAO-> ReadByID($id);
-                $room-> setIsActive(false);
-                $this-> roomDAO-> Update($room);
+                $showsList = $this-> showDAO-> ReadUpcomingByRoomID($id);
+                if ((is_array($showsList) && !empty($showsList)) || $showsList instanceof Show){
+                    header ("location: ".FRONT_ROOT."Cinema/showListView/?success=2");
+                } else {
+                    $room-> setIsActive(false);
+                    $this-> roomDAO-> Update($room);
+                    header ("location: ".FRONT_ROOT."Cinema/showListView/?success=1");
+                }
             }
-            $message = "Sala eliminada con éxito.";
-            header ("location: ".FRONT_ROOT."Cinema/showListView/?success=1");
         }
 
         function editRoom ($id, $name, $capacity, $ticketValue){

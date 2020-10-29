@@ -8,6 +8,7 @@
         private $startTime;
         private $endTime;
         private $isActive;
+        private $room;
 
         public function setID($id){$this->id = $id;}
         public function getID(){return $this->id;}
@@ -23,6 +24,9 @@
 
         public function setIsActive($isActive){$this->isActive = $isActive;}
         public function getIsActive(){return $this->isActive;}
+
+        public function setRoom($room){$this->room = $room;}
+        public function getRoom(){return $this->room;}
 
     }
 ?>
