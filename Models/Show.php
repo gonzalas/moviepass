@@ -9,6 +9,7 @@
         private $endTime;
         private $isActive;
         private $room;
+        private $movie;
 
         public function setID($id){$this->id = $id;}
         public function getID(){return $this->id;}
@@ -27,6 +28,9 @@
 
         public function setRoom($room){$this->room = $room;}
         public function getRoom(){return $this->room;}
+
+        public function setMovie($movie){$this->movie = $movie;}
+        public function getMovie(){return $this->movie;}
 
     }
 ?>

@@ -35,7 +35,7 @@
                     <input type="hidden" name="showDate" value="<?php echo $showDate?>">
                     <input type="hidden" name="movieID" value="<?php echo $movieID?>">
                     <div class="row">
-                        <a type="" class="btn btn-danger ml-auto d-block">Cancelar</a>
+                        <a href="<?php echo FRONT_ROOT ?>Show/showAddView/" class="btn btn-danger ml-auto d-block">Cancelar</a>
                         <button type="submit" class="btn btn-primary ml-3 mr-4">Continuar</button>
                     </div>
                </form>
