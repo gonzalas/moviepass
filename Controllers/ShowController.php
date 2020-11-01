@@ -43,58 +43,7 @@
             }
         }
 
-        function removeCinema($id){
-            if ($id!=-1){
-                $cinema = ($this-> cinemaDAO-> ReadByID($id))[0];
-                $cinema-> setIsActive(false);
-                $this-> cinemaDAO-> Update($cinema);
-            }
-            $cinemasList = $this-> cinemaDAO-> ReadAll();
-            $this-> showListView();
-        }
-
-        function editCinema ($id, $name, $address){
-            $cinema = $this-> cinemaDAO-> ReadByID($id)[0];
-            if ($this-> validateCinemaName($id, $name)){
-                $this-> showEditView($id, "Nombre de cine ya existente. Intente con otro.");
-            } else {
-                if ($this-> validateCinemaAddress($id, $address)){
-                    $this-> showEditView($id, "Dirección ya existente. Intente con otra.");
-                } else {
-                    $cinema-> setName($name);
-                    $cinema-> setAddress ($address);
-                    $this-> cinemaDAO-> Update($cinema);
-                    $this-> showListView();
-                }
-            }
-        }
-      
-        function showListView (){
-            $cinemasList = $this-> cinemaDAO-> ReadAll();
-            $roomsList = array();
-            if (!empty($cinemasList)){
-                $use = true;
-                $cinemasList = array_filter($cinemasList, function($cinema) use($use){
-                    return $cinema-> getIsActive() == $use;
-                });
-                $roomsList = $this-> roomDAO-> ReadAll();
-                foreach ($cinemasList as $cinema){
-                    $newRooms = $this-> roomDAO-> ReadByCinemaIDValid($cinema-> getID());
-                    if ($newRooms != null){
-                        $cinema-> setRooms($newRooms);
-                        $cinema-> setTotalCapacity ($this-> countTotalCapacity($newRooms));
-                    } else {
-                        $cinema-> setTotalCapacity (0);
-                        $cinema-> setRooms(array());
-                    }
-                }
-            } else {
-                $cinemasList = array();
-            }
-            require_once(VIEWS_PATH."cinema-list.php");
-        }
-
-        function showAddView ($message = ""){
+        function showAddView ($message = "", $messageCode = 0){
             $moviesList = $this-> movieDAO-> ReadActiveMovies();
             require_once(VIEWS_PATH."show-add.php");
         }
@@ -110,12 +59,18 @@
                 $cinemaID = $this-> roomDAO-> ReadCinemaID($roomID);
                 $movie = $this-> movieDAO-> ReadByID($movieID);
                 $room = $this-> roomDAO-> ReadByID($roomID);
-                $cinema = $this-> cinemaDAO-> ReadByID($cinemaID);
+                $room-> setCinema($this-> cinemaDAO-> ReadByID($cinemaID));
+                $showsList = $this-> showDAO-> ReadByDateAndRoom ($showDate, $roomID);
+                if ($showsList instanceof Show){
+                    $aux = $showsList;
+                    $showsList = array();
+                    array_push($showsList, $aux);
+                }
                 require_once(VIEWS_PATH."show-add-third.php");
             } else {
                 $cinemasList = $this-> cinemaDAO-> ReadActiveCinemasWithRooms();
                 foreach ($cinemasList as $cinema){
-                    $cinema-> setRooms($this-> roomDAO-> ReadByCinemaID($cinema-> getID()));
+                    $cinema-> setRooms($this-> roomDAO-> ReadByCinemaIDValid($cinema-> getID()));
                 }
                 require_once(VIEWS_PATH."show-add-second.php");
             }
@@ -130,14 +85,14 @@
             $cinemaID = $this-> roomDAO-> ReadCinemaID($roomID);
             $movie = $this-> movieDAO-> ReadByID($movieID);
             $room = $this-> roomDAO-> ReadByID($roomID);
-            $cinema = $this-> cinemaDAO-> ReadByID($cinemaID);
+            $room-> setCinema($this-> cinemaDAO-> ReadByID($cinemaID));
+            $showsList = $this-> showDAO-> ReadByDateAndRoom ($showDate, $roomID);
+            if ($showsList instanceof Show){
+                $aux = $showsList;
+                $showsList = array();
+                array_push($showsList, $aux);
+            }
             require_once(VIEWS_PATH."show-add-third.php");
-        }
-
-        function horario(){
-            $showTime = $_POST['showTime'];
-            $endTime = date('H:i', strtotime($showTime) + 900);
-            var_dump($endTime);
         }
 
         function validateAddShow(){
@@ -146,15 +101,52 @@
                 $movieID = $_POST['movieID'];
                 $showDate = $_POST['showDate'];
                 $showTime = $_POST['showTime'];
+                $movie = $this-> movieDAO-> ReadByID($movieID);
+                $endTime = date('H:i', strtotime($showTime) + TIME_AFTER_SHOW + $movie-> getLength() * 60);
+                $showsList = $this-> showDAO-> ReadByDateAndRoom ($showDate, $roomID);
+                if ($showsList instanceof Show){
+                    $aux = $showsList;
+                    $showsList = array();
+                    array_push($showsList, $aux);
+                }
+                if ($this-> validateShowTime($showTime, $endTime, $showsList)){
+                    $show = new Show();
+                    $show-> setDate($showDate);
+                    $show-> setStartTime($showTime);
+                    $show-> setEndTime($endTime);
+                    $this-> showDAO-> Create($show, $roomID, $movieID);
+                    $this-> showAddView("Función agregada con éxito.", 1);
+                } else {
+                    $this-> showAddView("La función no pudo ser agregada porque coincide con los horarios de otra función.", 2);
+                }
+            } else {
+                $this-> showAddView("Hubo un error en el envio de los datos.", 2);
             }
-            $movie = $this-> movieDAO-> ReadByID($movieID);
-            $endTime = date('H:i', strtotime($showTime) + TIME_AFTER_SHOW + $movie-> getLength() * 60);
-            $show = new Show();
-            $show-> setDate($showDate);
-            $show-> setStartTime($showTime);
-            $show-> setEndTime($endTime);
-            $this-> showDAO-> Create($show, $roomID, $movieID);
-            $this-> showAddView();
+        }
+
+        /**Validates if selected times for a show are available */
+        private function validateShowTime($startTime, $endTime, $showsList){
+            $startTime = strtotime($startTime);
+            $endTime = strtotime($endTime);
+            if (is_array($showsList)){ 
+                foreach ($showsList as $show){
+                    $showStartTime = strtotime($show-> getStartTime());
+                    /**Determines if the current show starts before the new show */
+                    if ($showStartTime < $startTime){
+                        $showEndTime = strtotime($show-> getEndTime());
+                        /**If the current show ending time has a conflict with the new show start time */
+                        if ($showEndTime > $startTime){
+                            return false;
+                        }
+                    } else {
+                        /**If the current show start time has a conflict with the new show ending time */
+                        if ($showStartTime < $endTime){
+                            return false;
+                        }
+                    }
+                }
+            }
+            return true;
         }
 
         function showEditView ($id, $message = ""){
@@ -162,7 +154,7 @@
             require_once(VIEWS_PATH."cinema-edit.php");
         }
 
-        function showUpcomingShows (){
+        function showUpcomingShows ($success = 0){
             if (isset($_GET['time'])){
                 $filter = $_GET['time'];
                 if (strcmp($filter, "previous") == 0){
@@ -189,27 +181,32 @@
                 }
             }
 
-
-            $moviesList = array();
-            foreach($showsList as $show){
-                $movieID = $this-> showDAO-> ReadMovieID($show-> getID());
-                array_push($moviesList, $this-> movieDAO-> ReadByID($movieID));
-            }
-
-            $roomsList = array();
-            foreach($showsList as $show){
-                $roomID = $this-> showDAO-> ReadRoomID($show-> getID());
-                array_push($roomsList, $this-> roomDAO-> ReadByID($roomID));
-            }
-
-            $cinemasList = array();
-            foreach($roomsList as $room){
-                $cinemaID = $this-> roomDAO-> ReadCinemaID($room-> getID());
-                array_push($cinemasList, $this-> cinemaDAO-> ReadByID($cinemaID));
-            }
-
             $emptyList = empty($showsList);
+            if(!$emptyList){
+                foreach ($showsList as $show){
+                    $movieID = $this-> showDAO-> ReadMovieID($show-> getID());
+                    $show-> setMovie($this-> movieDAO-> ReadByID($movieID));
+                }
+                foreach ($showsList as $show){
+                    $roomID = $this-> showDAO-> ReadRoomID($show-> getID());
+                    $cinemaID = $roomID = $this-> roomDAO-> ReadCinemaID($roomID);
+                    $room = $this-> roomDAO-> ReadByID ($roomID);
+                    $room-> setCinema($this-> cinemaDAO-> ReadByID($cinemaID));
+                    $show-> setRoom($room);
+                }    
+            }
+
+            if ($success == 1){
+                $message = "Función eliminada con éxito.";
+            }
+            
+            $today = $today = date("Y-m-d");
             require_once (VIEWS_PATH."show-list.php");
+        }
+
+        function removeShow($showID){
+            $this-> showDAO-> Delete($showID);
+            header ("location: ".FRONT_ROOT."Show/showUpcomingShows/?success=1");
         }
 
         private function validateCinemaName($id, $name){

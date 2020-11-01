@@ -126,6 +126,23 @@
                 return false;
         }
 
+        public function ReadUnactiveCinemas(){
+ 
+            $sql = "SELECT * FROM cinemas WHERE isActive = false";
+
+            try {
+                $this->connection = Connection::getInstance();
+                $result = $this->connection->execute($sql);
+            } catch ( PDOException $ex) {
+                throw $ex;
+            }
+
+            if(!empty($result)) {
+                return $this->mapear($result);
+            } else
+                return false;
+        }
+
         public function ReadActiveCinemasWithRooms(){
  
             $sql = "SELECT c.cinemaID as cinemaID, c.name as name, c.isActive as isActive, c.address as address FROM

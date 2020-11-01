@@ -2,6 +2,11 @@
     require_once('nav.php');
 ?>
 <main class="py-5">
+    <?php 
+        if ($success == 1){
+    ?>
+            <div  class="alert alert-success alert-dismissible fade show" role="alert"> <strong> <?php echo $message?> </strong></div>
+    <?php } ?>
     <h1 class="title">Funciones - MoviePass</h1>
     <ul class="nav justify-content-center nav-filters">
         <li class="nav-item">
@@ -19,7 +24,9 @@
         if (isset($_GET['time'])){
         ?>
             <li class="nav-item">
-            <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Filtro actual (período): <?=$filter?></a>
+            <?php if (strcmp($_GET['time'], "previous") == 0){ ?> <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Filtro actual (período): Anteriores</a>
+            <?php } else { ?> <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Filtro actual (período): Próximas</a>
+            <?php } ?>
             </li>
             <li class="nav-item">
             <a class="nav-link" href="<?=FRONT_ROOT?>Show/showUpcomingShows">Limpiar filtros</a>
@@ -40,6 +47,7 @@
                         <th scope="col">Sala</th>
                         <th scope="col">Cine</th>
                         <th scope="col"></th>
+                        <th scope="col"></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -50,10 +58,17 @@
                     <tr>
                         <th scope="row"><?=$show->getDate()?></th>
                         <td ><?=$show->getStartTime()?><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-<br><?=$show->getEndTime()?></td>
-                        <td><?=$moviesList[$i]->getTitle()?></td>
-                        <td><?=$roomsList[$i]->getName()?></td>
-                        <td><?=$cinemasList[$i]->getName()?></td>
-                        <td><button type="button" class="btn btn-primary btn-center" data-toggle="modal" data-target="#exampleModal" style="right-border-radius:20px; width:33%;">Estadísticas</button></td>
+                        <td><?=$show-> getMovie()-> getTitle()?></td>
+                        <td><?=$show-> getRoom()-> getName()?></td>
+                        <td><?=$show-> getRoom()-> getCinema()-> getName()?></td>
+                        <td><button type="button" class="btn btn-primary btn-center" data-toggle="modal" data-target="#exampleModal" style="right-border-radius:20px;">Estadísticas</button></td>
+                        <?php
+                        if($show->getDate() < $today && $show-> getIsActive()){
+                        ?>
+                            <td><a href="<?php echo FRONT_ROOT ?>Show/removeShow/?showId=<?php echo $show->getID();?>" class="btn btn-danger btn-center" style="right-border-radius:20px;">Eliminar</a></td>
+                        <?php
+                        }
+                        ?>
                     </tr>
                 <?php
                     $i++;

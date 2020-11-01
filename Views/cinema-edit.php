@@ -24,9 +24,9 @@
                               </div>
                          </div>
                     </div>
-                    <div class="d-flex flex-row-reverse">
-                         <a class="btn btn-danger p-2" href= "<?php echo FRONT_ROOT ?>Cinema/showListView" > Cancelar </a>
-                         <button type="submit" class="btn btn-success ml-auto p-2 mr-4">Confirmar</button>
+                    <div class="row">
+                         <a href="<?php echo FRONT_ROOT ?>Cinema/showListView/" class="btn btn-danger ml-auto d-block">Cancelar</a>
+                         <button type="submit" class="btn btn-primary ml-3">Confirmar</button>
                     </div>
                </form>
           </div>

@@ -67,6 +67,25 @@
                 return false;    
         }
 
+        public function ReadByDateAndRoom($showDate, $roomID){
+            
+            $sql = "SELECT * FROM shows WHERE showDate = :showDate AND roomID = :roomID order by startTime";
+
+            $parameters['showDate'] = $showDate;
+            $parameters['roomID'] = $roomID;
+            try {
+                $this->connection = Connection::getInstance();
+                $result = $this->connection->execute($sql, $parameters);
+            } catch(PDOException $ex){
+                throw $ex;
+            }
+
+            if(!empty($result)) {
+                return $this->mapear($result);
+            } else
+                return false;    
+        }
+
         public function ReadMovieID($showID){
             $sql = "SELECT movieID FROM shows WHERE showID = :showID";
 
@@ -98,7 +117,7 @@
         }
 
         public function ReadAll(){
-            $sql = "SELECT * FROM shows";
+            $sql = "SELECT * FROM shows WHERE isActive = true order by showDate";
 
             $this->connection = Connection::getInstance();
             $result = $this->connection->execute($sql);
@@ -119,7 +138,7 @@
         }
 
         public function ReadPrevious(){
-            $sql = "SELECT * FROM shows WHERE (showDate < CURDATE() OR (showDate = CURDATE() AND startTime <= CURTIME()));";
+            $sql = "SELECT * FROM shows WHERE (showDate < CURDATE() OR (showDate = CURDATE() AND startTime <= CURTIME())) AND isActive = true order by showDate";
 
             $this->connection = Connection::getInstance();
             $result = $this->connection->execute($sql);
@@ -140,7 +159,7 @@
         }
 
         public function ReadUpcoming(){
-            $sql = "SELECT * FROM shows WHERE (showDate > CURDATE() OR (showDate = CURDATE() AND startTime >= CURTIME()));";
+            $sql = "SELECT * FROM shows WHERE (showDate > CURDATE() OR (showDate = CURDATE() AND startTime >= CURTIME())) order by showDate";
 
             try {
 
@@ -158,7 +177,7 @@
         }
 
         public function ReadAllByRoomID($roomID){
-            $sql = "SELECT * FROM shows WHERE roomID = :roomID";
+            $sql = "SELECT * FROM shows WHERE roomID = :roomID order by showDate";
 
             try {
 
@@ -175,8 +194,9 @@
                 return false;
         }
 
+        /**Used to check if a room selected to delete has upcoming shows */
         public function ReadUpcomingByRoomID($roomID){
-            $sql = "SELECT * FROM shows WHERE ((showDate > CURDATE() AND roomID = :roomID) OR (showDate = CURDATE() AND startTime >= CURTIME() AND roomID = :roomID));";
+            $sql = "SELECT * FROM shows WHERE ((showDate > CURDATE() AND roomID = :roomID) OR (showDate = CURDATE() AND startTime >= CURTIME() AND roomID = :roomID)) order by startTime";
             $parameters['roomID'] = $roomID;
 
             try {
@@ -213,7 +233,7 @@
         }
 
         public function Delete($id){
-            $sql = "DELETE FROM shows WHERE id = :id";
+            $sql = "UPDATE shows SET isActive = false WHERE showID = :id";
 
             $parameters['id'] = $id;
 

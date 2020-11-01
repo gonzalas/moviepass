@@ -9,22 +9,28 @@
                     <div class="col-lg-12">
                         <div class="form-group">
                             <label for="cinemaSelection">Película</label>
-                            <input class="form-control" type="text" value="<?=$movie->getTitle();?>" readonly>
-                            <input type="hidden" name="movieID" value="<?php echo $movie-> getID()?>">
+                            <input class="form-control" type="text" value="<?=$movie-> getTitle();?>" readonly>
+                            <input type="hidden" name="movieID" value="<?=$movie-> getID();?>">
+                        </div>
+                    </div>
+                    <div class="col-lg-12">
+                        <div class="form-group">
+                            <label for="cinemaSelection">Duración (al horario de finalización se le agregan 15 minutos)</label>
+                            <input class="form-control" type="text" value="<?=$movie-> getLength() . ' minutos.';?>" readonly>
                         </div>
                     </div>
                     <div class="col-lg-12">
                         <div class="form-group">
                             <label for="cinemaSelection">Cine</label>
-                            <input class="form-control" type="text" value="<?=$cinema->getName();?>" readonly>
-                            <input type="hidden" name="cinemaID" value="<?php echo $cinema-> getID()?>">
+                            <input class="form-control" type="text" value="<?=$room-> getCinema()-> getName();?>" readonly>
+                            <input type="hidden" name="cinemaID" value="<?=$room-> getCinema()-> getID();?>">
                         </div>
                     </div>
                     <div class="col-lg-12">
                         <div class="form-group">
                             <label for="cinemaSelection">Sala</label>
-                            <input class="form-control" type="text" value="<?=$room->getName();?>" readonly>
-                            <input type="hidden" name="roomID" value="<?php echo $room-> getID()?>">
+                            <input class="form-control" type="text" value="<?=$room-> getName();?>" readonly>
+                            <input type="hidden" name="roomID" value="<?=$room-> getID();?>">
                         </div>
                     </div>
                     <div class="col-lg-12">
@@ -33,6 +39,22 @@
                             <input class="form-control" name="showDate" type="text" value="<?=$showDate?>" readonly>
                         </div>
                     </div>
+                    <?php 
+                        if(!empty($showsList)){
+                    ?>
+                        <div class="col-lg-12">
+                            <div class="form-group">
+                                <label for="cinemaSelection">Horarios ocupados</label>
+                                <?php foreach ($showsList as $show){ ?>
+                                    <input class="form-control" name="" type="text" value="<?= $show->getStartTime() . ' - ' . $show->getEndTime(); ?>" readonly>
+                                <?php
+                                    }
+                                ?>
+                            </div>
+                        </div>
+                    <?php
+                        }
+                    ?>
                     <div class="col-lg-12">
                         <div class="form-group">
                             <label for="timeSelection">Horario (recordá que debe haber 15 minutos entre funciones)</label><br>
@@ -40,7 +62,7 @@
                         </div>
                     </div>
                     <div class="row">
-                        <button type="" class="btn btn-danger ml-auto d-block">Cancelar</button>
+                        <a href="<?php echo FRONT_ROOT ?>Show/showAddView/" class="btn btn-danger ml-auto d-block">Cancelar</a>
                         <button type="submit" class="btn btn-primary ml-3">Comprobar horario</button>
                     </div>
                </form>

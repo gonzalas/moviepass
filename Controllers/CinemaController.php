@@ -4,6 +4,7 @@
     use \Exception as Exception;
     use DAO\CinemaDAO as CinemaDAO;
     use DAO\RoomDAO as RoomDAO;
+    use DAO\ShowDAO as ShowDAO;
     use Models\Cinema as Cinema;
     use Models\Room as Room;
 
@@ -16,6 +17,7 @@
         {
             $this-> cinemaDAO = new CinemaDAO();
             $this-> roomDAO = new RoomDAO();
+            $this-> showDAO = new ShowDAO();
         }
 
         function addCinema($name, $address) {
@@ -37,16 +39,48 @@
 
         function removeCinema($id){
             if ($id!=-1){
-                $cinema = ($this-> cinemaDAO-> ReadByID($id))[0];
-                $cinema-> setIsActive(false);
-                $this-> cinemaDAO-> Update($cinema);
+                $cinema = ($this-> cinemaDAO-> ReadByID($id));
+                $roomsList = $this-> roomDAO-> ReadByCinemaID($id);
+                if ($roomsList instanceof Room){
+                    $aux = $roomsList;
+                    $roomsList = array();
+                    array_push($roomsList, $aux);
+                }
+                if ($this-> validateCinemaShows($roomsList)){
+                    $cinema-> setIsActive(false);
+                    $this-> cinemaDAO-> Update($cinema);
+                    $cinemasList = $this-> cinemaDAO-> ReadAll();
+                    $this-> showListView("Cine eliminado con éxito.", 1);
+                } else {
+                    $this-> showListView("El cine no pudo ser eliminado porque tiene funciones próximas.", 2);
+                }
+            } else {
+                $cinemasList = $this-> cinemaDAO-> ReadAll();
+                $this-> showListView();
             }
-            $cinemasList = $this-> cinemaDAO-> ReadAll();
-            $this-> showListView("Cine eliminado con éxito.", 2);
         }
 
+        function retrieveCinema($id){
+            $cinema = ($this-> cinemaDAO-> ReadByID($id));
+            $cinema-> setIsActive(true);
+            $this-> cinemaDAO-> Update($cinema);
+            $cinemasList = $this-> cinemaDAO-> ReadAll();
+            $this-> showListView("Cine dado de alta con éxito.", 1);
+        }
+
+        private function validateCinemaShows ($roomsList){
+            foreach ($roomsList as $room){
+                $upcomingShows = $this-> showDAO-> ReadUpcomingByRoomID($room-> getID());
+                if ((is_array($upcomingShows) && !empty($upcomingShows)) || $upcomingShows instanceof Show){
+                    return false;
+                }
+            }
+            return true;
+        }
+
+
         function editCinema ($id, $name, $address){
-            $cinema = $this-> cinemaDAO-> ReadByID($id)[0];
+            $cinema = $this-> cinemaDAO-> ReadByID($id);
             if ($this-> validateCinemaName($id, $name)){
                 $this-> showEditView($id, "Nombre de cine ya existente. Intente con otro.");
             } else {
@@ -72,13 +106,28 @@
                     }
                 }
             }
-            $cinemasList = $this-> cinemaDAO-> ReadAll();
+            if (isset($_GET['filter'])){
+                $filter = $_GET['filter'];
+                if (strcmp($filter, "all") == 0){
+                    $cinemasList = $this-> cinemaDAO-> ReadAll();
+                    if ($cinemasList instanceof Cinema){
+                        $aux = $cinemasList;
+                        $cinemasList = array();
+                        array_push($cinemasList, $aux);
+                    }
+                } else {
+                    $cinemasList = $this-> cinemaDAO-> ReadUnactiveCinemas();
+                    if ($cinemasList instanceof Cinema){
+                        $aux = $cinemasList;
+                        $cinemasList = array();
+                        array_push($cinemasList, $aux);
+                    }
+                }
+            } else {
+                $cinemasList = $this-> cinemaDAO-> ReadActiveCinemas();
+            }
             $roomsList = array();
             if (!empty($cinemasList)){
-                $use = true;
-                $cinemasList = array_filter($cinemasList, function($cinema) use($use){
-                    return $cinema-> getIsActive() == $use;
-                });
                 $roomsList = $this-> roomDAO-> ReadAll();
                 foreach ($cinemasList as $cinema){
                     $newRooms = $this-> roomDAO-> ReadByCinemaIDValid($cinema-> getID());
@@ -101,7 +150,7 @@
         }
 
         function showEditView ($id, $message = ""){
-            $cinema = $this-> cinemaDAO-> ReadByID($id)[0];
+            $cinema = $this-> cinemaDAO-> ReadByID($id);
             require_once(VIEWS_PATH."cinema-edit.php");
         }
 

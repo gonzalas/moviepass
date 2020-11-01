@@ -94,7 +94,7 @@
             if(!empty($result)) {
                 return $this->mapear($result);
             } else
-                return false;
+                return array();
         }
 
         public function ReadByCinemaIDValid($cinemaID){

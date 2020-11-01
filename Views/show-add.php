@@ -3,9 +3,17 @@
 ?>
 <main class="py-5">
      <section id="listado" class="mb-5">
-          <?php if ($message != ""){ ?>
-               <div class="alert alert-danger" role="alert"> <?php echo $message?> </div>
-          <?php } ?>
+            <?php 
+                if ($messageCode == 1){
+            ?>
+            <div class="alert alert-success alert-dismissible fade show" role="alert"> <strong> <?php echo $message?> </strong></div>
+            <?php } else {
+                        if ($messageCode == 2){
+            ?>
+                            <div class="alert alert-danger alert-dismissible fade show" role="alert"> <strong> <?php echo $message?> </strong></div>
+            <?php
+                        }
+            } ?>
           <div class="container">
                <h1 class="title">Agregar nueva Función</h1>
                <form action="<?php echo FRONT_ROOT ?>Show/addShowSecondForm" method="post" class="bg-light-alpha white-font p-5">                       
