@@ -40,7 +40,10 @@
                               </div>
                          </div>
                     </div>
-                    <button type="submit" class="btn btn-dark ml-auto d-block">Agregar</button>
+                    <div class="row">
+                         <a href="<?php echo FRONT_ROOT ?>Cinema/showListView/" class="btn btn-danger ml-auto d-block">Cancelar</a>
+                         <button type="submit" class="btn btn-primary ml-3">Agregar</button>
+                    </div>
                </form>
           </div>
      </section>

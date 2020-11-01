@@ -20,18 +20,18 @@
             if (!empty($this-> roomDAO-> ReadByName($cinemaID, $name))){
                 $this-> showAddView($cinemaID, "Nombre de sala ya existente en el cine elegido. Intente con otro.", 0);
             } else {
-                $room = new Room();
-                $room-> setName($name);
-                if ($capacity >0){
-                    $room-> setCapacity($capacity);
+                if ($capacity > 0){
                     if ($ticketValue > 0){
+                        $room = new Room();
+                        $room-> setName($name);
+                        $room-> setCapacity($capacity);
                         $room-> setTicketValue($ticketValue);
                         $room-> setIsActive(true);
                         $this-> roomDAO-> Create($room, $cinemaID);
+                        $this-> showAddView($cinemaID, "Sala agregada con éxito.", 1);
                     } else {
-                        $this-> showAddView("Intente usar un precio mayor a 0.");
+                        $this-> showAddView($cinemaID, "Intente usar un precio mayor a 0.", 0);
                     }
-                    $this-> showAddView($cinemaID, "Sala agregada con éxito.", 1);
                 } else {
                     $this-> showAddView($cinemaID, "Intente usar una capacidad mayor a 0.", 0);
                 }
@@ -66,7 +66,7 @@
                         $this-> roomDAO-> Update($room);
                         $this-> showEditView($room-> getID(), "Sala editada con éxito.", 1);
                     } else {
-                        $this-> showEditView($id, "Intente usar un valor de entrada positivo.");
+                        $this-> showEditView($id, "Intente usar un valor de entrada positivo.", 0);
                     }
                 } else {
                     $this-> showEditView($id, "Intente usar una capacidad mayor a 0.", 0);

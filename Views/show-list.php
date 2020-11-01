@@ -24,7 +24,9 @@
         if (isset($_GET['time'])){
         ?>
             <li class="nav-item">
-            <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Filtro actual (período): <?=$filter?></a>
+            <?php if (strcmp($_GET['time'], "previous") == 0){ ?> <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Filtro actual (período): Anteriores</a>
+            <?php } else { ?> <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Filtro actual (período): Próximas</a>
+            <?php } ?>
             </li>
             <li class="nav-item">
             <a class="nav-link" href="<?=FRONT_ROOT?>Show/showUpcomingShows">Limpiar filtros</a>
