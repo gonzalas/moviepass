@@ -87,6 +87,8 @@
 
         public function showMovieListing(){
 
+            $this->ValidateSession();
+
             if($_POST){
                 $cinemaSelected = $_POST['cinemaSelected'];
 
@@ -148,6 +150,8 @@
 
         public function showMovieDetails(){
 
+            $this->ValidateSession();
+
             if($_POST){
                 $movieSelected = new Movie();
                 $movieSelected->setID($_POST['movieID']);
@@ -167,6 +171,9 @@
         }
         
         public function showRoomsToUser(){
+
+            $this->ValidateSession();
+
             if($_POST){
                 $cinemaSelected = $_POST['cinemaSelected'];
 
@@ -182,6 +189,9 @@
         }
 
         public function showRoomMovieListing(){
+
+            $this->ValidateSession();
+
             if($_GET){
 
                $cinemaID = $_GET['cinema'];
@@ -198,6 +208,9 @@
         }
 
         public function showUserProfile(){
+
+            $this->ValidateSession();
+
             $user = $_SESSION['loggedUser'];
             require_once(VIEWS_PATH."user-info-profile.php");
         }
@@ -207,7 +220,15 @@
             require_once(VIEWS_PATH."login.php");
         }
 
+        public function ValidateSession(){
+            if(!isset($_SESSION["loggedUser"]))
+            require_once(VIEWS_PATH."login.php");
+        }
+
         public function showCinemaListMenu(){
+
+            $this->ValidateSession();
+            
             $cinemasList = $this->cinemaDAO->ReadAll();
             require_once(VIEWS_PATH."user-cinema-list.php");            
         }

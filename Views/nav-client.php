@@ -1,7 +1,7 @@
 <!-- Client NavBar -->
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
 
-      <a class="navbar-brand" href="<?php echo FRONT_ROOT ?>Home/Index">
+      <a class="navbar-brand" href="<?php echo FRONT_ROOT ?>User/showCinemaListMenu">
         <img src="../Views/img/icon.png" width="27" height="27" class="d-inline-block align-top" alt="" loading="lazy">
         MoviePass
       </a>
