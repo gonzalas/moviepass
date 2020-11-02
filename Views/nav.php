@@ -45,7 +45,7 @@
     </ul>
     <ul class="nav navbar-nav navbar-right">
       <li>
-      <a href="#" class="btn btn-light">Logout</a>
+      <a href="<?php echo FRONT_ROOT ?>Home/Index" class="btn btn-light">Logout</a>
       </li>
     </ul>
   </div>
