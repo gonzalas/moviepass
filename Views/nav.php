@@ -1,6 +1,6 @@
 <!-- Admin NavBar -->
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
-  <a class="navbar-brand" href="<?php echo FRONT_ROOT ?>Home/Index">
+  <a class="navbar-brand" href="<?php echo FRONT_ROOT ?>Cinema/ShowListView">
     <img src="../Views/img/icon.png" width="27" height="27" class="d-inline-block align-top" alt="" loading="lazy">
     MoviePass
   </a>
@@ -41,6 +41,11 @@
           <div class="dropdown-divider"></div>
           <a class="nav-link" href="<?php echo FRONT_ROOT ?>Show/showUpcomingShows">Ver funciones</a>
         </div>
+      </li>
+    </ul>
+    <ul class="nav navbar-nav navbar-right">
+      <li>
+      <a href="#" class="btn btn-light">Logout</a>
       </li>
     </ul>
   </div>
