@@ -7,6 +7,7 @@
     use Models\User as User;
     use Models\Movie as Movie;
     use Models\MovieListing as MovieListing;
+    use Config\SessionValidatorHelper as SessionValidatorHelper;
 
     class UserController {
         private $userDAO;
@@ -87,7 +88,7 @@
 
         public function showMovieListing(){
 
-            $this->ValidateSession();
+            SessionValidatorHelper::ValidateSession();
 
             if($_POST){
                 $cinemaSelected = $_POST['cinemaSelected'];
@@ -150,7 +151,7 @@
 
         public function showMovieDetails(){
 
-            $this->ValidateSession();
+            SessionValidatorHelper::ValidateSession();
 
             if($_POST){
                 $movieSelected = new Movie();
@@ -172,7 +173,7 @@
         
         public function showRoomsToUser(){
 
-            $this->ValidateSession();
+            SessionValidatorHelper::ValidateSession();
 
             if($_POST){
                 $cinemaSelected = $_POST['cinemaSelected'];
@@ -190,7 +191,7 @@
 
         public function showRoomMovieListing(){
 
-            $this->ValidateSession();
+            SessionValidatorHelper::ValidateSession();
 
             if($_GET){
 
@@ -209,7 +210,7 @@
 
         public function showUserProfile(){
 
-            $this->ValidateSession();
+            SessionValidatorHelper::ValidateSession();
 
             $user = $_SESSION['loggedUser'];
             require_once(VIEWS_PATH."user-info-profile.php");
@@ -220,15 +221,9 @@
             require_once(VIEWS_PATH."login.php");
         }
 
-        public function ValidateSession(){
-            if(!isset($_SESSION["loggedUser"]))
-            require_once(VIEWS_PATH."login.php");
-        }
-
         public function showCinemaListMenu(){
 
-            $this->ValidateSession();
-            
+            SessionValidatorHelper::ValidateSession();            
             $cinemasList = $this->cinemaDAO->ReadAll();
             require_once(VIEWS_PATH."user-cinema-list.php");            
         }
