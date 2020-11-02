@@ -20,6 +20,19 @@
                 <a class="dropdown-item" href="<?=FRONT_ROOT?>Show/showUpcomingShows?time=upcoming">Próximas</a>
             </div>
         </li>
+
+        <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Género</a>
+            <div class="dropdown-menu">
+            <?php
+                foreach ($genresList as $genre){ ?>
+                    <a class="dropdown-item" href="<?=FRONT_ROOT?>Show/showUpcomingShows?genre=<?=$genre->getID()?>"><?=$genre->getName()?></a>
+            <?php
+                }
+            ?>
+            </div>
+        </li>
+
         <?php
         if (isset($_GET['time'])){
         ?>
@@ -29,7 +42,16 @@
             <?php } ?>
             </li>
             <li class="nav-item">
-            <a class="nav-link" href="<?=FRONT_ROOT?>Show/showUpcomingShows">Limpiar filtros</a>
+                <a class="nav-link" href="<?=FRONT_ROOT?>Show/showUpcomingShows">Limpiar filtros</a>
+            </li>
+        <?php
+        } elseif ((isset($_GET['genre']))) {
+        ?>
+            <li class="nav-item">
+                <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Filtro actual (género): <?=$filterGenre->getName()?></a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="<?=FRONT_ROOT?>Show/showUpcomingShows">Limpiar filtros</a>
             </li>
         <?php
         }

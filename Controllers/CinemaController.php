@@ -47,6 +47,10 @@
                     array_push($roomsList, $aux);
                 }
                 if ($this-> validateCinemaShows($roomsList)){
+                    foreach ($roomsList as $room){
+                        $room-> setIsActive(false);
+                        $this-> roomDAO-> Update($room);
+                    }
                     $cinema-> setIsActive(false);
                     $this-> cinemaDAO-> Update($cinema);
                     $cinemasList = $this-> cinemaDAO-> ReadAll();
@@ -90,21 +94,30 @@
                     $cinema-> setName($name);
                     $cinema-> setAddress ($address);
                     $this-> cinemaDAO-> Update($cinema);
-                    $this-> showListView();
+                    $this-> showListView("Cine editado con éxito.", 1);
                 }
             }
         }
       
         function showListView ($message = "", $messageCode = 0){
-            if (isset($_GET["success"])){
-                $messageCode = $_GET["success"];
-                if ($messageCode == 1){
-                    $message = "Sala eliminada con éxito.";
-                } else {
-                    if ($messageCode == 2){
+            if (isset($_GET["roomMessage"])){
+                $messageCode = $_GET["roomMessage"];
+                switch ($messageCode){
+                    case 1:
+                        $message = "Sala eliminada con éxito.";
+                        break;
+                    case 2:
                         $message = "No se pudo eliminar la sala, porque hay funciones próximas.";
-                    }
+                        break;
+                    case 3:
+                        $message = "Sala dada de alta con éxito.";
+                        break;
+                    case 4:
+                        $message = "No se pudo dar de alta la sala, porque pertenece a un cine eliminado.";
+                        break;
                 }
+            } else {
+
             }
             if (isset($_GET['filter'])){
                 $filter = $_GET['filter'];
@@ -130,7 +143,7 @@
             if (!empty($cinemasList)){
                 $roomsList = $this-> roomDAO-> ReadAll();
                 foreach ($cinemasList as $cinema){
-                    $newRooms = $this-> roomDAO-> ReadByCinemaIDValid($cinema-> getID());
+                    $newRooms = $this-> roomDAO-> ReadByCinemaID($cinema-> getID());
                     if ($newRooms != null){
                         $cinema-> setRooms($newRooms);
                         $cinema-> setTotalCapacity ($this-> countTotalCapacity($newRooms));
@@ -175,7 +188,8 @@
         private function countTotalCapacity ($roomsList){
             $count = 0;
             foreach ($roomsList as $room){
-                $count += $room-> getCapacity();
+                if ($room-> getIsActive())
+                    $count += $room-> getCapacity();
             }
             return $count;
         }

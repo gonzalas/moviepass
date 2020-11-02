@@ -23,3 +23,20 @@ function confirmDelete(id) {
     document.getElementById('btnDelete' + id.toString()).value = answer;
     return;
 }
+
+function toggleValidRooms(id) {
+    const accordionChild = document.getElementsByClassName('accordion-child-room' + id.toString());
+
+    if (accordionChild[0].style.display == "none") {
+        for (let i = 0; i < accordionChild.length; i++) {
+            accordionChild[i].style.display = "table-row";
+        }
+        return;
+    }
+
+    if (accordionChild[0].style.display == "table-row") {
+        for (let i = 0; i < accordionChild.length; i++) {
+            accordionChild[i].style.display = "none";
+        }
+    }
+}

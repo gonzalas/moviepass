@@ -148,7 +148,7 @@
             $sql = "SELECT c.cinemaID as cinemaID, c.name as name, c.isActive as isActive, c.address as address FROM
                     cinemas c
                     INNER JOIN rooms r
-                    ON r.cinemaID = c.cinemaID AND r.isActive = true AND c. isActive = true
+                    ON r.cinemaID = c.cinemaID AND r.isActive = true AND c.isActive = true
                     GROUP BY c.cinemaID;";
 
             try {

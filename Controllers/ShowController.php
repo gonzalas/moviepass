@@ -6,6 +6,7 @@
     use DAO\RoomDAO as RoomDAO;
     use DAO\MovieDAO as MovieDAO;
     use DAO\CinemaDAO as CinemaDAO;
+    use DAO\GenreDAO as GenreDAO;
     use Models\Show as Show;
     use Models\Room as Room;
     use Models\Movie as Movie;
@@ -17,6 +18,7 @@
         private $roomDAO;
         private $movieDAO;
         private $cinemaDAO;
+        private $genreDAO;
 
         public function __construct()
         {
@@ -24,6 +26,7 @@
             $this-> roomDAO = new RoomDAO();
             $this-> movieDAO = new MovieDAO();
             $this-> cinemaDAO = new CinemaDAO();
+            $this-> genreDAO = new GenreDAO();
         }
 
         function addShow($name, $address) {
@@ -173,11 +176,22 @@
                     }
                 }
             } else {
-                $showsList = $this-> showDAO-> ReadAll();
-                if ($showsList instanceof Show){
-                    $aux = $showsList;
-                    $showsList = array();
-                    array_push($showsList, $aux);
+                if (isset($_GET['genre'])){
+                    $genreID = $_GET['genre'];
+                    $filterGenre = $this-> genreDAO-> ReadByID($genreID);
+                    $showsList = $this-> showDAO-> ReadByGenreID($genreID);
+                    if ($showsList instanceof Show){
+                        $aux = $showsList;
+                        $showsList = array();
+                        array_push($showsList, $aux);
+                    }
+                } else {
+                    $showsList = $this-> showDAO-> ReadAll();
+                    if ($showsList instanceof Show){
+                        $aux = $showsList;
+                        $showsList = array();
+                        array_push($showsList, $aux);
+                    }
                 }
             }
 
@@ -200,6 +214,7 @@
                 $message = "Función eliminada con éxito.";
             }
             
+            $genresList = $this-> genreDAO-> ReadAll();
             $today = $today = date("Y-m-d");
             require_once (VIEWS_PATH."show-list.php");
         }
