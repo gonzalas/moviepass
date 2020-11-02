@@ -213,6 +213,25 @@
                 return false;
         }
 
+        public function ReadByGenreID($genreID){
+            $sql = "SELECT showID, showDate, startTime, endTime, isActive FROM shows s 
+            INNER JOIN genresxmovies gxm
+            ON s.movieID = gxm.movieID AND gxm.genreID = :genreID";
+            $parameters['genreID'] = $genreID;
+
+            try {
+                $this->connection = Connection::getInstance();
+                $result = $this->connection->execute($sql, $parameters);
+            } catch(PDOException $ex){
+                throw $ex;
+            }
+
+            if(!empty($result)){
+                return $this->mapear($result);
+            } else
+                return false;
+        }
+
         public function Update($show, $roomID, $movieID){
 
             $sql = "UPDATE shows SET roomID = :roomID, movieID = :movieID, showDate = :showDate, startTime = :startTime, endTime = :endTime, isActive = :isActive";

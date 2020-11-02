@@ -3,6 +3,7 @@
     namespace Controllers;
     use DAO\RoomDAO as RoomDAO;
     use DAO\ShowDAO as ShowDAO;
+    use DAO\CinemaDAO as CinemaDAO;
     use Models\Room as Room;
     use Models\Show as Show;
 
@@ -14,6 +15,7 @@
         {
             $this-> roomDAO = new RoomDAO();
             $this-> showDAO = new ShowDAO();
+            $this-> cinemaDAO = new CinemaDAO();
         }
 
         function addRoom($cinemaID, $name, $capacity, $ticketValue) {
@@ -43,12 +45,25 @@
                 $room = $this-> roomDAO-> ReadByID($id);
                 $showsList = $this-> showDAO-> ReadUpcomingByRoomID($id);
                 if ((is_array($showsList) && !empty($showsList)) || $showsList instanceof Show){
-                    header ("location: ".FRONT_ROOT."Cinema/showListView/?success=2");
+                    header ("location: ".FRONT_ROOT."Cinema/showListView/?roomMessage=2");
                 } else {
                     $room-> setIsActive(false);
                     $this-> roomDAO-> Update($room);
-                    header ("location: ".FRONT_ROOT."Cinema/showListView/?success=1");
+                    header ("location: ".FRONT_ROOT."Cinema/showListView/?roomMessage=1");
                 }
+            }
+        }
+
+        function retrieveRoom($id){
+            $cinemaID = $this-> roomDAO-> ReadCinemaID($id);
+            $cinema = $this-> cinemaDAO-> ReadByID($cinemaID);
+            if ($cinema-> getIsActive()){
+                $room = ($this-> roomDAO-> ReadByID($id));
+                $room-> setIsActive(true);
+                $this-> roomDAO-> Update($room);
+                header ("location: ".FRONT_ROOT."Cinema/showListView/?roomMessage=3");
+            } else {
+                header ("location: ".FRONT_ROOT."Cinema/showListView/?roomMessage=4");
             }
         }
 

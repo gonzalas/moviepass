@@ -3,13 +3,13 @@
 ?>
 <main class="py-5">
      <section id="listado" class="mb-5">
-          <div class="container">
+          <div>
           <?php 
-               if ($messageCode == 1){
+               if ($messageCode == 1 || $messageCode == 3){
           ?>
                     <div  class="alert alert-success alert-dismissible fade show" role="alert"> <strong> <?php echo $message?> </strong></div>
           <?php } else {
-                    if ($messageCode == 2){
+                    if ($messageCode == 2 || $messageCode == 4){
                ?>
                     <div  class="alert alert-danger alert-dismissible fade show" role="alert"> <strong> <?php echo $message?> </strong></div>
           <?php
@@ -45,11 +45,13 @@
                </ul>
                <?php if (!empty($cinemasList)){ ?>
                <form action="<?php echo FRONT_ROOT."Cinema/removeCinema"?>">
-                    <table class="table bg-light-alpha white-font">
+                    <table class="table table-hover table-dark">
                          <thead>
-                              <th>Nombre</th>
-                              <th>Dirección</th>
-                              <th>Capacidad Total</th>
+                              <tr>
+                                   <th scope="col">Nombre</th>
+                                   <th scope="col">Dirección</th>
+                                   <th scope="col">Capacidad Total</th>
+                              </tr>
                          </thead>
                          <tbody>
                               <?php
@@ -57,7 +59,7 @@
                                    {
                               ?>
                                    <tr>
-                                        <td><?php echo $cinema-> getName() ?></td>
+                                        <th scope="row"><?php echo $cinema-> getName() ?></td>
                                         <td><?php echo $cinema-> getAddress() ?></td>
                                         <td><?php echo $cinema-> getTotalCapacity()?></td>
                                         <td>
