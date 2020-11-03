@@ -48,6 +48,7 @@
 
         function showAddView ($message = "", $messageCode = 0){
             $moviesList = $this-> movieDAO-> ReadActiveMovies();
+            $cinemaList = $this->cinemaDAO->ReadActiveCinemas();
             require_once(VIEWS_PATH."show-add.php");
         }
 
