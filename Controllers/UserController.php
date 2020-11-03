@@ -110,15 +110,18 @@
 
                     //Get all shows to prepare movielisting
                     $showsList = $this->showDAO->ReadAll();
-                    
-                    //Fill movielisting with movies on shows
+
+                    //Fill movielisting with movies on shows, filtering by cinema id first
                     $movieListing = array();
+                    
                     foreach($showsList as $show){
-                        array_push($movieListing, $this->movieDAO->ReadById($show->getMovie()));
+                        if($cinemaSelected == $this->roomDAO->ReadCinemaID($show->getRoom())){
+                            array_push($movieListing, $this->movieDAO->ReadById($show->getMovie()));
+                        }
                     }
                     
-                    //Filtering array
-                    $movieListing = $this->filterArray($movieListing);
+                    //Filtering array by repetead movies
+                    $movieListing = $this->filterArrayRepetead($movieListing);
 
                     //Carrousel
                     $moviesOnCarrousel = 3;
@@ -220,7 +223,7 @@
             return ($password === $password2) ? true : false;
         }
 
-        private function filterArray($array, $keep_key_assoc = false){
+        private function filterArrayRepetead($array, $keep_key_assoc = false){
             $duplicate_keys = array();
             $tmp = array();       
         
