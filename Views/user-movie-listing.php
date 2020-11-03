@@ -34,11 +34,28 @@
     .movie img {
         height: 560px;
         object-fit: cover;
+        object-position: top;
+        z-index: -1;
     }
     #myCarousel:hover{
         cursor: pointer;
         opacity: 0.9;
         transition: 0.2s;
+    }
+    .img-btn-submit{
+        position: absolute;
+        top: 85%;
+        left: 38.5%;
+        width: 200px;
+        outline: none;
+        border-style: none;
+        padding: 5px;
+        border-radius: 15px;
+    }
+    .img-btn-submit:hover{
+        background-color: red;
+        color: #ffffff;
+        transition: 1s;
     }
 </style>
 
@@ -66,6 +83,21 @@
             <div class="carousel-item active movie">
                 <h1 style="position: absolute; top: 15%; color: #ffffff; background-color: rgba(0,0,0,0.7); padding: 20px 100px;"><?php echo $movieCarrousel->getTitle(); ?></h1>
                 <img src="<?php echo API_IMG.$movieCarrousel->getImage(); ?>" class="d-block w-100" alt="Poster">
+                <form action="<?php echo FRONT_ROOT ?>User/showMovieDetails" method="post">
+                    <!-- GET MOVIE ATTRIBUTES TO SEND BY FORM -->
+                    <input type="hidden" name="movieID" value="<?php echo $movieCarrousel->getID(); ?>">
+                    <input type="hidden" name="movieTitle" value="<?php echo $movieCarrousel->getTitle(); ?>">
+                    <input type="hidden" name="movieOverview" value="<?php echo $movieCarrousel->getOverview(); ?>">
+                    <input type="hidden" name="movieReleaseDate" value="<?php echo $movieCarrousel->getReleaseDate(); ?>">
+                    <input type="hidden" name="movieLength" value="<?php echo $movieCarrousel->getLength(); ?>">
+                    <input type="hidden" name="movieImage" value="<?php echo $movieCarrousel->getImage(); ?>">
+                    <input type="hidden" name="movieTrailer" value="<?php echo $movieCarrousel->getTrailer(); ?>">
+                    <input type="hidden" name="movieLanguage" value="<?php echo $movieCarrousel->getLanguage(); ?>">
+                    <input type="hidden" name="movieGenres" value="<?php echo $movieCarrousel->getGenres(); ?>">
+                    <input type="hidden" name="movieVoteAverage" value="<?php echo $movieCarrousel->getVoteAverage(); ?>">
+                    <!-- --- -->
+                    <button class="img-btn-submit" type="submit">Ver detalles</button>
+                </form>
             </div>
 
             <?php
@@ -75,6 +107,21 @@
             <div class="carousel-item movie">
                 <h1 style="position: absolute; top: 15%; color: #ffffff; background-color: rgba(0,0,0,0.7); padding: 20px 100px;"><?php echo $movieCarrousel->getTitle(); ?></h1>
                 <img src="<?php echo API_IMG.$movieCarrousel->getImage(); ?>" class="d-block w-100" alt="Poster">
+                <form action="<?php echo FRONT_ROOT ?>User/showMovieDetails" method="post">
+                    <!-- GET MOVIE ATTRIBUTES TO SEND BY FORM -->
+                    <input type="hidden" name="movieID" value="<?php echo $movieCarrousel->getID(); ?>">
+                    <input type="hidden" name="movieTitle" value="<?php echo $movieCarrousel->getTitle(); ?>">
+                    <input type="hidden" name="movieOverview" value="<?php echo $movieCarrousel->getOverview(); ?>">
+                    <input type="hidden" name="movieReleaseDate" value="<?php echo $movieCarrousel->getReleaseDate(); ?>">
+                    <input type="hidden" name="movieLength" value="<?php echo $movieCarrousel->getLength(); ?>">
+                    <input type="hidden" name="movieImage" value="<?php echo $movieCarrousel->getImage(); ?>">
+                    <input type="hidden" name="movieTrailer" value="<?php echo $movieCarrousel->getTrailer(); ?>">
+                    <input type="hidden" name="movieLanguage" value="<?php echo $movieCarrousel->getLanguage(); ?>">
+                    <input type="hidden" name="movieGenres" value="<?php echo $movieCarrousel->getGenres(); ?>">
+                    <input type="hidden" name="movieVoteAverage" value="<?php echo $movieCarrousel->getVoteAverage(); ?>">
+                    <!-- --- -->
+                    <button class="img-btn-submit" type="submit">Ver detalles</button>
+                </form>
             </div>
 
             <?php
@@ -99,14 +146,14 @@
 
     <!-- ALL MOVIES ON LISTING AS CARDS -->
     <?php
-        if(!empty($moviesOnListing)){
+        if(!empty($movieListing)){
     ?>
     
     <div class="row" style="justify-content: center;">
 
         <?php
     
-            foreach($moviesOnListing as $movie){
+            foreach($movieListing as $movie){
         ?>
     
         <div class="card mb-3 col-5" style="max-width: 540px; background-color: rgba(10, 0, 0, 0.8); color: #ffffff;">

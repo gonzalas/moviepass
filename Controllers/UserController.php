@@ -108,52 +108,21 @@
                     //Restore all cinemas to choose again before load views
                     $cinemasList = $this->cinemaDAO->ReadAll();
 
-                   
-
+                    //Get all shows to prepare movielisting
                     $showsList = $this->showDAO->ReadAll();
+                    
+                    //Fill movielisting with movies on shows
                     $movieListing = array();
-
                     foreach($showsList as $show){
                         array_push($movieListing, $this->movieDAO->ReadById($show->getMovie()));
                     }
-
                     
-                    // $poster = IMG_PATH."poster00.jpg";
-                    // $movieListing = new MovieListing();
-                    // $movie1 = new Movie();
-                    // $movie1->setID(1);
-                    // $movie1->setTitle("Deadpool");
-                    // $movie1->setImage($poster);    
-                    // $movie2 = new Movie();    
-                    // $movie2->setID(2);
-                    // $movie2->setTitle("Batman");
-                    // $movie2->setImage($poster);
-                    // $movie3 = new Movie(); 
-                    // $movie3->setID(3);   
-                    // $movie3->setTitle("Fight Club");
-                    // $movie3->setImage($poster);
-                    // $movie4 = new Movie();  
-                    // $movie4->setID(4);  
-                    // $movie4->setTitle("Pulp Fiction");
-                    // $movie4->setImage($poster);
-                    // $movie5 = new Movie();
-                    // $movie5->setID(5);
-                    // $movie5->setTitle("Green Mile");
-                    // $movie5->setImage($poster);
-                    // $movies = array();
-                    // array_push($movies, $movie1);
-                    // array_push($movies, $movie2);
-                    // array_push($movies, $movie3);
-                    // array_push($movies, $movie4);
-                    // array_push($movies, $movie5);
+                    //Filtering array
+                    $movieListing = $this->filterArray($movieListing);
 
-                    // $movieListing->setMovies($movies);
-
-                    $moviesOnListing = $movieListing;
-                    
                     //Carrousel
                     $moviesOnCarrousel = 3;
-                    $carrousel = $this->generateCarrouselMovies($moviesOnListing, $moviesOnCarrousel);
+                    $carrousel = $this->generateCarrouselMovies($movieListing, $moviesOnCarrousel);
 
                     require_once(VIEWS_PATH."user-cinema-list.php");
                     require_once(VIEWS_PATH."user-movie-listing.php");
@@ -249,6 +218,27 @@
 
         private function validatePassword($password, $password2){
             return ($password === $password2) ? true : false;
+        }
+
+        private function filterArray($array, $keep_key_assoc = false){
+            $duplicate_keys = array();
+            $tmp = array();       
+        
+            foreach ($array as $key => $val){
+                // convert objects to arrays, in_array() does not support objects
+                if (is_object($val))
+                    $val = (array)$val;
+        
+                if (!in_array($val, $tmp))
+                    $tmp[] = $val;
+                else
+                    $duplicate_keys[] = $key;
+            }
+        
+            foreach ($duplicate_keys as $key)
+                unset($array[$key]);
+        
+            return $keep_key_assoc ? $array : array_values($array);
         }
 
         private function generateCarrouselMovies($movies, $moviesOnCarrousel){
