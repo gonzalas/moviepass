@@ -5,6 +5,7 @@
     use DAO\CinemaDAO as CinemaDAO;
     use DAO\RoomDAO as RoomDAO;
     use DAO\ShowDAO as ShowDAO;
+    use DAO\MovieDAO as MovieDAO;
     use Models\Cinema as Cinema;
     use Models\Room as Room;
 
@@ -12,12 +13,15 @@
 
         private $cinemaDAO;
         private $roomDAO;
+        private $showDAO;
+        private $movieDAO;
 
         public function __construct()
         {
             $this-> cinemaDAO = new CinemaDAO();
             $this-> roomDAO = new RoomDAO();
             $this-> showDAO = new ShowDAO();
+            $this-> movieDAO = new MovieDAO();
         }
 
         function addCinema($name, $address) {
@@ -97,6 +101,22 @@
                     $this-> showListView("Cine editado con éxito.", 1);
                 }
             }
+        }
+
+        public function generateMovieListing(){
+            $cinemasList = $this->cinemaDAO->ReadActiveCinemas();
+            $showsList = $this->showDAO->ReadAll();
+            $movieListing = array();
+
+            foreach($showsList as $show){
+                array_push($movieListing, $this->movieDAO->ReadById($show->getMovie()));
+            }
+
+            foreach($cinemasList as $cinema){
+                    $cinema->setMovieListing($movieListing);
+            }
+            
+            require_once(VIEWS_PATH."generate-movielisting.php");
         }
       
         function showListView ($message = "", $messageCode = 0){

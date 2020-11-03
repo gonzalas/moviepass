@@ -65,7 +65,7 @@
             
             <div class="carousel-item active movie">
                 <h1 style="position: absolute; top: 15%; color: #ffffff; background-color: rgba(0,0,0,0.7); padding: 20px 100px;"><?php echo $movieCarrousel->getTitle(); ?></h1>
-                <img src="<?php echo $movieCarrousel->getImage(); ?>" class="d-block w-100" alt="Poster">
+                <img src="<?php echo API_IMG.$movieCarrousel->getImage(); ?>" class="d-block w-100" alt="Poster">
             </div>
 
             <?php
@@ -74,7 +74,7 @@
 
             <div class="carousel-item movie">
                 <h1 style="position: absolute; top: 15%; color: #ffffff; background-color: rgba(0,0,0,0.7); padding: 20px 100px;"><?php echo $movieCarrousel->getTitle(); ?></h1>
-                <img src="<?php echo $movieCarrousel->getImage(); ?>" class="d-block w-100" alt="Poster">
+                <img src="<?php echo API_IMG.$movieCarrousel->getImage(); ?>" class="d-block w-100" alt="Poster">
             </div>
 
             <?php
@@ -127,7 +127,7 @@
 
                 <div class="row no-gutters movieListing">
                     <div class="col-md-4" style="top: 12%;">
-                        <img src="<?php echo $movie->getImage(); ?>" class="card-img" alt="Poster" style="margin-top: 20px;">
+                        <img src="<?php echo API_IMG.$movie->getImage(); ?>" class="card-img" alt="Poster" style="margin-top: 20px;">
                     </div>
                     <div class="col-md-8">
                     <div class="card-body">

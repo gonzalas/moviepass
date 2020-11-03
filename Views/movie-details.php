@@ -11,30 +11,29 @@
         width: 100%;
         z-index: -1;
         top: 0;
-        max-height: 100vh;
+        max-height: 200vh;
         left: 0;
         filter: opacity(0.2) grayscale(1) contrast(200%) blur(3.5px);
         object-fit: cover;
     }
     #img-detail-poster {
-        max-height: 300px;
+        max-height: 800px;
         width: 100%;
         object-fit: cover;
-
-    }
+    } 
 </style>
 
 <section class="container">
-    <img id="back-img-movie" src="<?php echo $movieSelected->getImage(); ?>" alt="Poster">
+    <img id="back-img-movie" src="<?php echo API_IMG.$movieSelected->getImage(); ?>" alt="Poster">
     <div>
         <h1 class="mt-3 p-4" style="color: #e88e9d; font-weight: 700;">Detalles de la película</h1>
     </div>
     <div class="card mb-3">
-        <img id="img-detail-poster" class="card-img-top" src="<?php echo $movieSelected->getImage(); ?>" alt="Poster">
+        <img id="img-detail-poster" class="card-img-top" src="<?php echo API_IMG.$movieSelected->getImage(); ?>" alt="Poster">
         <div class="card-body" style="margin-bottom: 20px;">
             <h5 class="card-title"><?php echo $movieSelected->getTitle(); ?></h5>
-            <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-            <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+            <p class="card-text"><?php echo $movieSelected->getOverview(); ?></p>
+            <p class="card-text"><small class="text-muted">Lanzamiento: <?php echo $movieSelected->getReleaseDate(); ?></small></p>
         </div>
         <div style="right: 0; position: absolute; bottom: 0;">
             <button type="button" class="btn btn-dark" style="width: 150px; padding: 10px;" onClick="showModalTrailer()">Trailer</button>
@@ -49,9 +48,17 @@
       <div class="modal-header">
         <h5 class="modal-title">Trailer</h5>
       </div>
-      <div class="modal-body">
-        <iframe id="iframe-trailer" width="470" height="315" src="https://www.youtube.com/embed/NHXXqlcCxPs" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-      </div>
+      <?php if($movieSelected->getTrailer()){ 
+            
+        ?>
+            <div class="modal-body">
+                <?php echo preg_replace("/\s*[a-zA-Z\/\/:\.]*youtube.com\/watch\?v=([a-zA-Z0-9\-_]+)([a-zA-Z0-9\/\*\-\_\?\&\;\%\=\.]*)/i","<iframe width=\"470\" height=\"315\" src=\"//www.youtube.com/embed/$1\" frameborder=\"0\" allowfullscreen></iframe>",$movieSelected->getTrailer());  ?>
+            </div>
+        <?php } else {?>
+            <div class="modal-body">
+                <h4>Trailer no disponible.</h4>
+            </div>
+        <?php } ?>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal" onClick="closeModalTrailer()">Cerrar</button>
       </div>
