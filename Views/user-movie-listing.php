@@ -141,9 +141,21 @@
     </div>
 
     <?php
-        }
+        } else {
     ?>
 
+    <div class="alert alert-dark mt-5 p-4" role="alert" style="top: 10rem;">
+        <h4>La cartelera no está disponible de momento. Vuelva en un rato.</h4>
+    </div>
+    <style>
+        #back-img-2{
+            height: 100vh;
+        }
+        #back-img-3{
+            display: none;
+        }
+    </style>
+        <?php } ?>
     <!-- ALL MOVIES ON LISTING AS CARDS -->
     <?php
         if(!empty($movieListing)){

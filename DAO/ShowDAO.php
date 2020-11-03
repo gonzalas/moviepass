@@ -274,6 +274,7 @@
                 $show = new Show();
                 $show->setID($p['showID']);
                 $show->setMovie($p['movieID']);
+                $show->setRoom($p['roomID']);
                 $show->setDate($p['showDate']);
                 $show->setStartTime($p['startTime']);
                 $show->setEndTime($p['endTime']);
