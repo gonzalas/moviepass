@@ -105,17 +105,22 @@
 
         public function generateMovieListing(){
             $cinemasList = $this->cinemaDAO->ReadActiveCinemas();
-            $showsList = $this->showDAO->ReadAll();
-            $movieListing = array();
-
-            foreach($showsList as $show){
-                array_push($movieListing, $this->movieDAO->ReadById($show->getMovie()));
-            }
-
-            foreach($cinemasList as $cinema){
-                    $cinema->setMovieListing($movieListing);
-            }
+            if ($cinemasList!= null) {
             
+                $showsList = $this->showDAO->ReadAll();
+                if ($showsList != null) {
+                    
+                    $movieListing = array();
+
+                    foreach($showsList as $show){
+                        array_push($movieListing, $this->movieDAO->ReadById($show->getMovie()));
+                    }
+
+                    foreach($cinemasList as $cinema){
+                            $cinema->setMovieListing($movieListing);
+                    }      
+                }   
+            }
             require_once(VIEWS_PATH."generate-movielisting.php");
         }
       
