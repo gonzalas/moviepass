@@ -23,13 +23,13 @@
     } 
 </style>
 
-<section class="container">
+<section class="container" style="width: 40%; max-width:90%;">
     <img id="back-img-movie" src="<?php echo API_IMG.$movieSelected->getImage(); ?>" alt="Poster">
     <div>
-        <h1 class="mt-3 p-4" style="color: #e88e9d; font-weight: 700;">Detalles de la película</h1>
+        <h1 class="mt-3 p-4" style="color: white; font-weight: 700; text-align: center;">Detalles de la película</h1>
     </div>
     <div class="card mb-3">
-        <img id="img-detail-poster" class="card-img-top" src="<?php echo API_IMG.$movieSelected->getImage(); ?>" alt="Poster">
+        <img class="card-img-top" src="<?php echo API_IMG.$movieSelected->getImage(); ?>" alt="Poster">
         <div class="card-body" style="margin-bottom: 20px;">
             <h5 class="card-title"><?php echo $movieSelected->getTitle(); ?></h5>
             <p class="card-text"><?php echo $movieSelected->getOverview(); ?></p>
@@ -37,10 +37,14 @@
         </div>
         <div style="right: 0; position: absolute; bottom: 0;">
             <button type="button" class="btn btn-dark" style="width: 150px; padding: 10px;" onClick="showModalTrailer()">Trailer</button>
-            <button type="button" class="btn btn-primary" style="width: 150px; padding: 10px;">Comprar</button>
+            <a href="#available-shows" type="button" class="btn btn-primary" style="width: 150px; padding: 10px;">Funciones</a>
         </div>
     </div>
 </section>
+
+<?php
+    require_once("user-shows-list.php");
+?>
 
 <div id="trailer-modal" class="modal modal-trailer animate__animated animate__fadeInDown" tabindex="-1" role="dialog" style="display: none;">
   <div class="modal-dialog" role="document">

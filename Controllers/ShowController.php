@@ -48,7 +48,7 @@
 
         function showAddView ($message = "", $messageCode = 0){
             $moviesList = $this-> movieDAO-> ReadActiveMovies();
-            $cinemaList = $this->cinemaDAO->ReadActiveCinemas();
+            $cinemaList = $this->cinemaDAO->ReadActiveCinemasWithRooms();
             require_once(VIEWS_PATH."show-add.php");
         }
 
@@ -132,12 +132,23 @@
         private function validateShowTime($startTime, $endTime, $showsList){
             $startTime = strtotime($startTime);
             $endTime = strtotime($endTime);
+            /**Times used to avoid conflicts if a show ends on the next day */
+            $endTimeLimit = strtotime("23:59:59");
+            $startTimeLimit = strtotime("10:59:00");
+            /** Used to avoid conflicts if a show ends on the next day */
+            if ($endTime < $startTimeLimit){
+                $endTime = $endTimeLimit;
+            }
             if (is_array($showsList)){ 
                 foreach ($showsList as $show){
                     $showStartTime = strtotime($show-> getStartTime());
                     /**Determines if the current show starts before the new show */
                     if ($showStartTime < $startTime){
                         $showEndTime = strtotime($show-> getEndTime());
+                        /** Used to avoid conflicts if a show ends on the next day */
+                        if ($showEndTime < $startTimeLimit){
+                            $showEndTime = $endTimeLimit;
+                        }
                         /**If the current show ending time has a conflict with the new show start time */
                         if ($showEndTime > $startTime){
                             return false;
@@ -204,7 +215,7 @@
                 }
                 foreach ($showsList as $show){
                     $roomID = $this-> showDAO-> ReadRoomID($show-> getID());
-                    $cinemaID = $roomID = $this-> roomDAO-> ReadCinemaID($roomID);
+                    $cinemaID = $this-> roomDAO-> ReadCinemaID($roomID);
                     $room = $this-> roomDAO-> ReadByID ($roomID);
                     $room-> setCinema($this-> cinemaDAO-> ReadByID($cinemaID));
                     $show-> setRoom($room);

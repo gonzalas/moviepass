@@ -106,15 +106,15 @@
                     $cinema = $this->cinemaDAO->ReadByID($cinemaSelected);
 
                     //Restore all cinemas to choose again before load views
-                    $cinemasList = $this->cinemaDAO->ReadAll();
+                    $cinemasList = $this->cinemaDAO->ReadActiveCinemasWithRooms();
 
-                   
-
-                    $showsList = $this->showDAO->ReadAll();
+                    $showsList = $this->showDAO->ReadMovieListingByCinemaID($cinema->getID());
                     $movieListing = array();
 
                     foreach($showsList as $show){
-                        array_push($movieListing, $this->movieDAO->ReadById($show->getMovie()));
+                        $movieID = $this-> showDAO-> ReadMovieID($show-> getID());
+                        $movie = $this-> movieDAO-> ReadByID($movieID);
+                        array_push($movieListing, $movie);
                     }
 
                     
@@ -169,19 +169,25 @@
             SessionValidatorHelper::ValidateSession();
 
             if($_POST){
+                $movieID = $_POST['movieID'];
+                $cinemaID = $_POST['cinemaID'];
                 $movieSelected = new Movie();
-                $movieSelected->setID($_POST['movieID']);
-                $movieSelected->setTitle($_POST['movieTitle']);
-                $movieSelected->setOverview($_POST['movieOverview']);
-                $movieSelected->setReleaseDate($_POST['movieReleaseDate']);
-                $movieSelected->setLength($_POST['movieLength']);
-                $movieSelected->setImage($_POST['movieImage']);
-                $movieSelected->setTrailer($_POST['movieTrailer']);
-                $movieSelected->setLanguage($_POST['movieLanguage']);
-                $movieSelected->setGenres($_POST['movieGenres']);
-                $movieSelected->setVoteAverage($_POST['movieVoteAverage']);
-                $movieSelected->setIsActive(true);
-
+                $movieSelected = $this-> movieDAO-> ReadByID($movieID);
+                $showsList = $this-> showDAO-> ReadUpcomingByCinemaID($cinemaID);
+                $emptyList = empty($showsList);
+                if(!$emptyList){
+                    foreach ($showsList as $show){
+                        $movieID = $this-> showDAO-> ReadMovieID($show-> getID());
+                        $show-> setMovie($this-> movieDAO-> ReadByID($movieID));
+                    }
+                    foreach ($showsList as $show){
+                        $roomID = $this-> showDAO-> ReadRoomID($show-> getID());
+                        $cinemaID = $this-> roomDAO-> ReadCinemaID($roomID);
+                        $room = $this-> roomDAO-> ReadByID ($roomID);
+                        $room-> setCinema($this-> cinemaDAO-> ReadByID($cinemaID));
+                        $show-> setRoom($room);
+                    }    
+                }
                 require_once(VIEWS_PATH."movie-details.php");
             }
         }
@@ -239,7 +245,7 @@
         public function showCinemaListMenu(){
 
             SessionValidatorHelper::ValidateSession();            
-            $cinemasList = $this->cinemaDAO->ReadAll();
+            $cinemasList = $this->cinemaDAO->ReadActiveCinemasWithRooms();
             require_once(VIEWS_PATH."user-cinema-list.php");            
         }
 

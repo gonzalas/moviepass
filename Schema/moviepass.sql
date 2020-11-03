@@ -28,7 +28,7 @@ create table if not exists rooms (
 create table if not exists movies (
     movieID int,
     title varchar(50) not null,
-    overview varchar(300),
+    overview varchar(600),
     dateRelease date,
     length int,
     posterPath varchar(60),
@@ -91,25 +91,25 @@ create table if not exists genresXMovies (
 create table if not exists purchases (
     purchaseID int AUTO_INCREMENT,
     userID int not null,
+    showID int not null,
     purchaseDate date,
     subTotal float,
     hasDiscount boolean,
     purchaseTotal float,
 
     constraint pkPurchaseID primary key (purchaseID),
+    constraint fkTicketShowID foreign key (showID) references shows (showID),
     constraint fkUserID foreign key (userID) references users (userID)
 
 ) ENGINE = InnoDB;
 
 create table if not exists tickets (
     ticketID int AUTO_INCREMENT,
-    showID int not null,
     purchaseID int not null,
-    seatLocation smallInt UNSIGNED,
+    seatLocation smallInt UNSIGNED, #set according to the amount of tickets sold on the show
     qrCodeURL varchar(100),
 
     constraint pkTicketID primary key (ticketID),
-    constraint fkTicketShowID foreign key (showID) references shows (showID),
     constraint fkPurchaseID foreign key (purchaseID) references purchases (purchaseID)
 
 ) ENGINE = InnoDB;

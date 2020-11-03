@@ -44,8 +44,8 @@
           <?php } else { ?>
                     <div class="jumbotron jumbotron-fluid custom-jumbotron">
                          <div class="container">
-                         <h1 class="display-4">No hay cines cargados en el sistema.</h1>
-                         <p class="lead">Lamentamos el inconveniente. Intenta agregando cines al sistema.</p>
+                         <h1 class="display-4">No hay salas activas cargadas en el sistema.</h1>
+                         <p class="lead">Lamentamos el inconveniente. Intenta agregando salas al sistema.</p>
                          </div>
                     </div>
                 <?php

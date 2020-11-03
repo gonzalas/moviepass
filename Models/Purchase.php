@@ -6,6 +6,7 @@
         private $purchaseID;
         private $purchaseDate;
         private $subTotal;
+        private $show;
         private $hasDiscount;
         private $purchaseTotal;
         private $user;
@@ -18,6 +19,9 @@
 
         public function setSubTotal($subTotal){$this->subTotal = $subTotal;}
         public function getSubTotal(){return $this->subTotal;}
+
+        public function setShow($show){$this->show = $show;}
+        public function getShow(){return $this->show;}
 
         public function setHasDiscount($hasDiscount){$this->hasDiscount = $hasDiscount;}
         public function getHasDiscount(){return $this->hasDiscount;}

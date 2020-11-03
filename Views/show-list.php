@@ -74,7 +74,6 @@
                 </thead>
                 <tbody>
                 <?php
-                $i = 0;
                 foreach ($showsList as $show){
                     ?>
                     <tr>
@@ -93,7 +92,6 @@
                         ?>
                     </tr>
                 <?php
-                    $i++;
                     }
                 ?>
                 </tbody>

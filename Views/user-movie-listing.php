@@ -94,8 +94,21 @@
     </div>
 
     <?php
-        }
-    ?>
+        } else {
+            ?>
+        
+            <div class="alert alert-dark mt-5 p-4" role="alert" style="top: 10rem;">
+                <h4>La cartelera no está disponible de momento. Vuelva en un rato.</h4>
+            </div>
+            <style>
+                #back-img-2{
+                    height: 100vh;
+                }
+                #back-img-3{
+                    display: none;
+                }
+            </style>
+    <?php } ?>
 
     <!-- ALL MOVIES ON LISTING AS CARDS -->
     <?php
@@ -114,15 +127,7 @@
 
                 <!-- GET MOVIE ATTRIBUTES TO SEND BY FORM -->
                 <input type="hidden" name="movieID" value="<?php echo $movie->getID(); ?>">
-                <input type="hidden" name="movieTitle" value="<?php echo $movie->getTitle(); ?>">
-                <input type="hidden" name="movieOverview" value="<?php echo $movie->getOverview(); ?>">
-                <input type="hidden" name="movieReleaseDate" value="<?php echo $movie->getReleaseDate(); ?>">
-                <input type="hidden" name="movieLength" value="<?php echo $movie->getLength(); ?>">
-                <input type="hidden" name="movieImage" value="<?php echo $movie->getImage(); ?>">
-                <input type="hidden" name="movieTrailer" value="<?php echo $movie->getTrailer(); ?>">
-                <input type="hidden" name="movieLanguage" value="<?php echo $movie->getLanguage(); ?>">
-                <input type="hidden" name="movieGenres" value="<?php echo $movie->getGenres(); ?>">
-                <input type="hidden" name="movieVoteAverage" value="<?php echo $movie->getVoteAverage(); ?>">
+                <input type="hidden" name="cinemaID" value="<?php echo $cinemaSelected; ?>">
                 <!-- --- -->
 
                 <div class="row no-gutters movieListing">
@@ -132,8 +137,8 @@
                     <div class="col-md-8">
                     <div class="card-body">
                         <h5 class="card-title"><?php echo $movie->getTitle(); ?></h5>
-                        <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-                        <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+                        <p class="card-text"><?php echo $movie->getOverview();?></p>
+                        <p class="card-text"><small>Duración: <?=$movie-> getLength()?> min.</small></p>
                     </div>
                     </div>
                 </div>

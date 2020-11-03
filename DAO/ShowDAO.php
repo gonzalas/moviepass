@@ -29,11 +29,11 @@
             }
         } 
         
-        public function ReadById($id){
+        public function ReadById($showID){
             
-            $sql = "SELECT * FROM shows WHERE id = :id";
+            $sql = "SELECT * FROM shows WHERE showID = :showID";
 
-            $parameters['id'] = $id;
+            $parameters['showID'] = $showID;
             try {
                 $this->connection = Connection::getInstance();
                 $result = $this->connection->execute($sql, $parameters);
@@ -213,6 +213,48 @@
                 return false;
         }
 
+        /**Used to build a cinema schedule. Returns one function per upcoming movie */
+        public function ReadMovieListingByCinemaID($cinemaID){
+            $sql = "SELECT showID, showDate, startTime, endTime, s.isActive FROM shows s 
+            INNER JOIN rooms r 
+            ON s.roomID = r.roomID AND r.cinemaID = :cinemaID 
+            GROUP BY s.movieID 
+            HAVING (showDate > CURDATE()) OR (showDate = CURDATE() AND startTime >= CURTIME());";
+            $parameters['cinemaID'] = $cinemaID;
+
+            try {
+                $this->connection = Connection::getInstance();
+                $result = $this->connection->execute($sql, $parameters);
+            } catch(PDOException $ex){
+                throw $ex;
+            }
+
+            if(!empty($result)){
+                return $this->mapear($result);
+            } else
+                return false;
+        }
+
+        public function ReadUpcomingByCinemaID($cinemaID){
+            $sql = "SELECT showID, showDate, startTime, endTime, s.isActive FROM shows s 
+            INNER JOIN rooms r 
+            ON s.roomID = r.roomID AND r.cinemaID = :cinemaID 
+            HAVING (showDate > CURDATE()) OR (showDate = CURDATE() AND startTime >= CURTIME());";
+            $parameters['cinemaID'] = $cinemaID;
+
+            try {
+                $this->connection = Connection::getInstance();
+                $result = $this->connection->execute($sql, $parameters);
+            } catch(PDOException $ex){
+                throw $ex;
+            }
+
+            if(!empty($result)){
+                return $this->mapear($result);
+            } else
+                return false;
+        }
+
         public function ReadByGenreID($genreID){
             $sql = "SELECT showID, showDate, startTime, endTime, isActive FROM shows s 
             INNER JOIN genresxmovies gxm
@@ -273,7 +315,6 @@
             $resp = array_map(function($p){
                 $show = new Show();
                 $show->setID($p['showID']);
-                $show->setMovie($p['movieID']);
                 $show->setDate($p['showDate']);
                 $show->setStartTime($p['startTime']);
                 $show->setEndTime($p['endTime']);
