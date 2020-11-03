@@ -10,6 +10,7 @@
 
     //API
     define("API_KEY", "1fda2c2ca096a563fb941fcfd34c718a");
+    define("API_IMG", "https://image.tmdb.org/t/p/w500");
 
     //ADMIN HARCODE
     define("ADMIN_USERNAME", "admin");

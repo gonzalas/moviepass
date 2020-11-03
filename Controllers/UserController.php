@@ -4,6 +4,8 @@
     use DAO\UserDAO as UserDAO;
     use DAO\CinemaDAO as CinemaDAO;
     use DAO\RoomDAO as RoomDAO;
+    use DAO\ShowDAO as ShowDAO;
+    use DAO\MovieDAO as MovieDAO;
     use Models\User as User;
     use Models\Movie as Movie;
     use Models\MovieListing as MovieListing;
@@ -12,11 +14,15 @@
         private $userDAO;
         private $cinemaDAO;
         private $roomDAO;
+        private $showDAO;
+        private $movieDAO;
 
         public function __construct(){
             $this->userDAO = new UserDAO();
             $this->cinemaDAO = new CinemaDAO();
             $this->roomDAO = new RoomDAO();
+            $this->showDAO = new ShowDAO();
+            $this->movieDAO = new MovieDAO();
         }
 
         function registerUser(){
@@ -101,40 +107,49 @@
                     //Restore all cinemas to choose again before load views
                     $cinemasList = $this->cinemaDAO->ReadAll();
 
-                    //Get movie listing
-                    // $movieListing = $cinema->getMovieListing();
-                    $poster = IMG_PATH."poster00.jpg";
-                    $movieListing = new MovieListing();
-                    $movie1 = new Movie();
-                    $movie1->setID(1);
-                    $movie1->setTitle("Deadpool");
-                    $movie1->setImage($poster);    
-                    $movie2 = new Movie();    
-                    $movie2->setID(2);
-                    $movie2->setTitle("Batman");
-                    $movie2->setImage($poster);
-                    $movie3 = new Movie(); 
-                    $movie3->setID(3);   
-                    $movie3->setTitle("Fight Club");
-                    $movie3->setImage($poster);
-                    $movie4 = new Movie();  
-                    $movie4->setID(4);  
-                    $movie4->setTitle("Pulp Fiction");
-                    $movie4->setImage($poster);
-                    $movie5 = new Movie();
-                    $movie5->setID(5);
-                    $movie5->setTitle("Green Mile");
-                    $movie5->setImage($poster);
-                    $movies = array();
-                    array_push($movies, $movie1);
-                    array_push($movies, $movie2);
-                    array_push($movies, $movie3);
-                    array_push($movies, $movie4);
-                    array_push($movies, $movie5);
+                   
 
-                    $movieListing->setMovies($movies);
+                    $showsList = $this->showDAO->ReadAll();
+                    $movieListing = array();
 
-                    $moviesOnListing = $movieListing->getMovies();
+                    foreach($showsList as $show){
+                        array_push($movieListing, $this->movieDAO->ReadById($show->getMovie()));
+                    }
+
+                    
+                    // $poster = IMG_PATH."poster00.jpg";
+                    // $movieListing = new MovieListing();
+                    // $movie1 = new Movie();
+                    // $movie1->setID(1);
+                    // $movie1->setTitle("Deadpool");
+                    // $movie1->setImage($poster);    
+                    // $movie2 = new Movie();    
+                    // $movie2->setID(2);
+                    // $movie2->setTitle("Batman");
+                    // $movie2->setImage($poster);
+                    // $movie3 = new Movie(); 
+                    // $movie3->setID(3);   
+                    // $movie3->setTitle("Fight Club");
+                    // $movie3->setImage($poster);
+                    // $movie4 = new Movie();  
+                    // $movie4->setID(4);  
+                    // $movie4->setTitle("Pulp Fiction");
+                    // $movie4->setImage($poster);
+                    // $movie5 = new Movie();
+                    // $movie5->setID(5);
+                    // $movie5->setTitle("Green Mile");
+                    // $movie5->setImage($poster);
+                    // $movies = array();
+                    // array_push($movies, $movie1);
+                    // array_push($movies, $movie2);
+                    // array_push($movies, $movie3);
+                    // array_push($movies, $movie4);
+                    // array_push($movies, $movie5);
+
+                    // $movieListing->setMovies($movies);
+
+                    $moviesOnListing = $movieListing;
+                    
                     //Carrousel
                     $moviesOnCarrousel = 3;
                     $carrousel = $this->generateCarrouselMovies($moviesOnListing, $moviesOnCarrousel);

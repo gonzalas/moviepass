@@ -254,6 +254,7 @@
             $resp = array_map(function($p){
                 $show = new Show();
                 $show->setID($p['showID']);
+                $show->setMovie($p['movieID']);
                 $show->setDate($p['showDate']);
                 $show->setStartTime($p['startTime']);
                 $show->setEndTime($p['endTime']);

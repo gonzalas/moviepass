@@ -18,8 +18,8 @@
           <a class="nav-link" href="<?php echo FRONT_ROOT ?>Cinema/showAddView">Agregar Cine</a>
           <div class="dropdown-divider"></div>
           <a class="nav-link" href="<?php echo FRONT_ROOT ?>Cinema/showListView">Listar Cines</a>
-          <!--<div class="dropdown-divider"></div>
-          <a class="dropdown-item" href="#">Something else here</a>-->
+          <div class="dropdown-divider"></div>
+          <a class="nav-link" href="<?php echo FRONT_ROOT ?>Cinema/generateMovieListing">Generar Cartelera</a>
         </div>
       </li>
       <li class="nav-item dropdown">
