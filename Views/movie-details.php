@@ -20,6 +20,7 @@
         max-height: 800px;
         width: 100%;
         object-fit: cover;
+        object-position: top;
     } 
 </style>
 
@@ -31,9 +32,13 @@
     <div class="card mb-3">
         <img class="card-img-top" src="<?php echo API_IMG.$movieSelected->getImage(); ?>" alt="Poster">
         <div class="card-body" style="margin-bottom: 20px;">
-            <h5 class="card-title"><?php echo $movieSelected->getTitle(); ?></h5>
-            <p class="card-text"><?php echo $movieSelected->getOverview(); ?></p>
-            <p class="card-text"><small class="text-muted">Lanzamiento: <?php echo $movieSelected->getReleaseDate(); ?></small></p>
+            <p class="card-text"><b><?php echo $movieSelected->getGenres(); ?></b></p>
+            <h4 class="card-title"><?php echo $movieSelected->getTitle(); ?></h4>
+            <p class="card-text"><small class="text-muted">(<?php echo $movieSelected->getLanguage(); ?>)</small></p>
+            <p class="card-text"><b><?php echo $movieSelected->getOverview(); ?></b></p>
+            <p class="card-text">Estreno: <?php echo date("d M Y", strtotime($movieSelected->getReleaseDate())); ?></p>
+            <p class="card-text">Duración: <?php echo $movieSelected->getLength(); ?> minutos.</p>
+            <p class="card-text">Rating: <?php echo $movieSelected->getVoteAverage(); ?> / 10</p>
         </div>
         <div style="right: 0; position: absolute; bottom: 0;">
             <button type="button" class="btn btn-dark" style="width: 150px; padding: 10px;" onClick="showModalTrailer()">Trailer</button>
