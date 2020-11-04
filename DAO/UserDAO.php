@@ -105,6 +105,7 @@
 
             $resp = array_map(function($p){
                 $user = new User();
+                $user->setID($p['userID']);
                 $user->setFirstName($p['firstName']);
                 $user->setLastName($p['lastName']);
                 $user->setEmail($p['email']);
