@@ -71,7 +71,7 @@
                 $purchase->setPurchaseDate(date('d M Y'));
                 $purchase->setSubTotal($seatsQuantity * $roomToBuy->getTicketValue());
                 $purchase->setShow($showToBuy);
-                $purchase->setHasDiscount(0); //--> None discount for now
+                $purchase->setHasDiscount(100); //--> None discount for now
                 $purchase->setPurchaseTotal($purchase->getSubTotal() * ($purchase->getHasDiscount() / 100));
                 $purchase->setUser($userLogged);
 

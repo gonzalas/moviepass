@@ -1,6 +1,8 @@
 <?php
 
     namespace DAO;
+    use DAO\Connection as Connection;
+    use Models\Genre as Genre;
 
     class GenreMovieDAO implements IGenreMovieDAO{
         
@@ -37,12 +39,10 @@
                 throw $ex;
             }
 
-            if (!empty($result)) {
-                return $result;
-            }else
-            {
-                return false;
-            }
+            if(!empty($result)) {
+                return $this->mapear($result);
+            } else
+                return false; 
         }
 
         public function ReadByGenreID($genreID) {
@@ -86,6 +86,20 @@
 
         public function Delete($id){
 
+        }
+
+        protected function mapear($value){
+
+            $value = is_array($value) ? $value : [];
+
+            $resp = array_map(function($p){
+                $genre = new Genre();
+                $genre->setID($p['genreID']);
+                $genre->setName($p['name']);
+                return $genre;
+            }, $value);
+
+            return count($resp) > 1 ? $resp : $resp['0'];
         }
     }
 

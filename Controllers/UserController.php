@@ -6,8 +6,10 @@
     use DAO\RoomDAO as RoomDAO;
     use DAO\ShowDAO as ShowDAO;
     use DAO\MovieDAO as MovieDAO;
+    use DAO\GenreMovieDAO as GenreMovieDAO;
     use Models\User as User;
     use Models\Movie as Movie;
+    use Models\Show as Show;
     use Models\MovieListing as MovieListing;
     use Config\SessionValidatorHelper as SessionValidatorHelper;
 
@@ -17,6 +19,7 @@
         private $roomDAO;
         private $showDAO;
         private $movieDAO;
+        private $genreMovieDAO;
 
         public function __construct(){
             $this->userDAO = new UserDAO();
@@ -24,6 +27,7 @@
             $this->roomDAO = new RoomDAO();
             $this->showDAO = new ShowDAO();
             $this->movieDAO = new MovieDAO();
+            $this->genreMovieDAO = new GenreMovieDAO();
         }
 
         function registerUser(){
@@ -145,14 +149,18 @@
                 $cinemaID = $_POST['cinemaID'];
                 $movieSelected = new Movie();
                 $movieSelected = $this-> movieDAO-> ReadByID($movieID);
-                $showsList = $this-> showDAO-> ReadUpcomingByCinemaID($cinemaID);
-                $emptyList = empty($showsList);
-                if(!$emptyList){
+                $genresList = $this-> genreMovieDAO-> ReadByMovieID($movieID);
+                $movieSelected-> setGenres($genresList);
+                $showsList = $this-> showDAO-> ReadUpcomingByCinemaAndMovie($cinemaID, $movieID);
+                if ($showsList instanceof Show){
+                    $aux = $showsList;
+                    $showsList = array();
+                    array_push($showsList, $aux);
+                }
+                if(!empty($showsList)){
                     foreach ($showsList as $show){
                         $movieID = $this-> showDAO-> ReadMovieID($show-> getID());
                         $show-> setMovie($this-> movieDAO-> ReadByID($movieID));
-                    }
-                    foreach ($showsList as $show){
                         $roomID = $this-> showDAO-> ReadRoomID($show-> getID());
                         $cinemaID = $this-> roomDAO-> ReadCinemaID($roomID);
                         $room = $this-> roomDAO-> ReadByID ($roomID);

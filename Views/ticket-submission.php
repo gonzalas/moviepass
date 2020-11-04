@@ -1,11 +1,29 @@
 <?php
     require_once('nav-client.php');
 ?>
+
+<style>
+    body {
+        background-image: linear-gradient(to right, #ba001f, red);
+        }
+    img#back-img-movie {
+        position: absolute;
+        width: 100%;
+        z-index: -1;
+        top: 0;
+        max-height: 200vh;
+        left: 0;
+        filter: opacity(0.2) grayscale(1) contrast(200%) blur(3.5px);
+        object-fit: cover;
+    }
+</style>
+
 <main class="py-5">
      <section id="listado" class="mb-5">
+        <img id="back-img-movie" src="<?php echo API_IMG.$show-> getMovie()->getImage(); ?>" alt="Poster">
           <div class="container">
                <h1 class="title">Datos de compra</h1>
-               <form action="<?php echo FRONT_ROOT ?>Ticket/validateTicketPurchase" method="post" class="bg-light-alpha white-font p-5">                       
+               <form action="<?php echo FRONT_ROOT ?>Ticket/validateTicketPurchase" method="post" class="bg-dark-alpha white-font p-5">                       
                     <div class="col-lg-12">
                         <div class="form-group">
                             <label for="cinemaSelection">Película</label>

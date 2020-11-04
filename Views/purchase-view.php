@@ -30,6 +30,6 @@
         <p>Película: <?php echo $movieToBuy->getTitle()?></p>
         <p>Horario: <?php echo date('H:i', strtotime($showToBuy->getStartTime()))?></p>
         <p>Entradas: <?php echo $seatsQuantity?></p>
-        <p><b>Total: $<?php echo $purchase->getSubTotal()?></b></p>        
+        <p><b>Total: $<?php echo $purchase->getPurchaseTotal()?></b></p>        
     </div>
 </section>

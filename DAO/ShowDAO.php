@@ -218,7 +218,6 @@
             $sql = "SELECT showID, showDate, startTime, endTime, s.isActive FROM shows s 
             INNER JOIN rooms r 
             ON s.roomID = r.roomID AND r.cinemaID = :cinemaID 
-            GROUP BY s.movieID 
             HAVING (showDate > CURDATE()) OR (showDate = CURDATE() AND startTime >= CURTIME());";
             $parameters['cinemaID'] = $cinemaID;
 
@@ -241,6 +240,27 @@
             ON s.roomID = r.roomID AND r.cinemaID = :cinemaID 
             HAVING (showDate > CURDATE()) OR (showDate = CURDATE() AND startTime >= CURTIME());";
             $parameters['cinemaID'] = $cinemaID;
+
+            try {
+                $this->connection = Connection::getInstance();
+                $result = $this->connection->execute($sql, $parameters);
+            } catch(PDOException $ex){
+                throw $ex;
+            }
+
+            if(!empty($result)){
+                return $this->mapear($result);
+            } else
+                return false;
+        }
+
+        public function ReadUpcomingByCinemaAndMovie($cinemaID, $movieID){
+            $sql = "SELECT showID, showDate, startTime, endTime, s.isActive FROM shows s 
+            INNER JOIN rooms r 
+            ON s.roomID = r.roomID AND r.cinemaID = :cinemaID AND s.movieID = :movieID
+            HAVING (showDate > CURDATE()) OR (showDate = CURDATE() AND startTime >= CURTIME());";
+            $parameters['cinemaID'] = $cinemaID;
+            $parameters['movieID'] = $movieID;
 
             try {
                 $this->connection = Connection::getInstance();

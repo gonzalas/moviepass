@@ -81,40 +81,45 @@
             require_once(VIEWS_PATH."movie-list.php");
         }
 
-        private function setMoviesGenres($moviesList){
-            foreach ($moviesList as $movie){
-                $movieGenres = $this-> genreMovieDAO-> ReadByMovieID($movie-> getID());
-                $movieGenresArray = array();
-                foreach ($movieGenres as $genre){
-                    $newGenre = new Genre();
-                    $newGenre-> setID($genre["genreID"]);
-                    $newGenre-> setName($genre["name"]);
-                    array_push ($movieGenresArray, $newGenre);
-                }
-                $movie-> setGenres($movieGenresArray);
-            }
-            return $moviesList;
-        }
-
         public function showSavedMovies ($message = "", $messageCode = 0){
             if (isset($_GET['validity'])){
                 $validity = $_GET['validity'];
                 switch ($validity) {
                     case "active":
                         $moviesList = $this-> movieDAO-> ReadActiveMovies();
-                        if (is_array($moviesList)) $moviesList = $this-> setMoviesGenres ($moviesList);
+                        if (is_array($moviesList)){
+                            foreach ($moviesList as $movie){
+                                $movieGenres = $this-> genreMovieDAO-> ReadByMovieID($movie-> getID());
+                                $movie-> setGenres($movieGenres);
+                            }
+                        }
                         break;
                     case "deleted":
-                        $moviesList = $this-> movieDAO-> ReadDeletedMovies();
-                        if (is_array($moviesList)) $moviesList = $this-> setMoviesGenres ($moviesList);
+                        $moviesList = $this-> movieDAO-> ReadActiveMovies();
+                        if (is_array($moviesList)){
+                            foreach ($moviesList as $movie){
+                                $movieGenres = $this-> genreMovieDAO-> ReadByMovieID($movie-> getID());
+                                $movie-> setGenres($movieGenres);
+                            }
+                        }
                         break;
                     default:
-                        $moviesList = $this-> movieDAO-> ReadAll();
-                        if (is_array($moviesList)) $moviesList = $this-> setMoviesGenres ($moviesList);
+                        $moviesList = $this-> movieDAO-> ReadActiveMovies();
+                        if (is_array($moviesList)){
+                            foreach ($moviesList as $movie){
+                                $movieGenres = $this-> genreMovieDAO-> ReadByMovieID($movie-> getID());
+                                $movie-> setGenres($movieGenres);
+                            }
+                        }
                 }
             } else {
                 $moviesList = $this-> movieDAO-> ReadAll();
-                if (is_array($moviesList)) $moviesList = $this-> setMoviesGenres ($moviesList);
+                if (is_array($moviesList)){
+                    foreach ($moviesList as $movie){
+                        $movieGenres = $this-> genreMovieDAO-> ReadByMovieID($movie-> getID());
+                        $movie-> setGenres($movieGenres);
+                    }
+                }
             }
             $emptyList = true;
             if (is_array($moviesList)){
