@@ -4,6 +4,7 @@
 
     class User
     {
+        private $id;
         private $firstName;
         private $lastName;
         private $userName;
@@ -11,6 +12,9 @@
         private $email;
         private $isAdmin;
         private $purchases = array();
+
+        public function setID($id){$this->id = $id;}
+        public function getID(){return $this->id;}
         
         public  function getFirstName()
         {

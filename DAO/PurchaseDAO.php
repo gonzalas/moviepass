@@ -46,6 +46,24 @@
                 return false;    
         }
 
+        public function ReadByUserID($userID){
+            
+            $sql = "SELECT * FROM purchases WHERE userID = :userID";
+
+            $parameters['userID'] = $userID;
+            try {
+                $this->connection = Connection::getInstance();
+                $result = $this->connection->execute($sql, $parameters);
+            } catch(PDOException $ex){
+                throw $ex;
+            }
+
+            if(!empty($result)) {
+                return $this->mapear($result);
+            } else
+                return false;    
+        }
+
         public function Update($purchase){
 
             $sql = "UPDATE purchases SET subTotal = :subTotal, hasDiscount = :hasDiscount, purchaseTotal = :purchaseTotal WHERE purchaseID = :purchaseID";
