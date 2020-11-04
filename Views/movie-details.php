@@ -22,6 +22,16 @@
         object-fit: cover;
         object-position: top;
     } 
+    #available-shows img{
+        position: absolute;
+        width: 100%;
+        z-index: -1;
+        top: 200vh;
+        max-height: 100vh;
+        left: 0;
+        filter: opacity(0.2) grayscale(1) contrast(200%) blur(3.5px);
+        object-fit: cover;
+    }
 </style>
 
 <section class="container" style="width: 40%; max-width:90%;">
@@ -40,16 +50,13 @@
             <p class="card-text">Duración: <?php echo $movieSelected->getLength(); ?> minutos.</p>
             <p class="card-text">Rating: <?php echo $movieSelected->getVoteAverage(); ?> / 10</p>
         </div>
-        <div style="right: 0; position: absolute; bottom: 0;">
+        <div style="right: 0; position: absolute; bottom: 0; display: flex;">
             <button type="button" class="btn btn-dark" style="width: 150px; padding: 10px;" onClick="showModalTrailer()">Trailer</button>
-            <a href="#available-shows" type="button" class="btn btn-primary" style="width: 150px; padding: 10px;">Funciones</a>
+            <button type="button" class="btn btn-primary" style="width: 150px; padding: 10px; margin-left: 10px;" onClick="showList()">Funciones</button>
         </div>
     </div>
 </section>
 
-<?php
-    require_once("user-shows-list.php");
-?>
 
 <div id="trailer-modal" class="modal modal-trailer animate__animated animate__fadeInDown" tabindex="-1" role="dialog" style="display: none;">
   <div class="modal-dialog" role="document">
@@ -75,11 +82,52 @@
   </div>
 </div>
 
+<section class="container" style="width: 80%; max-width: 90%; display: none; margin-top: 8%;" id="available-shows">
+    <img src="<?php echo API_IMG.$movieSelected->getImage();?>">
+    <div>
+        <h1 class="mt-3 p-4" style="color: white; font-weight: 700; text-align: center;">Funciones disponibles</h1>
+    </div>
+    <table class="table table-hover table-dark" style="text-align: center;">
+        <thead>
+            <tr>
+                <th scope="col">Fecha</th>
+                <th scope="col">Hora</th>
+                <th scope="col">Sala</th>
+                <th scope="col">Precio por entrada</th>
+                <th scope="col"></th>
+            </tr>
+        </thead>
+        <tbody>
+        <?php
+        foreach ($showsList as $show){
+            ?>
+            <tr>
+                <th scope="row"><?=date("d M Y", strtotime($show->getDate()));?></th>
+                <td><?=$show->getStartTime()?><br>-<br><?=$show->getEndTime()?></td>
+                <td><?=$show-> getRoom()-> getName()?></td>
+                <td>$<?=$show-> getRoom()-> getTicketValue()?></td>
+                <td><a href="<?php echo FRONT_ROOT ?>Ticket/showBuyTicketView/?showId=<?php echo $show->getID();?>" class="btn btn-primary btn-center" style="right-border-radius:20px;">Comprar Entradas</button></td>
+            </tr>
+        <?php
+            }
+        ?>
+        </tbody>
+    </table>
+</section>
+
 <script>
     function showModalTrailer(){
         document.getElementById("trailer-modal").style.display = "block";
     }
     function closeModalTrailer(){
         document.getElementById("trailer-modal").style.display = "none";
+    }
+
+    function showList(){
+        document.getElementById("available-shows").style.display = "block";
+        window.scroll({
+        top: 2000,
+        behavior: 'smooth'
+        });
     }
 </script>

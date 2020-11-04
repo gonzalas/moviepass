@@ -84,17 +84,9 @@
                 <h1 style="position: absolute; top: 15%; color: #ffffff; background-color: rgba(0,0,0,0.7); padding: 20px 100px;"><?php echo $movieCarrousel->getTitle(); ?></h1>
                 <img src="<?php echo API_IMG.$movieCarrousel->getImage(); ?>" class="d-block w-100" alt="Poster">
                 <form action="<?php echo FRONT_ROOT ?>User/showMovieDetails" method="post">
-                    <!-- GET MOVIE ATTRIBUTES TO SEND BY FORM -->
+                   <!-- GET MOVIE ATTRIBUTES TO SEND BY FORM -->
                     <input type="hidden" name="movieID" value="<?php echo $movieCarrousel->getID(); ?>">
-                    <input type="hidden" name="movieTitle" value="<?php echo $movieCarrousel->getTitle(); ?>">
-                    <input type="hidden" name="movieOverview" value="<?php echo $movieCarrousel->getOverview(); ?>">
-                    <input type="hidden" name="movieReleaseDate" value="<?php echo $movieCarrousel->getReleaseDate(); ?>">
-                    <input type="hidden" name="movieLength" value="<?php echo $movieCarrousel->getLength(); ?>">
-                    <input type="hidden" name="movieImage" value="<?php echo $movieCarrousel->getImage(); ?>">
-                    <input type="hidden" name="movieTrailer" value="<?php echo $movieCarrousel->getTrailer(); ?>">
-                    <input type="hidden" name="movieLanguage" value="<?php echo $movieCarrousel->getLanguage(); ?>">
-                    <input type="hidden" name="movieGenres" value="<?php echo $movieCarrousel->getGenres(); ?>">
-                    <input type="hidden" name="movieVoteAverage" value="<?php echo $movieCarrousel->getVoteAverage(); ?>">
+                    <input type="hidden" name="cinemaID" value="<?php echo $cinemaSelected; ?>">
                     <!-- --- -->
                     <button class="img-btn-submit" type="submit">Ver detalles</button>
                 </form>
@@ -110,15 +102,7 @@
                 <form action="<?php echo FRONT_ROOT ?>User/showMovieDetails" method="post">
                     <!-- GET MOVIE ATTRIBUTES TO SEND BY FORM -->
                     <input type="hidden" name="movieID" value="<?php echo $movieCarrousel->getID(); ?>">
-                    <input type="hidden" name="movieTitle" value="<?php echo $movieCarrousel->getTitle(); ?>">
-                    <input type="hidden" name="movieOverview" value="<?php echo $movieCarrousel->getOverview(); ?>">
-                    <input type="hidden" name="movieReleaseDate" value="<?php echo $movieCarrousel->getReleaseDate(); ?>">
-                    <input type="hidden" name="movieLength" value="<?php echo $movieCarrousel->getLength(); ?>">
-                    <input type="hidden" name="movieImage" value="<?php echo $movieCarrousel->getImage(); ?>">
-                    <input type="hidden" name="movieTrailer" value="<?php echo $movieCarrousel->getTrailer(); ?>">
-                    <input type="hidden" name="movieLanguage" value="<?php echo $movieCarrousel->getLanguage(); ?>">
-                    <input type="hidden" name="movieGenres" value="<?php echo $movieCarrousel->getGenres(); ?>">
-                    <input type="hidden" name="movieVoteAverage" value="<?php echo $movieCarrousel->getVoteAverage(); ?>">
+                    <input type="hidden" name="cinemaID" value="<?php echo $cinemaSelected; ?>">
                     <!-- --- -->
                     <button class="img-btn-submit" type="submit">Ver detalles</button>
                 </form>

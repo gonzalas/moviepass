@@ -111,11 +111,13 @@
                     $showsList = $this->showDAO->ReadMovieListingByCinemaID($cinema->getID());
                    
                     $movieListing = array();
-                    
-                    foreach($showsList as $show){
-                        $movieID = $this-> showDAO-> ReadMovieID($show-> getID());
-                        $movie = $this-> movieDAO-> ReadByID($movieID);
-                        array_push($movieListing, $movie);
+                   
+                    if($showsList){
+                        foreach($showsList as $show){
+                            $movieID = $this-> showDAO-> ReadMovieID($show-> getID());
+                            $movie = $this-> movieDAO-> ReadByID($movieID);
+                            array_push($movieListing, $movie);
+                        }
                     }
                     
                     //Filtering array by repetead movies
