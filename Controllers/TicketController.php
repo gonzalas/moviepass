@@ -68,7 +68,7 @@
                 $roomToBuy = $this->roomDAO->ReadById($roomIDToBuy);
                 $cinemaToBuy = $this->roomDAO->ReadCinemaID($roomIDToBuy);
 
-                $purchase->setPurchaseDate(date('d M Y'));
+                $purchase->setPurchaseDate(date('Y-m-d', time()));
                 $purchase->setSubTotal($seatsQuantity * $roomToBuy->getTicketValue());
                 $purchase->setShow($showToBuy);
                 $purchase->setHasDiscount(100); //--> None discount for now
@@ -78,10 +78,10 @@
                 $ticket->setPurchase($purchase);
 
                 //Save in DB
-                // $userInDB = $this->userDAO->Read($userLogged->getUserName(), $userLogged->getPassword());
-                // $this->purchaseDAO->Create($purchase, $userInDB->getID());
-                // $purchaseFromDAO = $this->purchaseDAO->ReadByUserID($userLogged->getID());
-                // $this->ticketDAO->Create($ticket, $showID, $purchaseFromDAO->getPurchaseID());
+                $userInDB = $this->userDAO->Read($userLogged->getUserName(), $userLogged->getPassword());
+                $this->purchaseDAO->Create($purchase, $userInDB->getID());
+                $purchaseFromDAO = $this->purchaseDAO->ReadOneByUserID($userLogged->getID());
+                $this->ticketDAO->Create($ticket, $purchaseFromDAO->getPurchaseID());
 
                 require_once(VIEWS_PATH."purchase-view.php");
             }
