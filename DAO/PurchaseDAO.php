@@ -10,9 +10,10 @@
 
         public function Create(Purchase $purchase, $userID){
 
-            $sql = "INSERT INTO purchases (userID, purchaseDate, subTotal, hasDiscount, purchaseTotal) VALUES (:userID, :purchaseDate, :subTotal, :hasDiscount, :purchaseTotal)";
+            $sql = "INSERT INTO purchases (userID, showID, purchaseDate, subTotal, hasDiscount, purchaseTotal) VALUES (:userID, :showID, :purchaseDate, :subTotal, :hasDiscount, :purchaseTotal)";
 
             $parameters['userID'] = $userID; 
+            $parameters['showID'] = $purchase->getShow()->getID();
             $parameters['purchaseDate'] = $purchase->getPurchaseDate(); 
             $parameters['subTotal'] = $purchase->getSubTotal(); 
             $parameters['hasDiscount'] = $purchase->getHasDiscount(); 
@@ -49,6 +50,24 @@
         public function ReadByUserID($userID){
             
             $sql = "SELECT * FROM purchases WHERE userID = :userID";
+
+            $parameters['userID'] = $userID;
+            try {
+                $this->connection = Connection::getInstance();
+                $result = $this->connection->execute($sql, $parameters);
+            } catch(PDOException $ex){
+                throw $ex;
+            }
+
+            if(!empty($result)) {
+                return $this->mapear($result);
+            } else
+                return false;    
+        }
+
+        public function ReadOneByUserID($userID){
+            
+            $sql = "SELECT * FROM purchases WHERE userID = :userID ORDER BY purchaseID desc LIMIT 1";
 
             $parameters['userID'] = $userID;
             try {

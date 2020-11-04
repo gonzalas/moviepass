@@ -8,12 +8,11 @@
     
         private $connection;
 
-        public function Create(Ticket $ticket, $showID, $purchaseID){
+        public function Create(Ticket $ticket, $purchaseID){
 
-            $sql = "INSERT INTO tickets (ticketID, showID, purchaseID, seatLocation, qrCodeURL) VALUES (:ticketID, :showID, :purchaseID, :seatLocation, :qrCodeURL)";
+            $sql = "INSERT INTO tickets (ticketID, purchaseID, seatLocation, qrCodeURL) VALUES (:ticketID, :purchaseID, :seatLocation, :qrCodeURL)";
 
             $parameters['ticketID'] = $ticket->getTicketID(); 
-            $parameters['showID'] = $showID;
             $parameters['purchaseID'] = $purchaseID;
             $parameters['seatLocation'] = $ticket->getSeatLocation(); 
             $parameters['qrCodeURL'] = $ticket->getQRCode(); 
