@@ -5,13 +5,21 @@
      <section id="listado" class="mb-5">
           <div>
           <?php 
-               if ($messageCode == 1 || $messageCode == 3){
+               if ($messageCode == 3 || $messageCode == 4 || $messageCode == 5|| $messageCode == 7 || $messageCode == 8 ){
           ?>
-                    <div  class="alert alert-success alert-dismissible fade show" role="alert"> <strong> <?php echo $message?> </strong></div>
+                    <div  class="alert alert-success alert-dismissible fade show" role="alert"> <strong> <?php echo $message?> </strong>
+                         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                              <span aria-hidden="true">&times;</span>
+                         </button>
+               </div>
           <?php } else {
-                    if ($messageCode == 2 || $messageCode == 4){
+                    if ($messageCode == 1 || $messageCode == 2|| $messageCode == 6){
                ?>
-                    <div  class="alert alert-danger alert-dismissible fade show" role="alert"> <strong> <?php echo $message?> </strong></div>
+                    <div  class="alert alert-danger alert-dismissible fade show" role="alert"> <strong> <?php echo $message?> </strong>
+                         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                              <span aria-hidden="true">&times;</span>
+                         </button>
+                    </div>
           <?php
                }
           } ?>
@@ -24,15 +32,15 @@
                     <li class="nav-item dropdown">
                          <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Cines</a>
                          <div class="dropdown-menu">
-                              <a class="dropdown-item" href="<?=FRONT_ROOT?>Cinema/showListView?filter=all">Todos</a>
-                              <a class="dropdown-item" href="<?=FRONT_ROOT?>Cinema/showListView?filter=removed">Eliminados</a>
+                              <a class="dropdown-item" href="<?=FRONT_ROOT?>Cinema/showListView/?messageCode=0&filter=all">Todos</a>
+                              <a class="dropdown-item" href="<?=FRONT_ROOT?>Cinema/showListView/?messageCode=0&filter=removed">Eliminados</a>
                          </div>
                     </li>
                     <?php
-                    if (isset($_GET['filter'])){
+                    if ($filter != ""){
                     ?>
                          <li class="nav-item">
-                         <?php if (strcmp($_GET['filter'], "all") == 0){ ?> <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Filtro actual: Todos</a>
+                         <?php if ($filter == "all"){ ?> <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Filtro actual: Todos</a>
                          <?php } else { ?> <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Filtro actual: Eliminados</a>
                          <?php } ?>
                          </li>

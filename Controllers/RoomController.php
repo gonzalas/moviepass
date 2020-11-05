@@ -45,11 +45,11 @@
                 $room = $this-> roomDAO-> ReadByID($id);
                 $showsList = $this-> showDAO-> ReadUpcomingByRoomID($id);
                 if ((is_array($showsList) && !empty($showsList)) || $showsList instanceof Show){
-                    header ("location: ".FRONT_ROOT."Cinema/showListView/?roomMessage=2");
+                    header ("location: ".FRONT_ROOT."Cinema/showListView/?messageCode=5");
                 } else {
                     $room-> setIsActive(false);
                     $this-> roomDAO-> Update($room);
-                    header ("location: ".FRONT_ROOT."Cinema/showListView/?roomMessage=1");
+                    header ("location: ".FRONT_ROOT."Cinema/showListView/?messageCode=6");
                 }
             }
         }
@@ -61,9 +61,9 @@
                 $room = ($this-> roomDAO-> ReadByID($id));
                 $room-> setIsActive(true);
                 $this-> roomDAO-> Update($room);
-                header ("location: ".FRONT_ROOT."Cinema/showListView/?roomMessage=3");
+                header ("location: ".FRONT_ROOT."Cinema/showListView/?messageRoom=7");
             } else {
-                header ("location: ".FRONT_ROOT."Cinema/showListView/?roomMessage=4");
+                header ("location: ".FRONT_ROOT."Cinema/showListView/?messageRoom=8");
             }
         }
 

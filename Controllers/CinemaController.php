@@ -36,7 +36,7 @@
                     $cinema-> setAddress($address);
                     $cinema-> setIsActive(true);
                     $this-> cinemaDAO-> Create($cinema);
-                    $this-> showListView();
+                    $this-> showListView(3);
                 }
             }
         }
@@ -58,9 +58,9 @@
                     $cinema-> setIsActive(false);
                     $this-> cinemaDAO-> Update($cinema);
                     $cinemasList = $this-> cinemaDAO-> ReadAll();
-                    $this-> showListView("Cine eliminado con éxito.", 1);
+                    $this-> showListView(1);
                 } else {
-                    $this-> showListView("El cine no pudo ser eliminado porque tiene funciones próximas.", 2);
+                    $this-> showListView(2);
                 }
             } else {
                 $cinemasList = $this-> cinemaDAO-> ReadAll();
@@ -73,7 +73,7 @@
             $cinema-> setIsActive(true);
             $this-> cinemaDAO-> Update($cinema);
             $cinemasList = $this-> cinemaDAO-> ReadAll();
-            $this-> showListView("Cine dado de alta con éxito.", 1);
+            $this-> showListView(3);
         }
 
         private function validateCinemaShows ($roomsList){
@@ -98,33 +98,41 @@
                     $cinema-> setName($name);
                     $cinema-> setAddress ($address);
                     $this-> cinemaDAO-> Update($cinema);
-                    $this-> showListView("Cine editado con éxito.", 1);
+                    $this-> showListView(4);
                 }
             }
         }
       
-        function showListView ($message = "", $messageCode = 0){
-            if (isset($_GET["roomMessage"])){
-                $messageCode = $_GET["roomMessage"];
+        function showListView ($messageCode = 0,$filter = ""){
+            if ($messageCode != 0){
                 switch ($messageCode){
                     case 1:
-                        $message = "Sala eliminada con éxito.";
+                        $message = "Cine eliminado con éxito.";
                         break;
                     case 2:
-                        $message = "No se pudo eliminar la sala, porque hay funciones próximas.";
+                        $message = "El cine no pudo ser eliminado porque tiene funciones próximas.";
                         break;
                     case 3:
-                        $message = "Sala dada de alta con éxito.";
+                        $message = "Cinema Añadido con exito.";
                         break;
                     case 4:
-                        $message = "No se pudo dar de alta la sala, porque pertenece a un cine eliminado.";
+                        $message = "Cine editado con exito.";
+                        break;
+                    case 5:
+                        $message = "La sala no pudo ser eliminada porque tiene funciones próximas.";
+                        break;
+                    case 6:
+                        $message = "Sala eliminada con éxito.";
+                        break;
+                    case 7:
+                        $message = "Sala dada de alta con exito.";
+                        break;
+                    case 8:
+                        $message = "";
                         break;
                 }
-            } else {
-
             }
-            if (isset($_GET['filter'])){
-                $filter = $_GET['filter'];
+            if ($filter != ""){
                 if (strcmp($filter, "all") == 0){
                     $cinemasList = $this-> cinemaDAO-> ReadAll();
                     if ($cinemasList instanceof Cinema){
