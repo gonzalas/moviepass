@@ -8,7 +8,7 @@
     use DAO\GenreMovieDAO as GenreMovieDAO;
     use \Exception as Exception;
     use Helpers\SessionValidatorHelper as SessionValidatorHelper;
-    use Helpers\GenreConverter as GenreConverter;
+    use Helpers\LanguageConverter as LanguageConverter;
 
     class MovieController {
 
@@ -53,7 +53,7 @@
                 $newMovie-> setImage($movie["poster_path"]);
                 $newMovie-> setTitle($movie["original_title"]);
                 $newMovie-> setOverview($movie["overview"]);
-                $newMovie-> setLanguage(GenreConverter::Convert($movie["original_language"]));
+                $newMovie-> setLanguage(LanguageConverter::Convert($movie["original_language"]));
                 $newMovie-> setGenres($this-> assignMovieGenres($movie["genre_ids"], $genresList));
                 $newMovie-> setReleaseDate($movie["release_date"]);
 
@@ -132,7 +132,7 @@
         function showAddView ($movieID){
             SessionValidatorHelper::ValidateSessionAdmin();
             $movie = $this-> getMovieFromAPI($movieID);
-            $movie-> setLanguage(GenreConverter::Convert($movie-> getLanguage()));
+            $movie-> setLanguage(LanguageConverter::Convert($movie-> getLanguage()));
             require_once(VIEWS_PATH."movie-add.php");
         }
 
@@ -150,7 +150,7 @@
             SessionValidatorHelper::ValidateSessionAdmin();
             if ($this-> movieDAO-> ReadById($movieID) == false){
                 $movie = $this-> getMovieFromAPI($movieID);
-                $movie-> setLanguage(GenreConverter::Convert($movie-> getLanguage()));
+                $movie-> setLanguage(LanguageConverter::Convert($movie-> getLanguage()));
                 try{
                     $this-> movieDAO-> Create($movie);
                     foreach($movie-> getGenres() as $genre){
