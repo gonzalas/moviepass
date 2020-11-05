@@ -126,7 +126,7 @@
     function showList(){
         document.getElementById("available-shows").style.display = "block";
         window.scroll({
-        top: 2000,
+        top: 1500,
         behavior: 'smooth'
         });
     }
