@@ -8,6 +8,7 @@
     use DAO\GenreMovieDAO as GenreMovieDAO;
     use \Exception as Exception;
     use Helpers\SessionValidatorHelper as SessionValidatorHelper;
+    use Helpers\GenreConverter as GenreConverter;
 
     class MovieController {
 
@@ -22,7 +23,7 @@
             $this-> genreMovieDAO = new GenreMovieDAO();
         }
 
-        public function showNowPlaying ($message = "", $messageCode = -1){
+        public function showNowPlaying ($message = "", $messageCode = -1, $genreID = -1, $orderByDate = -1){
             SessionValidatorHelper::ValidateSessionAdmin();
             $apiMoviesJSON = file_get_contents("https://api.themoviedb.org/3/movie/now_playing?api_key=".API_KEY."&language=es&page=1");
             $apiGenresJSON = file_get_contents("https://api.themoviedb.org/3/genre/movie/list?api_key=".API_KEY."&language=es");
@@ -52,15 +53,14 @@
                 $newMovie-> setImage($movie["poster_path"]);
                 $newMovie-> setTitle($movie["original_title"]);
                 $newMovie-> setOverview($movie["overview"]);
-                $newMovie-> setLanguage($movie["original_language"]);
+                $newMovie-> setLanguage(GenreConverter::Convert($movie["original_language"]));
                 $newMovie-> setGenres($this-> assignMovieGenres($movie["genre_ids"], $genresList));
                 $newMovie-> setReleaseDate($movie["release_date"]);
 
                 array_push($moviesList, $newMovie);
             }
 
-            if (isset($_GET['genreID'])){
-                $genreID = $_GET['genreID'];
+            if ($genreID != -1){
                 foreach($genresList as $currentGenre){
                     if ($currentGenre-> getID() == $genreID){
                         $genreFilterName = $currentGenre-> getName();
@@ -69,11 +69,10 @@
                 }
                 $moviesList = $this-> filterMoviesListByGenre($moviesList, $genreID);
             } else {
-                if (isset($_GET['orderByDate'])){
-                    $dateFilter = $_GET['orderByDate'];
-                    if ($dateFilter == 1){
+                if ($orderByDate != -1){
+                    if ($orderByDate == 1){
                         $moviesList = $this-> orderMoviesByDate($moviesList);
-                    } else if ($dateFilter == 0){
+                    } else if ($orderByDate == 0){
                         $moviesList = $this-> orderMoviesByDate($moviesList);
                         $moviesList = array_reverse($moviesList);
                     }
@@ -83,10 +82,9 @@
             require_once(VIEWS_PATH."movie-list.php");
         }
 
-        public function showSavedMovies ($message = "", $messageCode = 0){
+        public function showSavedMovies ($message = 0, $messageCode = 0, $validity = -1){
             SessionValidatorHelper::ValidateSessionAdmin();
-            if (isset($_GET['validity'])){
-                $validity = $_GET['validity'];
+            if ($validity != -1){
                 switch ($validity) {
                     case "active":
                         $moviesList = $this-> movieDAO-> ReadActiveMovies();
@@ -98,7 +96,7 @@
                         }
                         break;
                     case "deleted":
-                        $moviesList = $this-> movieDAO-> ReadActiveMovies();
+                        $moviesList = $this-> movieDAO-> ReadDeletedMovies();
                         if (is_array($moviesList)){
                             foreach ($moviesList as $movie){
                                 $movieGenres = $this-> genreMovieDAO-> ReadByMovieID($movie-> getID());
@@ -107,7 +105,7 @@
                         }
                         break;
                     default:
-                        $moviesList = $this-> movieDAO-> ReadActiveMovies();
+                        $moviesList = $this-> movieDAO-> ReadAll();
                         if (is_array($moviesList)){
                             foreach ($moviesList as $movie){
                                 $movieGenres = $this-> genreMovieDAO-> ReadByMovieID($movie-> getID());
@@ -134,6 +132,7 @@
         function showAddView ($movieID){
             SessionValidatorHelper::ValidateSessionAdmin();
             $movie = $this-> getMovieFromAPI($movieID);
+            $movie-> setLanguage(GenreConverter::Convert($movie-> getLanguage()));
             require_once(VIEWS_PATH."movie-add.php");
         }
 
@@ -151,6 +150,7 @@
             SessionValidatorHelper::ValidateSessionAdmin();
             if ($this-> movieDAO-> ReadById($movieID) == false){
                 $movie = $this-> getMovieFromAPI($movieID);
+                $movie-> setLanguage(GenreConverter::Convert($movie-> getLanguage()));
                 try{
                     $this-> movieDAO-> Create($movie);
                     foreach($movie-> getGenres() as $genre){
@@ -168,7 +168,12 @@
                     $this-> showNowPlaying ("Hubo un error al cargar la película al sistema.<br> Inténtelo de nuevo más tarde.", 1);
                 }
             } else {
-                $this-> showNowPlaying ("La película seleccionada ya estaba cargada en el sistema.", 2);
+                $movie = $this-> movieDAO-> ReadById($movieID);
+                if ($movie-> getIsActive()){
+                    $this-> showNowPlaying ("La película seleccionada ya estaba cargada en el sistema.", 3);
+                } else {
+                    $this-> showNowPlaying ("La película seleccionada ya estaba cargada en el sistema.", 2);
+                }
             }
         }
 

@@ -12,7 +12,7 @@
     use Models\Movie as Movie;
     use Models\Ticket as Ticket;
     use Models\Purchase as Purchase;
-    use Config\SessionValidatorHelper as SessionValidatorHelper;
+    use Helpers\SessionValidatorHelper as SessionValidatorHelper;
 
     class TicketController {
         private $userDAO;
@@ -35,8 +35,7 @@
 
 
         public function showBuyTicketView($showID){
-            SessionValidatorHelper::ValidateSession();
-
+            SessionValidatorHelper::ValidateBuyTicketView($showID);
             $show = $this-> showDAO-> ReadByID($showID);
             $roomID = $this-> showDAO-> ReadRoomID($showID);
             $room = $this-> roomDAO-> ReadByID($roomID);
@@ -51,6 +50,7 @@
         }
 
         public function validateTicketPurchase(){
+            SessionValidatorHelper::ValidateRestrictedUserView();
             if($_POST){
                 $showID = $_POST['showID'];
                 $showDate = $_POST['showDate'];

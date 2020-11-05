@@ -56,7 +56,7 @@
         </nav>
     </form>
 
-    <?php if($message){ ?>
+    <?php if($message != ""){ ?>
         <div class="alert alert-secondary mt-5 mb-5" role="alert">
             <h5 style="text-align: center;"><?php echo $message ?></h5>
         </div>

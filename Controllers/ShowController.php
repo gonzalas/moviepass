@@ -175,11 +175,10 @@
             require_once(VIEWS_PATH."cinema-edit.php");
         }
 
-        function showUpcomingShows ($success = 0){
+        function showUpcomingShows ($success = 0, $time = "upcoming", $genreID = -1){
             SessionValidatorHelper::ValidateSessionAdmin();
-            if (isset($_GET['time'])){
-                $filter = $_GET['time'];
-                if (strcmp($filter, "previous") == 0){
+            if (strcmp($time, "0") != 0){
+                if (strcmp($time, "previous") == 0){
                     $showsList = $this-> showDAO-> ReadPrevious();
                     if ($showsList instanceof Show){
                         $aux = $showsList;
@@ -195,8 +194,7 @@
                     }
                 }
             } else {
-                if (isset($_GET['genre'])){
-                    $genreID = $_GET['genre'];
+                if ($genreID != -1){
                     $filterGenre = $this-> genreDAO-> ReadByID($genreID);
                     $showsList = $this-> showDAO-> ReadByGenreID($genreID);
                     if ($showsList instanceof Show){

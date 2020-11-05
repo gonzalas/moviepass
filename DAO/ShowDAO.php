@@ -278,7 +278,9 @@
         public function ReadByGenreID($genreID){
             $sql = "SELECT showID, showDate, startTime, endTime, isActive FROM shows s 
             INNER JOIN genresxmovies gxm
-            ON s.movieID = gxm.movieID AND gxm.genreID = :genreID";
+            ON s.movieID = gxm.movieID AND gxm.genreID = :genreID
+            HAVING (showDate > CURDATE()) OR (showDate = CURDATE() AND startTime >= CURTIME())
+            ORDER BY showDate";
             $parameters['genreID'] = $genreID;
 
             try {

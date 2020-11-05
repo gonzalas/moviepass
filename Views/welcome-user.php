@@ -13,7 +13,7 @@
       <div class="modal-body">
         <p>Bienvenido <b><?php echo $user->getFirstName()?> <?php echo $user->getLastName()?></b>.</p>
         <p>Esperamos que disfrute su experiencia con nosotros.</p>
-        <p>Su usuario será <b><?php echo $user->getUserName()?></b> y su contraseña <b><?php echo $user->getPassword()?></b>.</p>
+        <p>Su usuario será <b><?php echo $user->getUserName()?></b>.</p>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" onClick="closeWelcomeModal()">Close</button>

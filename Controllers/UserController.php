@@ -64,6 +64,10 @@
             }
         }
 
+        function showLoginView ($message = ""){
+            require_once(VIEWS_PATH . "login.php");
+        }
+
         function processLogin(){
 
             if($_POST){
@@ -93,11 +97,15 @@
                         $this->showCinemaListMenu();
 
                     } else {
-                        require_once(VIEWS_PATH."login.php");
+                        $this-> showLoginView("El usuario o contraseña ingresados son incorrectos.");
                     }
 
                 }
             }
+        }
+
+        function buyTicketLogin($movieID){
+            
         }
 
         public function showMovieListing(){
@@ -211,7 +219,7 @@
 
         public function showUserProfile($message = ""){
 
-            SessionValidatorHelper::ValidateSession();
+            SessionValidatorHelper::ValidateRestrictedUserView();
 
             //Get user from session
             $user = $_SESSION['loggedUser'];
@@ -223,6 +231,7 @@
         }
 
         public function changeInfoUser($userName, $password){
+            SessionValidatorHelper::ValidateRestrictedUserView();
             $user = $_SESSION['loggedUser'];
             $userInDB = $this->userDAO->ReadByUserName($userName);
             if(!$userInDB){
@@ -240,12 +249,12 @@
         }
 
         public function showCinemaListMenu(){
-          
             $cinemasList = $this->cinemaDAO->ReadActiveCinemasWithRooms();
             require_once(VIEWS_PATH."user-cinema-list.php");            
         }
 
         private function welcomeNewUser($user){
+            SessionValidatorHelper::ValidateRestrictedUserView();
             require_once(VIEWS_PATH."welcome-user.php");
         }
 

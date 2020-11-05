@@ -16,8 +16,8 @@
         <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Período</a>
             <div class="dropdown-menu">
-                <a class="dropdown-item" href="<?=FRONT_ROOT?>Show/showUpcomingShows?time=previous">Anteriores</a>
-                <a class="dropdown-item" href="<?=FRONT_ROOT?>Show/showUpcomingShows?time=upcoming">Próximas</a>
+                <a class="dropdown-item" href="<?=FRONT_ROOT?>Show/showUpcomingShows?success=0&time=previous&genreID=-1">Anteriores</a>
+                <a class="dropdown-item" href="<?=FRONT_ROOT?>Show/showUpcomingShows?success=0&time=upcoming&genreID=-1">Próximas</a>
             </div>
         </li>
 
@@ -26,7 +26,7 @@
             <div class="dropdown-menu">
             <?php
                 foreach ($genresList as $genre){ ?>
-                    <a class="dropdown-item" href="<?=FRONT_ROOT?>Show/showUpcomingShows?genre=<?=$genre->getID()?>"><?=$genre->getName()?></a>
+                    <a class="dropdown-item" href="<?=FRONT_ROOT?>Show/showUpcomingShows?success=0&time=0&genreID=<?=$genre->getID()?>"><?=$genre->getName()?></a>
             <?php
                 }
             ?>
@@ -34,18 +34,17 @@
         </li>
 
         <?php
-        if (isset($_GET['time'])){
+        if (strcmp($time, "0") != 0){
         ?>
             <li class="nav-item">
-            <?php if (strcmp($_GET['time'], "previous") == 0){ ?> <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Filtro actual (período): Anteriores</a>
-            <?php } else { ?> <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Filtro actual (período): Próximas</a>
+            <?php if (strcmp($time, "previous") == 0){ ?> <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Filtro actual (período): Anteriores</a>
             <?php } ?>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="<?=FRONT_ROOT?>Show/showUpcomingShows">Limpiar filtros</a>
             </li>
         <?php
-        } elseif ((isset($_GET['genre']))) {
+        } elseif ($genreID != -1) {
         ?>
             <li class="nav-item">
                 <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Filtro actual (género): <?=$filterGenre->getName()?></a>
