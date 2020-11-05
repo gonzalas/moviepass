@@ -11,7 +11,7 @@
     use Models\Movie as Movie;
     use Models\Show as Show;
     use Models\MovieListing as MovieListing;
-    use Config\SessionValidatorHelper as SessionValidatorHelper;
+    use Helpers\SessionValidatorHelper as SessionValidatorHelper;
     use Helpers\EncodePassword as EncodePassword;
 
     class UserController {
@@ -75,7 +75,10 @@
                 //Verify if user is Admin and redirect
                 if($user->getUserName() == ADMIN_USERNAME && $user->getPassword() == ADMIN_PASSWORD){
 
-                    header("location:".FRONT_ROOT."Cinema/ShowAddView");
+                    $userValidated = $user->getUserName();
+                    $userValidated = $user->getPassword();
+                    $_SESSION['loggedAdmin'] = $userValidated;
+                    header("location:".FRONT_ROOT."Show/showUpcomingShows");
 
                 } else {
 
@@ -98,8 +101,6 @@
         }
 
         public function showMovieListing(){
-
-            SessionValidatorHelper::ValidateSession();
 
             if($_POST){
                 $cinemaSelected = $_POST['cinemaSelected'];
@@ -143,8 +144,6 @@
 
         public function showMovieDetails(){
 
-            SessionValidatorHelper::ValidateSession();
-
             if($_POST){
                 $movieID = $_POST['movieID'];
                 $cinemaID = $_POST['cinemaID'];
@@ -175,8 +174,6 @@
         
         public function showRoomsToUser(){
 
-            SessionValidatorHelper::ValidateSession();
-
             if($_POST){
                 $cinemaSelected = $_POST['cinemaSelected'];
 
@@ -192,8 +189,6 @@
         }
 
         public function showRoomMovieListing(){
-
-            SessionValidatorHelper::ValidateSession();
 
             if($_GET){
 
@@ -245,8 +240,7 @@
         }
 
         public function showCinemaListMenu(){
-
-            SessionValidatorHelper::ValidateSession();            
+          
             $cinemasList = $this->cinemaDAO->ReadActiveCinemasWithRooms();
             require_once(VIEWS_PATH."user-cinema-list.php");            
         }

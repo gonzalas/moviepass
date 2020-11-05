@@ -1,5 +1,5 @@
 <?php
-    namespace Config;
+    namespace Helpers;
 
     class SessionValidatorHelper
     {
@@ -7,5 +7,10 @@
             if(!isset($_SESSION["loggedUser"]))
             header ("location:".FRONT_ROOT."Home/Index");
         }   
+
+        public static function ValidateSessionAdmin(){
+            if(!isset($_SESSION["loggedAdmin"]))
+            header ("location:".FRONT_ROOT."Home/Index");
+        } 
     }
 ?>

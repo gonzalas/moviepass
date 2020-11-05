@@ -8,6 +8,7 @@
     use DAO\MovieDAO as MovieDAO;
     use Models\Cinema as Cinema;
     use Models\Room as Room;
+    use Helpers\SessionValidatorHelper as SessionValidatorHelper;
 
     class CinemaController {
 
@@ -25,6 +26,7 @@
         }
 
         function addCinema($name, $address) {
+            SessionValidatorHelper::ValidateSessionAdmin();
             if (!empty($this-> cinemaDAO-> ReadByName($name))){
                 $this-> showAddView("Nombre de cine ya existente. Intente con otro.");
             } else {
@@ -42,6 +44,7 @@
         }
 
         function removeCinema($id){
+            SessionValidatorHelper::ValidateSessionAdmin();
             if ($id!=-1){
                 $cinema = ($this-> cinemaDAO-> ReadByID($id));
                 $roomsList = $this-> roomDAO-> ReadByCinemaID($id);
@@ -69,6 +72,7 @@
         }
 
         function retrieveCinema($id){
+            SessionValidatorHelper::ValidateSessionAdmin();
             $cinema = ($this-> cinemaDAO-> ReadByID($id));
             $cinema-> setIsActive(true);
             $this-> cinemaDAO-> Update($cinema);
@@ -88,6 +92,7 @@
 
 
         function editCinema ($id, $name, $address){
+            SessionValidatorHelper::ValidateSessionAdmin();
             $cinema = $this-> cinemaDAO-> ReadByID($id);
             if ($this-> validateCinemaName($id, $name)){
                 $this-> showEditView($id, "Nombre de cine ya existente. Intente con otro.");
@@ -104,6 +109,7 @@
         }
       
         function showListView ($messageCode = 0,$filter = ""){
+            SessionValidatorHelper::ValidateSessionAdmin();
             if ($messageCode != 0){
                 switch ($messageCode){
                     case 1:
@@ -171,10 +177,12 @@
         }
 
         function showAddView ($message = "", Cinema $cinema = null){
+            SessionValidatorHelper::ValidateSessionAdmin();
             require_once(VIEWS_PATH."cinema-add.php");
         }
 
         function showEditView ($id, $message = ""){
+            SessionValidatorHelper::ValidateSessionAdmin();
             $cinema = $this-> cinemaDAO-> ReadByID($id);
             require_once(VIEWS_PATH."cinema-edit.php");
         }
