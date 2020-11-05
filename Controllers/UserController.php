@@ -61,6 +61,10 @@
             }
         }
 
+        function showLoginView ($message = ""){
+            require_once(VIEWS_PATH . "login.php");
+        }
+        
         function processLogin($userName, $userPassword){
 
             $user = new User();
@@ -82,19 +86,20 @@
                 //Verify user in DB
                 $userValidated = $this->userDAO->Read($user->getUserName(), $user->getPassword());
                 if($userValidated){
-
                     //Initiate session
                     $_SESSION['loggedUser'] = $userValidated;
                     //Redirect to user menu
                     $this->showCinemaListMenu();
-
                 } else {
-                    $message = "Datos incorrectos. Vuelva a intentarlo.";
-                    require_once(VIEWS_PATH."login.php");
+                    $this-> showLoginView("El usuario o contraseña ingresados son incorrectos.");
                 }
             }
         }
 
+        function buyTicketLogin($movieID){
+            
+        }
+       
         public function showMovieListing($cinemaSelected){
 
                 //If cinemaSelected == -1, was selected the default 'Elija' option on select
@@ -179,7 +184,7 @@
 
         public function showUserProfile($message = ""){
 
-            SessionValidatorHelper::ValidateSession();
+            SessionValidatorHelper::ValidateRestrictedUserView();
 
             //Get user from session
             $user = $_SESSION['loggedUser'];
@@ -191,6 +196,7 @@
         }
 
         public function changeInfoUser($userName, $password){
+            SessionValidatorHelper::ValidateRestrictedUserView();
 
             //Get user from actual session
             $user = $_SESSION['loggedUser'];
@@ -215,13 +221,13 @@
 
 
         public function showCinemaListMenu(){
-          
             $cinemasList = $this->cinemaDAO->ReadActiveCinemasWithRooms();
             require_once(VIEWS_PATH."user-cinema-list.php");            
         }
 
 
         private function welcomeNewUser($user){
+            SessionValidatorHelper::ValidateRestrictedUserView();
             require_once(VIEWS_PATH."welcome-user.php");
         }
 

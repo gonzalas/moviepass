@@ -2,7 +2,7 @@
     require_once('nav.php');
 ?>
 <main class="py-5">
-    <?php if ($message != "" && $message != "all" && $message != "active" && $message != "deleted"){
+    <?php if (strcmp($message, "0") != 0){
         if ($messageCode == 1){
             $text = "success";
         } else{
@@ -27,9 +27,9 @@
         <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Validez</a>
             <div class="dropdown-menu">
-                <a class="dropdown-item" href="<?=FRONT_ROOT?>Movie/showSavedMovies?validity=all">Todas</a>
-                <a class="dropdown-item" href="<?=FRONT_ROOT?>Movie/showSavedMovies?validity=active">Activas</a>
-                <a class="dropdown-item" href="<?=FRONT_ROOT?>Movie/showSavedMovies?validity=deleted">Eliminadas</a>
+                <a class="dropdown-item" href="<?=FRONT_ROOT?>Movie/showSavedMovies/?message=0&messageCode=0&validity=all">Todas</a>
+                <a class="dropdown-item" href="<?=FRONT_ROOT?>Movie/showSavedMovies/?message=0&messageCode=0&validity=active">Activas</a>
+                <a class="dropdown-item" href="<?=FRONT_ROOT?>Movie/showSavedMovies/?message=0&messageCode=0&validity=deleted">Eliminadas</a>
             </div>
         </li>
         <?php

@@ -1,6 +1,5 @@
 <?php
-    require_once("nav-client.php"); 
-    use Helpers\LanguageGenre as LanguageGenre;
+    Helpers\SessionValidatorHelper::ValidateUserNav();
 ?>
 
 <style>
@@ -45,7 +44,7 @@
         <div class="card-body" style="margin-bottom: 20px;">
             <h4 class="card-title"><?php echo $movieSelected->getTitle(); ?></h4>
             <p class="card-text"><small class="text-muted"><?php foreach ($movieSelected-> getGenres() as $genre){ echo $genre->getName() . " | "; } ?></small></p>
-            <p class="card-text">Idioma: <?php echo LanguageGenre::getLanguage($movieSelected->getLanguage()); ?></p>
+            <p class="card-text"><small class="text-muted">Idioma: <?php echo $movieSelected->getLanguage(); ?></small></p>
             <p class="card-text"><b><?php echo $movieSelected->getOverview(); ?></b></p>
             <p class="card-text">Estreno: <?php echo date("d M Y", strtotime($movieSelected->getReleaseDate())); ?></p>
             <p class="card-text">Duración: <?php echo $movieSelected->getLength(); ?> minutos.</p>

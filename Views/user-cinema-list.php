@@ -1,5 +1,5 @@
 <?php
-    require_once("nav-client.php"); 
+    Helpers\SessionValidatorHelper::ValidateUserNav();
 ?>
 <style>
     body {
@@ -16,7 +16,6 @@
         object-fit: cover;
     }
 </style>
-
 
     <section class="container">
         <div class="pt-5 pb-5">
