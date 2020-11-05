@@ -27,6 +27,28 @@
             }
         }
 
+        public function ReadByUserName($userName){
+ 
+            $sql = "SELECT * FROM users where userName = :userName";
+
+            $parameters['userName'] = $userName;
+
+            try {
+
+                $this->connection = Connection::getInstance();
+                $result = $this->connection->execute($sql, $parameters);
+
+            } catch(Exception $err){
+                throw $err;
+            }
+
+            if(!empty($result)){
+                return $this->mapear($result);
+            } else {
+                return false;
+            }
+        }
+
         public function Read($userName, $userPassword){
  
             $sql = "SELECT * FROM users where userName = :userName and password = :password";
@@ -70,10 +92,6 @@
 
         }
 
-        public function GetByID($id){
-
-        }
-
         public function Update($user){
 
             $sql = "UPDATE users SET firstName = :firstName, lastName = :lastName, email = :email, userName = :userName, password = :password";
@@ -95,7 +113,24 @@
 
         }
 
-        public function Delete($id){
+        public function UpdateUserNamePassword($user, $userName, $password){
+
+            $sql = "UPDATE users SET firstName = :firstName, lastName = :lastName, email = :email, userName = :userName, password = :password";
+
+            $parameters['firstName'] = $user->getFirstName();
+            $parameters['lastName'] = $user->getLastName();
+            $parameters['email'] = $user->getEmail();
+            $parameters['userName'] = $userName;
+            $parameters['password'] = $password;
+
+            try {
+
+                $this->connection = Connection::getInstance();
+                return $this->connection->ExecuteNonQuery($sql, $parameters);
+
+            } catch(\PDOException $err){
+                throw $err;
+            }
 
         }
 
