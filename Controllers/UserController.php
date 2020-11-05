@@ -12,6 +12,7 @@
     use Models\Show as Show;
     use Models\MovieListing as MovieListing;
     use Config\SessionValidatorHelper as SessionValidatorHelper;
+    use Helpers\EncodePassword as EncodePassword;
 
     class UserController {
         private $userDAO;
@@ -209,15 +210,36 @@
             }
         }
 
-        public function showUserProfile(){
+        public function verifyUserInDB($userName, $password){
+
+        }
+
+        public function showUserProfile($message = ""){
 
             SessionValidatorHelper::ValidateSession();
 
+            //Get user from session
             $user = $_SESSION['loggedUser'];
+
+            //Encode his password before showing
+            $user->setPassword(EncodePassword::Encode($user->getPassword()));
+
             require_once(VIEWS_PATH."user-info-profile.php");
         }
 
-        public function userLogOut(){
+        public function changeInfoUser($userName, $password){
+            $user = $_SESSION['loggedUser'];
+            $userInDB = $this->userDAO->ReadByUserName($userName);
+            if(!$userInDB){
+                $this->userDAO->UpdateUserNamePassword($user, $userName, $password);
+                $this->userLogOut("Usuario actualizado.");
+            } else {
+                $message = "Error al actualizar información. Usuario ya existente.";
+            }
+            $this->showUserProfile($message);
+        }
+
+        public function userLogOut($message = ""){
             session_destroy();
             require_once(VIEWS_PATH."login.php");
         }

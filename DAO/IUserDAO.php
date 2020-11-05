@@ -5,10 +5,10 @@
     interface IUserDAO {
         function Create(User $user);
         function Read($userName, $userPassword);
+        function ReadByUserName($userName);
         function ReadAll();
-        function GetByID($id);
+        function UpdateUserNamePassword(User $user, $userName, $password);
         function Update(User $user);
-        function Delete($id);
     }
 
 ?>
