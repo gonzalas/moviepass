@@ -62,9 +62,9 @@
 <section class="container">
     <img id="back-img-2" src="<?php echo IMG_PATH."poster00.jpg" ?>" alt="Poster">
 
-    <!-- CARROUSEL FOR MAIN 3 MOVIES -->
+    <!-- CAROUSEL FOR MAIN 3 MOVIES -->
     <?php 
-        if(!empty($carrousel)){ 
+        if(!empty($carousel)){ 
     ?>
 
     <div id="myCarousel" class="carousel slide carousel-fade" data-ride="carousel" style="margin-top: 5%; margin-bottom: 10%; margin-left: 10%; width: 80%;">
@@ -76,16 +76,16 @@
         <div class="carousel-inner img-hover" style="border-radius: 5px;">
 
             <?php
-                foreach($carrousel as $movieCarrousel){
-                    if($movieCarrousel == $carrousel[0]){
+                foreach($carousel as $movieCarousel){
+                    if($movieCarousel == $carousel[0]){
             ?>
             
             <div class="carousel-item active movie">
-                <h1 style="position: absolute; top: 15%; color: #ffffff; background-color: rgba(0,0,0,0.7); padding: 20px 100px;"><?php echo $movieCarrousel->getTitle(); ?></h1>
-                <img src="<?php echo API_IMG.$movieCarrousel->getImage(); ?>" class="d-block w-100" alt="Poster">
+                <h1 style="position: absolute; top: 15%; color: #ffffff; background-color: rgba(0,0,0,0.7); padding: 20px 100px;"><?php echo $movieCarousel->getTitle(); ?></h1>
+                <img src="<?php echo API_IMG.$movieCarousel->getImage(); ?>" class="d-block w-100" alt="Poster">
                 <form action="<?php echo FRONT_ROOT ?>User/showMovieDetails" method="post">
                    <!-- GET MOVIE ATTRIBUTES TO SEND BY FORM -->
-                    <input type="hidden" name="movieID" value="<?php echo $movieCarrousel->getID(); ?>">
+                    <input type="hidden" name="movieID" value="<?php echo $movieCarousel->getID(); ?>">
                     <input type="hidden" name="cinemaID" value="<?php echo $cinemaSelected; ?>">
                     <!-- --- -->
                     <button class="img-btn-submit" type="submit">Ver detalles</button>
@@ -97,11 +97,11 @@
             ?>
 
             <div class="carousel-item movie">
-                <h1 style="position: absolute; top: 15%; color: #ffffff; background-color: rgba(0,0,0,0.7); padding: 20px 100px;"><?php echo $movieCarrousel->getTitle(); ?></h1>
-                <img src="<?php echo API_IMG.$movieCarrousel->getImage(); ?>" class="d-block w-100" alt="Poster">
+                <h1 style="position: absolute; top: 15%; color: #ffffff; background-color: rgba(0,0,0,0.7); padding: 20px 100px;"><?php echo $movieCarousel->getTitle(); ?></h1>
+                <img src="<?php echo API_IMG.$movieCarousel->getImage(); ?>" class="d-block w-100" alt="Poster">
                 <form action="<?php echo FRONT_ROOT ?>User/showMovieDetails" method="post">
                     <!-- GET MOVIE ATTRIBUTES TO SEND BY FORM -->
-                    <input type="hidden" name="movieID" value="<?php echo $movieCarrousel->getID(); ?>">
+                    <input type="hidden" name="movieID" value="<?php echo $movieCarousel->getID(); ?>">
                     <input type="hidden" name="cinemaID" value="<?php echo $cinemaSelected; ?>">
                     <!-- --- -->
                     <button class="img-btn-submit" type="submit">Ver detalles</button>

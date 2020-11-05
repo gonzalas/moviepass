@@ -13,6 +13,8 @@
     use Models\MovieListing as MovieListing;
     use Helpers\SessionValidatorHelper as SessionValidatorHelper;
     use Helpers\EncodePassword as EncodePassword;
+    use Helpers\FilterRepeteadArray as FilterRepeteadArray;
+    use Helpers\Carousel as Carousel;
 
     class UserController {
         private $userDAO;
@@ -31,179 +33,145 @@
             $this->genreMovieDAO = new GenreMovieDAO();
         }
 
-        function registerUser(){
+        function registerUser($firstName, $lastName, $email, $username, $password, $password2){
 
-            if($_POST){
+            if($this->validatePassword($password, $password2)){
+                $user = new User();
+                $user->setFirstName($firstName);
+                $user->setLastName($lastname);
+                $user->setEmail($email);
+                $user->setUserName($username);
+                $user->setPassword($password);
+                $user->setIsAdmin(false);
 
-                if($this->validatePassword($_POST['password'], $_POST['password2'])){
+                //Add user into DB
+                $this->userDAO->Create($user);
 
-                    $user = new User();
-                    $user->setFirstName($_POST['firstName']);
-                    $user->setLastName($_POST['lastName']);
-                    $user->setEmail($_POST['email']);
-                    $user->setUserName($_POST['username']);
-                    $user->setPassword($_POST['password']);
-                    $user->setIsAdmin(false);
+                //Create session with user data
+                $_SESSION['loggedUser'] = $user;
 
-                    //Add user into DB
-                    $this->userDAO->Create($user);
+                //Give a welcome to a new user
+                $this->welcomeNewUser($user);
 
-                    //Create session with user data
-                    $_SESSION['loggedUser'] = $user;
+                //Show first view for user logged
+                $this->showCinemaListMenu();
 
-                    //Give a welcome to a new user
-                    $this->welcomeNewUser($user);
+            } else {
+                require_once(VIEWS_PATH."login.php");
+            }
+        }
 
-                    //Show first view for user logged
+        function processLogin($userName, $userPassword){
+
+            $user = new User();
+            $user->setUserName($userName);
+            $user->setPassword($userPassword);
+
+            //Verify if user is Admin and redirect
+            if($user->getUserName() == ADMIN_USERNAME && $user->getPassword() == ADMIN_PASSWORD){
+
+                $userValidated = $user->getUserName();
+                $userValidated = $user->getPassword();
+                $_SESSION['loggedAdmin'] = $userValidated;
+
+                //Redirect to admin menu
+                header("location:".FRONT_ROOT."Show/showUpcomingShows");
+
+            } else {
+
+                //Verify user in DB
+                $userValidated = $this->userDAO->Read($user->getUserName(), $user->getPassword());
+                if($userValidated){
+
+                    //Initiate session
+                    $_SESSION['loggedUser'] = $userValidated;
+                    //Redirect to user menu
                     $this->showCinemaListMenu();
 
                 } else {
+                    $message = "Datos incorrectos. Vuelva a intentarlo.";
                     require_once(VIEWS_PATH."login.php");
                 }
-                
             }
         }
 
-        function processLogin(){
-
-            if($_POST){
-
-                $user = new User();
-                $user->setUserName($_POST['userName']);
-                $user->setPassword($_POST['userPassword']);
-
-                //Verify if user is Admin and redirect
-                if($user->getUserName() == ADMIN_USERNAME && $user->getPassword() == ADMIN_PASSWORD){
-
-                    $userValidated = $user->getUserName();
-                    $userValidated = $user->getPassword();
-                    $_SESSION['loggedAdmin'] = $userValidated;
-                    header("location:".FRONT_ROOT."Show/showUpcomingShows");
-
-                } else {
-
-                    //Verify user in DB
-                    $userValidated = $this->userDAO->Read($user->getUserName(), $user->getPassword());
-
-                    if($userValidated){
-                        //Initiate session
-                        $_SESSION['loggedUser'] = $userValidated;
-
-                        //Redirect user
-                        $this->showCinemaListMenu();
-
-                    } else {
-                        require_once(VIEWS_PATH."login.php");
-                    }
-
-                }
-            }
-        }
-
-        public function showMovieListing(){
-
-            if($_POST){
-                $cinemaSelected = $_POST['cinemaSelected'];
+        public function showMovieListing($cinemaSelected){
 
                 //If cinemaSelected == -1, was selected the default 'Elija' option on select
-                if($cinemaSelected != -1){
+            if($cinemaSelected != -1){
 
-                    //Retrive cinema selected on database
-                    $cinema = $this->cinemaDAO->ReadByID($cinemaSelected);
-
-                    //Restore all cinemas to choose again before load views
-                    $cinemasList = $this->cinemaDAO->ReadActiveCinemasWithRooms();
-
-                    $showsList = $this->showDAO->ReadMovieListingByCinemaID($cinema->getID());
-                   
-                    $movieListing = array();
-                   
-                    if($showsList){
-                        foreach($showsList as $show){
-                            $movieID = $this-> showDAO-> ReadMovieID($show-> getID());
-                            $movie = $this-> movieDAO-> ReadByID($movieID);
-                            array_push($movieListing, $movie);
-                        }
-                    }
-                    
-                    //Filtering array by repetead movies
-                    $movieListing = $this->filterArrayRepetead($movieListing);
-
-                    //Carrousel
-                    $moviesOnCarrousel = 3;
-                    $carrousel = $this->generateCarrouselMovies($movieListing, $moviesOnCarrousel);
-
-                    require_once(VIEWS_PATH."user-cinema-list.php");
-                    require_once(VIEWS_PATH."user-movie-listing.php");
-
-                } else {
-                    $this->showCinemaListMenu();
-                }
-            }
-        }
-
-        public function showMovieDetails(){
-
-            if($_POST){
-                $movieID = $_POST['movieID'];
-                $cinemaID = $_POST['cinemaID'];
-                $movieSelected = new Movie();
-                $movieSelected = $this-> movieDAO-> ReadByID($movieID);
-                $genresList = $this-> genreMovieDAO-> ReadByMovieID($movieID);
-                $movieSelected-> setGenres($genresList);
-                $showsList = $this-> showDAO-> ReadUpcomingByCinemaAndMovie($cinemaID, $movieID);
-                if ($showsList instanceof Show){
-                    $aux = $showsList;
-                    $showsList = array();
-                    array_push($showsList, $aux);
-                }
-                if(!empty($showsList)){
-                    foreach ($showsList as $show){
-                        $movieID = $this-> showDAO-> ReadMovieID($show-> getID());
-                        $show-> setMovie($this-> movieDAO-> ReadByID($movieID));
-                        $roomID = $this-> showDAO-> ReadRoomID($show-> getID());
-                        $cinemaID = $this-> roomDAO-> ReadCinemaID($roomID);
-                        $room = $this-> roomDAO-> ReadByID ($roomID);
-                        $room-> setCinema($this-> cinemaDAO-> ReadByID($cinemaID));
-                        $show-> setRoom($room);
-                    }    
-                }
-                require_once(VIEWS_PATH."movie-details.php");
-            }
-        }
-        
-        public function showRoomsToUser(){
-
-            if($_POST){
-                $cinemaSelected = $_POST['cinemaSelected'];
-
-                //Retrive all rooms from one cinema
-                $roomList = $this->roomDAO->ReadByCinemaID($cinemaSelected);
+                //Retrive cinema selected on database
+                $cinema = $this->cinemaDAO->ReadByID($cinemaSelected);
 
                 //Restore all cinemas to choose again before load views
-                $cinemasList = $this->cinemaDAO->ReadAll();
+                $cinemasList = $this->cinemaDAO->ReadActiveCinemasWithRooms();
+                $showsList = $this->showDAO->ReadMovieListingByCinemaID($cinema->getID());
+               
+                $movieListing = array();
+               
+                if($showsList){
+                    foreach($showsList as $show){
+                        $movieID = $this-> showDAO-> ReadMovieID($show-> getID());
+                        $movie = $this-> movieDAO-> ReadByID($movieID);
+                        array_push($movieListing, $movie);
+                    }
+                }
+                
+                //Filtering array by repetead movies
+                $movieListing = FilterRepeteadArray::filterArray($movieListing);
+        
+                //Carrousel
+                $moviesOnCarousel = 3;
+                $carousel = Carousel::generateCarouselMovies($movieListing, $moviesOnCarousel);
 
                 require_once(VIEWS_PATH."user-cinema-list.php");
-                require_once(VIEWS_PATH."user-room-list.php");
+                require_once(VIEWS_PATH."user-movie-listing.php");
+            } else {
+                $this->showCinemaListMenu();
             }
+
         }
 
-        public function showRoomMovieListing(){
+        public function showMovieDetails($movieID, $cinemaID){
 
-            if($_GET){
+            $movieSelected = new Movie();
+            $movieSelected = $this-> movieDAO-> ReadByID($movieID);
+            $genresList = $this-> genreMovieDAO-> ReadByMovieID($movieID);
+            $movieSelected-> setGenres($genresList);
+            $showsList = $this-> showDAO-> ReadUpcomingByCinemaAndMovie($cinemaID, $movieID);
 
-               $cinemaID = $_GET['cinema'];
-               $roomID = $_GET['room'];
-
-               //Search on database the room selected
-               $cinema = $this->cinemaDAO->ReadByID($cinemaID);
-
-               //Getting this room movie listing to show on view
-               $movieListing = $cinema['0']->getMovieListing();
-
-               require_once(VIEWS_PATH."room-movielisting.php");
+            if ($showsList instanceof Show){
+                $aux = $showsList;
+                $showsList = array();
+                array_push($showsList, $aux);
             }
+            if(!empty($showsList)){
+                foreach ($showsList as $show){
+                    $movieID = $this-> showDAO-> ReadMovieID($show-> getID());
+                    $show-> setMovie($this-> movieDAO-> ReadByID($movieID));
+                    $roomID = $this-> showDAO-> ReadRoomID($show-> getID());
+                    $cinemaID = $this-> roomDAO-> ReadCinemaID($roomID);
+                    $room = $this-> roomDAO-> ReadByID ($roomID);
+                    $room-> setCinema($this-> cinemaDAO-> ReadByID($cinemaID));
+                    $show-> setRoom($room);
+                }    
+            }
+            require_once(VIEWS_PATH."movie-details.php");
         }
+        
+        public function showRoomsToUser($cinemaSelected){
+
+            //Retrive all rooms from one cinema
+            $roomList = $this->roomDAO->ReadByCinemaID($cinemaSelected);
+
+            //Restore all cinemas to choose again before load views
+            $cinemasList = $this->cinemaDAO->ReadAll();
+
+            require_once(VIEWS_PATH."user-cinema-list.php");
+            require_once(VIEWS_PATH."user-room-list.php");
+           
+        }
+
 
         public function verifyUserInDB($userName, $password){
 
@@ -223,8 +191,13 @@
         }
 
         public function changeInfoUser($userName, $password){
+
+            //Get user from actual session
             $user = $_SESSION['loggedUser'];
+
+            //Check if new username is on DB. If not, it's ok to update
             $userInDB = $this->userDAO->ReadByUserName($userName);
+
             if(!$userInDB){
                 $this->userDAO->UpdateUserNamePassword($user, $userName, $password);
                 $this->userLogOut("Usuario actualizado.");
@@ -234,16 +207,19 @@
             $this->showUserProfile($message);
         }
 
+
         public function userLogOut($message = ""){
             session_destroy();
             require_once(VIEWS_PATH."login.php");
         }
+
 
         public function showCinemaListMenu(){
           
             $cinemasList = $this->cinemaDAO->ReadActiveCinemasWithRooms();
             require_once(VIEWS_PATH."user-cinema-list.php");            
         }
+
 
         private function welcomeNewUser($user){
             require_once(VIEWS_PATH."welcome-user.php");
@@ -253,56 +229,6 @@
             return ($password === $password2) ? true : false;
         }
 
-        private function filterArrayRepetead($array, $keep_key_assoc = false){
-            $duplicate_keys = array();
-            $tmp = array();       
-        
-            foreach ($array as $key => $val){
-                // convert objects to arrays, in_array() does not support objects
-                if (is_object($val))
-                    $val = (array)$val;
-        
-                if (!in_array($val, $tmp))
-                    $tmp[] = $val;
-                else
-                    $duplicate_keys[] = $key;
-            }
-        
-            foreach ($duplicate_keys as $key)
-                unset($array[$key]);
-        
-            return $keep_key_assoc ? $array : array_values($array);
-        }
-
-        private function generateCarrouselMovies($movies, $moviesOnCarrousel){
-            $carrouselListing = array();
-            if(count($movies) >= $moviesOnCarrousel){
-
-                for($i = 0; $i < $moviesOnCarrousel; $i++){  
-                    array_push($carrouselListing, $movies[$i]);
-                }
-            } else {
-                $carrouselListing = [];
-            }                        
-            return $carrouselListing;
-        }   
-
-        private function getArrayRandom($movies, $number){
-            $i = 0;
-            $random = array();
-            while($i < $number){
-                $random[$i] = rand(0, count($movies) - 1);
-                while(in_array($random[$i], $random)){
-                    $random[$i] = rand(0, count($movies) - 1);
-                }
-                var_dump($random[$i]);
-                array_push($random, $random[$i]);
-                $i++;
-            }
-            array_pop($random);
-            var_dump($random);
-            return $random;
-        }
     }
 
 ?>
