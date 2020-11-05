@@ -11,6 +11,7 @@
     use Models\Room as Room;
     use Models\Movie as Movie;
     use Models\Cinema as Cinema;
+    use Helpers\SessionValidatorHelper as SessionValidatorHelper;
 
     class ShowController {
 
@@ -30,6 +31,7 @@
         }
 
         function addShow($name, $address) {
+            SessionValidatorHelper::ValidateSessionAdmin();
             if (!empty($this-> cinemaDAO-> ReadByName($name))){
                 $this-> showAddView("Nombre de cine ya existente. Intente con otro.");
             } else {
@@ -47,12 +49,14 @@
         }
 
         function showAddView ($message = "", $messageCode = 0){
+            SessionValidatorHelper::ValidateSessionAdmin();
             $moviesList = $this-> movieDAO-> ReadActiveMovies();
             $cinemaList = $this->cinemaDAO->ReadActiveCinemasWithRooms();
             require_once(VIEWS_PATH."show-add.php");
         }
 
         function addShowSecondForm (){
+            SessionValidatorHelper::ValidateSessionAdmin();
             if (isset($_POST['movieID']) && isset($_POST['showDate'])){
                 $movieID = $_POST['movieID'];
                 $showDate = $_POST['showDate'];
@@ -81,6 +85,7 @@
         }
 
         function addShowThirdForm (){
+            SessionValidatorHelper::ValidateSessionAdmin();
             if (isset($_POST['movieID']) && isset($_POST['showDate']) && isset($_POST['roomID'])){
                 $movieID = $_POST['movieID'];
                 $showDate = $_POST['showDate'];
@@ -165,11 +170,13 @@
         }
 
         function showEditView ($id, $message = ""){
+            SessionValidatorHelper::ValidateSessionAdmin();
             $cinema = $this-> cinemaDAO-> ReadByID($id)[0];
             require_once(VIEWS_PATH."cinema-edit.php");
         }
 
         function showUpcomingShows ($success = 0){
+            SessionValidatorHelper::ValidateSessionAdmin();
             if (isset($_GET['time'])){
                 $filter = $_GET['time'];
                 if (strcmp($filter, "previous") == 0){
@@ -232,6 +239,7 @@
         }
 
         function removeShow($showID){
+            SessionValidatorHelper::ValidateSessionAdmin();
             $this-> showDAO-> Delete($showID);
             header ("location: ".FRONT_ROOT."Show/showUpcomingShows/?success=1");
         }

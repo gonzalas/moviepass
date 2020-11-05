@@ -6,6 +6,7 @@
     use DAO\CinemaDAO as CinemaDAO;
     use Models\Room as Room;
     use Models\Show as Show;
+    use Helpers\SessionValidatorHelper as SessionValidatorHelper;
 
     class RoomController {
 
@@ -19,6 +20,7 @@
         }
 
         function addRoom($cinemaID, $name, $capacity, $ticketValue) {
+            SessionValidatorHelper::ValidateSessionAdmin();
             if (!empty($this-> roomDAO-> ReadByName($cinemaID, $name))){
                 $this-> showAddView($cinemaID, "Nombre de sala ya existente en el cine elegido. Intente con otro.", 0);
             } else {
@@ -41,6 +43,7 @@
         }
 
         function removeRoom($id){
+            SessionValidatorHelper::ValidateSessionAdmin();
             if ($id!=-1){
                 $room = $this-> roomDAO-> ReadByID($id);
                 $showsList = $this-> showDAO-> ReadUpcomingByRoomID($id);
@@ -55,6 +58,7 @@
         }
 
         function retrieveRoom($id){
+            SessionValidatorHelper::ValidateSessionAdmin();
             $cinemaID = $this-> roomDAO-> ReadCinemaID($id);
             $cinema = $this-> cinemaDAO-> ReadByID($cinemaID);
             if ($cinema-> getIsActive()){
@@ -68,6 +72,7 @@
         }
 
         function editRoom ($id, $name, $capacity, $ticketValue){
+            SessionValidatorHelper::ValidateSessionAdmin();
             $room = $this-> roomDAO-> ReadByID($id);
             $cinemaID = $this-> roomDAO-> ReadCinemaID($id);
             if ($this-> validateRoomEdit($id, $name, $cinemaID)){
@@ -90,10 +95,12 @@
         }
 
         function showAddView ($cinemaId, $message = "", $messageCode = 0, Room $room = null){
+            SessionValidatorHelper::ValidateSessionAdmin();
             require_once(VIEWS_PATH."room-add.php");
         }
 
         function showEditView ($id, $message = "", $messageCode = 0){
+            SessionValidatorHelper::ValidateSessionAdmin();
             $room = $this-> roomDAO-> ReadByID($id);
             require_once(VIEWS_PATH."room-edit.php");
         }
