@@ -1,6 +1,6 @@
 <!-- Admin NavBar -->
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
-  <a class="navbar-brand" href="<?php echo FRONT_ROOT ?>Cinema/ShowListView">
+  <a class="navbar-brand" href="<?php echo FRONT_ROOT ?>Show/showUpcomingShows">
     <img src="../Views/img/icon.png" width="27" height="27" class="d-inline-block align-top" alt="" loading="lazy">
     MoviePass
   </a>
@@ -15,9 +15,9 @@
           Cines
         </a>
         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-          <a class="nav-link" href="<?php echo FRONT_ROOT ?>Cinema/showAddView">Agregar Cine</a>
-          <div class="dropdown-divider"></div>
           <a class="nav-link" href="<?php echo FRONT_ROOT ?>Cinema/showListView">Listar Cines</a>
+          <div class="dropdown-divider"></div>
+          <a class="nav-link" href="<?php echo FRONT_ROOT ?>Cinema/showAddView">Agregar Cine</a>
       </li>
       <li class="nav-item dropdown">
         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -34,9 +34,9 @@
           Funciones
         </a>
         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-          <a class="nav-link" href="<?php echo FRONT_ROOT ?>Show/showAddView">Agregar función</a>
-          <div class="dropdown-divider"></div>
           <a class="nav-link" href="<?php echo FRONT_ROOT ?>Show/showUpcomingShows">Ver funciones</a>
+          <div class="dropdown-divider"></div>
+          <a class="nav-link" href="<?php echo FRONT_ROOT ?>Show/showAddView">Agregar función</a>
         </div>
       </li>
     </ul>
