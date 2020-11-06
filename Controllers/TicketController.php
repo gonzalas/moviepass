@@ -49,7 +49,41 @@
             require(VIEWS_PATH."ticket-submission.php");
         }
 
-        public function validateTicketPurchase($showID, $showDate, $seatsQuantity){
+        function viewForm(){
+            require(VIEWS_PATH."checkout-form.php");
+        }
+
+        private function hasDiscount ($seatsQuantity, $showDate){
+            if ($seatsQuantity >= 2){
+                //Get the day of the week using PHP's date function.
+                $dayOfWeek = date("l", strtotime($showDate));
+                if (strcmp($dayOfWeek, "Tuesday") == 0 || strcmp($dayOfWeek, "Wednesday") == 0){
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        public function readCCInformation ($showID, $seatsQuantity){
+            SessionValidatorHelper::ValidateRestrictedUserView();
+            $show = $this-> showDAO-> ReadByID ($showID);
+            $movieID = $this->showDAO->ReadMovieID($showID);
+            $movie = $this->movieDAO->ReadById($movieID);
+            $show-> setMovie($movie);
+            $roomID = $this-> showDAO-> ReadRoomID ($showID);
+            $room = $this-> roomDAO-> ReadByID($roomID);
+            $show-> setRoom($room);
+            $showDate = $show-> getDate();
+            $subtotal = $room-> getTicketValue() * $seatsQuantity;
+            if ($this-> hasDiscount($seatsQuantity, $showDate)){
+                $total = $subtotal * 0.75;
+            } else {
+                $total = $subtotal;
+            }
+            require_once (VIEWS_PATH."checkout-form.php");
+        }
+
+        public function validateTicketPurchase($showID, $seatsQuantity){
             SessionValidatorHelper::ValidateRestrictedUserView();
                 
             $ticket = new Ticket();
