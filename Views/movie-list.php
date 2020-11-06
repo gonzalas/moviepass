@@ -51,7 +51,7 @@
         if (isset($_GET['genreID'])){
         ?>
             <li class="nav-item">
-            <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Filtro actual (género): <?=$genreFilterName?></a>
+            <a class="nav-link disabled" href="<?=FRONT_ROOT?>Movie/showNowPlaying?genreID=<?php echo $_GET['genreID'] ?>" tabindex="-1" aria-disabled="true">Filtro actual (género): <?=$genreFilterName?></a>
             </li>
             <li class="nav-item">
             <a class="nav-link" href="<?=FRONT_ROOT?>Movie/showNowPlaying">Limpiar filtros</a>

@@ -9,27 +9,32 @@
     use \Exception as Exception;
     use Helpers\SessionValidatorHelper as SessionValidatorHelper;
     use Helpers\LanguageConverter as LanguageConverter;
+    use API\MovieAPI as MovieAPI;
 
     class MovieController {
 
         private $movieDAO;
         private $genreDAO;
         private $genreMovieDAO;
+        private $movieAPI;
 
         public function __construct()
         {
             $this-> movieDAO = new MovieDAO();
             $this-> genreDAO = new GenreDAO();
             $this-> genreMovieDAO = new GenreMovieDAO();
+            $this-> movieAPI = new MovieAPI();
         }
 
         public function showNowPlaying ($message = "", $messageCode = -1, $genreID = -1, $orderByDate = -1){
             SessionValidatorHelper::ValidateSessionAdmin();
-            $apiMoviesJSON = file_get_contents("https://api.themoviedb.org/3/movie/now_playing?api_key=".API_KEY."&language=es&page=1");
-            $apiGenresJSON = file_get_contents("https://api.themoviedb.org/3/genre/movie/list?api_key=".API_KEY."&language=es");
 
-            $genresResult = json_decode($apiGenresJSON, true);
-            $moviesResult = json_decode($apiMoviesJSON, true);
+            //Try to fix it later
+            if(isset($_GET['genreID'])) $genreID = $_GET['genreID'];
+
+            //Get content from API
+            $genresResult = $this-> movieAPI-> getApiGenresJson();
+            $moviesResult = $this-> movieAPI-> getApiMoviesJson();
 
             $apiGenresList = $genresResult ["genres"];
             $apiMoviesList = $moviesResult ["results"];
@@ -138,8 +143,7 @@
 
         function showEditView ($movieID){
             SessionValidatorHelper::ValidateSessionAdmin();
-            $apiTitlesJSON = file_get_contents("https://api.themoviedb.org/3/movie/".$movieID."/alternative_titles?api_key=".API_KEY);
-            $titlesResult = json_decode($apiTitlesJSON, true);
+            $titlesResult = $this-> movieAPI-> getMovieByTitle($movieID);
 
             $titlesResult = $titlesResult["titles"];
             $movie = $this-> movieDAO-> ReadByID($movieID);
@@ -188,8 +192,7 @@
 
         public function showGenreManagement(){
             SessionValidatorHelper::ValidateSessionAdmin();
-            $apiGenresJSON = file_get_contents("https://api.themoviedb.org/3/genre/movie/list?api_key=".API_KEY."&language=es");
-            $genresResult = json_decode($apiGenresJSON, true);
+            $genresResult = $this-> movieAPI-> getApiGenresJson();
             $apiGenresList = $genresResult ["genres"];
 
             require_once(VIEWS_PATH."genre-management.php");
@@ -255,8 +258,7 @@
         }
 
         private function getMovieFromAPI($movieID){
-            $apiMovieJSON = file_get_contents("https://api.themoviedb.org/3/movie/".$movieID."?api_key=".API_KEY."&language=es");
-            $movieResult = json_decode($apiMovieJSON, true);
+            $movieResult = $this-> movieAPI-> getMovieResult($movieID);
 
             $movie = new Movie;
             $movie-> setID($movieResult["id"]);
@@ -269,8 +271,7 @@
             $movie-> setGenres($movieResult["genres"]);
             $movie-> setVoteAverage($movieResult["vote_average"]);
 
-            $apiVideoJSON = file_get_contents("https://api.themoviedb.org/3/movie/".$movieID."/videos?api_key=".API_KEY."&language=es");
-            $videoResult = json_decode($apiVideoJSON, true);
+            $videoResult = $this-> movieAPI-> getMovieVideo($movieID);
             $videoResult = $videoResult["results"];
             foreach ($videoResult as $video){
                 if (strcmp ($video["type"], "Trailer") == 0 && strcmp ($video["site"], "YouTube") == 0){
