@@ -83,7 +83,7 @@
             <div class="carousel-item active movie">
                 <h1 style="position: absolute; top: 15%; color: #ffffff; background-color: rgba(0,0,0,0.7); padding: 20px 100px;"><?php echo $movieCarousel->getTitle(); ?></h1>
                 <img src="<?php echo API_IMG.$movieCarousel->getImage(); ?>" class="d-block w-100" alt="Poster">
-                <form action="<?php echo FRONT_ROOT ?>User/showMovieDetails" method="post">
+                <form action="<?php echo FRONT_ROOT ?>User/showMovieDetails" method="get">
                    <!-- GET MOVIE ATTRIBUTES TO SEND BY FORM -->
                     <input type="hidden" name="movieID" value="<?php echo $movieCarousel->getID(); ?>">
                     <input type="hidden" name="cinemaID" value="<?php echo $cinemaSelected; ?>">
@@ -99,7 +99,7 @@
             <div class="carousel-item movie">
                 <h1 style="position: absolute; top: 15%; color: #ffffff; background-color: rgba(0,0,0,0.7); padding: 20px 100px;"><?php echo $movieCarousel->getTitle(); ?></h1>
                 <img src="<?php echo API_IMG.$movieCarousel->getImage(); ?>" class="d-block w-100" alt="Poster">
-                <form action="<?php echo FRONT_ROOT ?>User/showMovieDetails" method="post">
+                <form action="<?php echo FRONT_ROOT ?>User/showMovieDetails" method="get">
                     <!-- GET MOVIE ATTRIBUTES TO SEND BY FORM -->
                     <input type="hidden" name="movieID" value="<?php echo $movieCarousel->getID(); ?>">
                     <input type="hidden" name="cinemaID" value="<?php echo $cinemaSelected; ?>">
@@ -141,7 +141,7 @@
         ?>
     
         <div class="card mb-3 col-5" style="max-width: 540px; background-color: rgba(10, 0, 0, 0.8); color: #ffffff;">
-            <form action="<?php echo FRONT_ROOT ?>User/showMovieDetails" method="post">
+            <form action="<?php echo FRONT_ROOT ?>User/showMovieDetails" method="get">
 
                 <!-- GET MOVIE ATTRIBUTES TO SEND BY FORM -->
                 <input type="hidden" name="movieID" value="<?php echo $movie->getID(); ?>">

@@ -22,7 +22,7 @@
             <h1 style="color: #e88e9d; font-weight: 700;">Cines</h1>
         </div>
         <img id="back-img" src="<?php echo IMG_PATH."poster00.jpg" ?>" alt="Poster">
-            <form action="<?php echo FRONT_ROOT ?>User/showMovieListing" method="post" id="cinema-list-form">
+            <form action="<?php echo FRONT_ROOT ?>User/showMovieListing" method="get" id="cinema-list-form">
                 <div class="input-group mb-3" style="width: 50%; margin-left: 23%;" id="options">
                     <div class="input-group-prepend">
                         <label class="input-group-text" for="inputGroupSelect01">Cines</label>
