@@ -49,6 +49,28 @@
             }
         }
 
+        public function ReadByUserEmail($email){
+ 
+            $sql = "SELECT * FROM users where email = :email";
+
+            $parameters['email'] = $email;
+
+            try {
+
+                $this->connection = Connection::getInstance();
+                $result = $this->connection->execute($sql, $parameters);
+
+            } catch(Exception $err){
+                throw $err;
+            }
+
+            if(!empty($result)){
+                return $this->mapear($result);
+            } else {
+                return false;
+            }
+        }
+
         public function Read($userName, $userPassword){
  
             $sql = "SELECT * FROM users where userName = :userName and password = :password";
