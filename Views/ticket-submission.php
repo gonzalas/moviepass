@@ -23,7 +23,7 @@
         <img id="back-img-movie" src="<?php echo API_IMG.$show-> getMovie()->getImage(); ?>" alt="Poster">
           <div class="container">
                <h1 class="title">Datos de compra</h1>
-               <form action="<?php echo FRONT_ROOT ?>Ticket/validateTicketPurchase" method="post" class="bg-dark-alpha white-font p-5">                       
+               <form action="<?php echo FRONT_ROOT ?>Ticket/readCCInformation" method="post" class="bg-dark-alpha white-font p-5">                       
                     <div class="col-lg-12">
                         <div class="form-group">
                             <label for="cinemaSelection">Película</label>
@@ -58,7 +58,7 @@
                     <div class="col-lg-12">
                         <div class="form-group">
                             <label for="cinemaSelection">Fecha</label>
-                            <input class="form-control" name="showDate" type="text" value="<?=$show-> getDate()?>" readonly>
+                            <input class="form-control" type="text" value="<?=$show-> getDate()?>" readonly>
                         </div>
                     </div>
                     <div class="col-lg-12">
