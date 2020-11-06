@@ -1,5 +1,6 @@
 <?php
     require_once('nav.php');
+    use Helpers\LanguageConverter as LanguageConverter;
 ?>
 <main class="py-5">
     <?php if (strcmp($message, "0") != 0){
@@ -101,7 +102,7 @@
                                             <h5 class="card-title"><?=$movie-> getTitle()?></h5>
                                             <p><?=$movie-> getOverview()?></p>
                                             <p class="card-text"><small class="text-muted">Fecha de lanzamiento: <?=$movie-> getReleaseDate()?></small></p>
-                                            <p class="card-text"><small class="text-muted">Idioma: <?=$movie-> getLanguage()?></small></p>
+                                            <p class="card-text"><small class="text-muted">Idioma: <?=LanguageConverter::Convert($movie-> getLanguage())?></small></p>
                                             <p class="card-text"><small class="text-muted">Géneros: 
                                             <?php
                                                 foreach($movie-> getGenres() as $genre){
