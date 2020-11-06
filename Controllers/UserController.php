@@ -13,6 +13,7 @@
     use Models\MovieListing as MovieListing;
     use Helpers\SessionValidatorHelper as SessionValidatorHelper;
     use Helpers\EncodePassword as EncodePassword;
+    use Helpers\UserValidator as UserValidator;
     use Helpers\FilterRepeteadArray as FilterRepeteadArray;
     use Helpers\Carousel as Carousel;
 
@@ -36,27 +37,42 @@
         function registerUser($firstName, $lastName, $email, $username, $password, $password2){
 
             if($this->validatePassword($password, $password2)){
-                $user = new User();
-                $user->setFirstName($firstName);
-                $user->setLastName($lastname);
-                $user->setEmail($email);
-                $user->setUserName($username);
-                $user->setPassword($password);
-                $user->setIsAdmin(false);
 
-                //Add user into DB
-                $this->userDAO->Create($user);
+                //Verify that username and email are available before create
+                if(UserValidator::ValidateUsername($username)){
+                    if(UserValidator::ValidateEmail($email)){
 
-                //Create session with user data
-                $_SESSION['loggedUser'] = $user;
+                        $user = new User();
+                        $user->setFirstName($firstName);
+                        $user->setLastName($lastName);
+                        $user->setEmail($email);
+                        $user->setUserName($username);
+                        $user->setPassword($password);
+                        $user->setIsAdmin(false);
 
-                //Give a welcome to a new user
-                $this->welcomeNewUser($user);
+                        //Add user into DB
+                        $this->userDAO->Create($user);
 
-                //Show first view for user logged
-                $this->showCinemaListMenu();
+                        //Create session with user data
+                        $_SESSION['loggedUser'] = $user;
+
+                        //Give a welcome to a new user
+                        $this->welcomeNewUser($user);
+
+                        //Show first view for user logged
+                        $this->showCinemaListMenu();
+
+                    } else {
+                        $message = "El email ya está registrado.";
+                        require_once(VIEWS_PATH."login.php");
+                    }
+                } else {
+                    $message = "Nombre de usuario no disponible.";
+                    require_once(VIEWS_PATH."login.php");
+                }
 
             } else {
+                $message = "Las contraseñas no coinciden.";
                 require_once(VIEWS_PATH."login.php");
             }
         }
@@ -178,9 +194,6 @@
         }
 
 
-        public function verifyUserInDB($userName, $password){
-
-        }
 
         public function showUserProfile($message = ""){
 
