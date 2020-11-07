@@ -64,7 +64,7 @@
             return false;
         }
 
-        public function readCCInformation ($showID, $seatsQuantity){
+        public function readCCInformation ($showID, $seatsQuantity, $message = ""){
             SessionValidatorHelper::ValidateRestrictedUserView();
             $show = $this-> showDAO-> ReadByID ($showID);
             $movieID = $this->showDAO->ReadMovieID($showID);
@@ -72,6 +72,9 @@
             $show-> setMovie($movie);
             $roomID = $this-> showDAO-> ReadRoomID ($showID);
             $room = $this-> roomDAO-> ReadByID($roomID);
+            $cinemaID = $this-> roomDAO-> ReadCinemaID($roomID);
+            $cinema = $this-> cinemaDAO-> ReadByID($cinemaID);
+            $room-> setCinema($cinema);
             $show-> setRoom($room);
             $showDate = $show-> getDate();
             $subtotal = $room-> getTicketValue() * $seatsQuantity;
@@ -81,6 +84,34 @@
                 $total = $subtotal;
             }
             require_once (VIEWS_PATH."checkout-form.php");
+        }
+
+        public function validateCCInformation ($ccName, $ccNumber, $expireMM, $expireYY, $ccCVV, $showID, $seatsQuantity){
+            SessionValidatorHelper::ValidateRestrictedUserView();
+
+            /**Validate that the user inserted 16 numbers into the cc numbers field */
+            if (strlen($ccNumber) == 16){
+                /**Validate that the inserted cc numbers belong either to a Visa (first digit = 4) or to a MasterCard card (first digit = 6)*/
+                if (substr($ccNumber, 0, 1) === "4" || substr($ccNumber, 0, 1) === "6"){
+                    $currentYear = date('Y');
+                    $currentMonth = date('m');
+                    /**Validate that the inserted cc hasn't expired */
+                    if ($currentYear < $expireYY || ($currentYear == $expireYY && $currentMonth < $expireMM)){
+                        /** Validate that the inserted ccCVV belongs either to a Visa or to a Mastercard card (CVV is 3 digits long) */
+                        if (strlen($ccCVV) == 3){
+                            $this-> validateTicketPurchase($showID, $seatsQuantity);
+                        } else {
+                            $this-> readCCInformation($showID, $seatsQuantity, "El pago no pudo ser procesado el código de seguridad ingresado es incorrecto.");
+                        }
+                    } else {
+                        $this-> readCCInformation($showID, $seatsQuantity, "El pago no pudo ser procesado porque su tarjeta venció.");
+                    }
+                } else {
+                    $this-> readCCInformation($showID, $seatsQuantity, "El pago no pudo ser procesado porque nuestro sistema sólo acepta tarjetas Visa o MasterCard.");
+                }
+            } else {
+                $this-> readCCInformation($showID, $seatsQuantity, "El pago no pudo ser procesado porque el número de la tarjeta debe contener 16 dígitos.");
+            }
         }
 
         public function validateTicketPurchase($showID, $seatsQuantity){
