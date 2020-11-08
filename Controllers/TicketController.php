@@ -117,7 +117,7 @@
         public function validateTicketPurchase($showID, $seatsQuantity){
             SessionValidatorHelper::ValidateRestrictedUserView();
                 
-            $ticket = new Ticket();
+            
             $purchase = new Purchase();
 
             $userLogged = $_SESSION['loggedUser'];
@@ -132,16 +132,27 @@
             $purchase->setPurchaseDate(date('Y-m-d', time()));
             $purchase->setSubTotal($seatsQuantity * $roomToBuy->getTicketValue());
             $purchase->setShow($showToBuy);
-            $purchase->setHasDiscount(100); //--> None discount for now
-            $purchase->setPurchaseTotal($purchase->getSubTotal() * ($purchase->getHasDiscount() / 100));
+            if ($this-> hasDiscount($seatsQuantity, $showToBuy-> getDate())){
+                $purchase->setHasDiscount(true);
+                $purchase->setPurchaseTotal($purchase->getSubTotal() * 0.75);
+            } else {
+                $purchase->setHasDiscount(false);
+                $purchase->setPurchaseTotal($purchase->getSubTotal());
+            }
             $purchase->setUser($userLogged);
-            $ticket->setPurchase($purchase);
-
             //Save in DB
             $userInDB = $this->userDAO->Read($userLogged->getUserName(), $userLogged->getPassword());
             $this->purchaseDAO->Create($purchase, $userInDB->getID());
             $purchaseFromDAO = $this->purchaseDAO->ReadOneByUserID($userLogged->getID());
-            $this->ticketDAO->Create($ticket, $purchaseFromDAO->getPurchaseID());
+
+            $showSoldTickets = $this-> showDAO-> CountShowSoldTickets($showID);
+            for ($i = 0; $i<$seatsQuantity; $i++){
+                $ticket = new Ticket();
+                $ticket->setPurchase($purchase);
+                $ticket-> setSeatLocation($showSoldTickets + 1);
+                $this->ticketDAO->Create($ticket, $purchaseFromDAO->getPurchaseID());
+                $showSoldTickets++;
+            }            
             
             require_once(VIEWS_PATH."purchase-view.php");
 
