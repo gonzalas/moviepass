@@ -224,6 +224,10 @@
                     $room = $this-> roomDAO-> ReadByID ($roomID);
                     $room-> setCinema($this-> cinemaDAO-> ReadByID($cinemaID));
                     $show-> setRoom($room);
+                    $soldTickets = $this-> showDAO-> CountShowSoldTickets($show-> getID());
+                    $show-> setSoldTickets($soldTickets);
+                    $gatheredMoney = $this-> showDAO-> SumGatheredMoney($show->getID());
+                    $show-> setGatheredMoney($gatheredMoney);
                 }    
             }
 

@@ -81,7 +81,7 @@
                         <td><?=$show-> getMovie()-> getTitle()?></td>
                         <td><?=$show-> getRoom()-> getName()?></td>
                         <td><?=$show-> getRoom()-> getCinema()-> getName()?></td>
-                        <td><button type="button" class="btn btn-primary btn-center" data-toggle="modal" data-target="#exampleModal" style="right-border-radius:20px;">Estadísticas</button></td>
+                        <td><button type="button" class="btn btn-primary btn-center" data-toggle="modal" data-target="#statisticsModal<?=$show->getID()?>" style="right-border-radius:20px;">Estadísticas</button></td>
                         <?php
                         if($show->getDate() < $today && $show-> getIsActive()){
                         ?>
@@ -90,47 +90,54 @@
                         }
                         ?>
                     </tr>
+                    <div class="modal fade show" id="statisticsModal<?=$show->getID()?>" tabindex="-1" aria-labelledby="statisticsModal<?=$show->getID()?>" style="display: none; padding-right: 17px;" aria-modal="true" role="dialog">
+                        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                            <div class="modal-content" style="width: 700px;">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="statisticsModal<?=$show->getID()?>">Estadísticas de la función</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">×</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="col mb-3 movie-div">
+                                        <div class="card card-movie">
+                                            <div class="card-body">
+                                                <h5 class="card-title">Entradas vendidas: <?=$show->getSoldTickets()?>/<?=$show->getRoom()->getCapacity()?></h5>
+                                                <div class="progress">
+                                                    <div class="progress-bar" role="progressbar" style="width: <?=$show->getSoldTickets() * 100/ $show-> getRoom()-> getCapacity()?>%;" aria-valuenow="<?=$show->getSoldTickets() * 100 / $show-> getRoom()-> getCapacity()?>" aria-valuemin="0" aria-valuemax="100"></div>
+                                                </div>
+                                                <h5 class="card-title"><br>Entradas disponibles: <?=$show->getRoom()->getCapacity() - $show->getSoldTickets()?>/<?=$show->getRoom()->getCapacity()?></h5>
+                                                <div class="progress">
+                                                    <div class="progress-bar bg-danger" role="progressbar" style="width: <?=($show->getRoom()->getCapacity() - $show->getSoldTickets()) * 100/ $show-> getRoom()-> getCapacity()?>%;" aria-valuenow="46" aria-valuemin="0" aria-valuemax="100"></div>
+                                                </div>
+                                                <?php if ($show->getGatheredMoney()>0){ ?>
+                                                    <h5 class="card-title"><br>Dinero recaudado*: $<?=$show->getGatheredMoney()?>/$<?=($show-> getRoom()-> getCapacity() * $show-> getRoom()-> getTicketValue())?></h5>
+                                                <?php } else { ?>
+                                                    <h5 class="card-title"><br>Dinero recaudado*: $0/$<?=($show-> getRoom()-> getCapacity() * $show-> getRoom()-> getTicketValue())?></h5>
+                                                <?php } ?>
+                                                
+                                                <div class="progress">
+                                                    <div class="progress-bar bg-success" role="progressbar" style="width: <?=$show->getGatheredMoney() * 100/ ($show-> getRoom()-> getCapacity() * $show-> getRoom()-> getTicketValue())?>%;" aria-valuenow="<?=$show->getGatheredMoney() * 100/ ($show-> getRoom()-> getCapacity() * $show-> getRoom()-> getTicketValue())?>" aria-valuemin="0" aria-valuemax="100"></div>
+                                                </div>
+                                                <div class="muted">* algunas entradas pueden contener descuentos</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 <?php
                     }
                 ?>
                 </tbody>
             </table>
             
-            <div class="modal fade show" id="exampleModal" tabindex="-1" aria-labelledby="exampleModal" style="display: none; padding-right: 17px;" aria-modal="true" role="dialog">
-                <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
-                    <div class="modal-content" style="width: 700px;">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="exampleModal">Estadísticas de función</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">×</span>
-                            </button>
-                        </div>
-                        <div class="modal-body">
-                            <div class="col mb-3 movie-div">
-                                <div class="card card-movie">
-                                    <div class="card-body">
-                                        <h5 class="card-title">Entradas vendidas</h5>
-                                        <div class="progress">
-                                            <div class="progress-bar" role="progressbar" style="width: 54%;" aria-valuenow="54" aria-valuemin="0" aria-valuemax="100">162/300</div>
-                                        </div>
-                                        <h5 class="card-title"><br>Entradas disponibles</h5>
-                                        <div class="progress">
-                                            <div class="progress-bar bg-danger" role="progressbar" style="width: 46%;" aria-valuenow="46" aria-valuemin="0" aria-valuemax="100">128/300</div>
-                                        </div>
-                                        <h5 class="card-title"><br>Dinero recaudado</h5>
-                                        <div class="progress">
-                                            <div class="progress-bar bg-success" role="progressbar" style="width: 54%;" aria-valuenow="54" aria-valuemin="0" aria-valuemax="100">$72.900,00/$135.000,00</div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            
             <?php
             } else {
             ?>
