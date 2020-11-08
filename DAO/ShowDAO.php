@@ -330,6 +330,19 @@
             }
         }
 
+        public function SumGatheredMoney($showID){
+            $sql = "SELECT sum(p.purchaseTotal) FROM purchases p WHERE p.showID = :showID;";
+
+            $parameters['showID'] = $showID;
+
+            try {
+                $this->connection = Connection::getInstance();
+                return $this->connection->execute($sql, $parameters)[0][0];
+            }catch(PDOException $ex){
+                throw $ex;
+            }
+        }
+
         public function Delete($id){
             $sql = "UPDATE shows SET isActive = false WHERE showID = :id";
 

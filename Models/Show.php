@@ -10,6 +10,8 @@
         private $isActive;
         private $room;
         private $movie;
+        private $soldTickets;
+        private $gatheredMoney;
 
         public function setID($id){$this->id = $id;}
         public function getID(){return $this->id;}
@@ -31,6 +33,12 @@
 
         public function setMovie($movie){$this->movie = $movie;}
         public function getMovie(){return $this->movie;}
+
+        public function setSoldTickets($soldTickets){$this->soldTickets = $soldTickets;}
+        public function getSoldTickets(){return $this->soldTickets;}
+
+        public function setGatheredMoney($gatheredMoney){$this->gatheredMoney = $gatheredMoney;}
+        public function getGatheredMoney(){return $this->gatheredMoney;}
 
     }
 ?>
