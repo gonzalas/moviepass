@@ -12,6 +12,37 @@
             justify-content: flex-end;
             border-bottom: 1px solid #ff3b55;
         }
+        #btn-redirect {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            padding: 10px 35px;
+            padding-left: 20px;
+            border-style: none;
+            border-radius: 10px;
+            z-index: 5;
+        }
+        #btn-redirect:hover {
+            transition: 1s;
+            cursor: pointer;
+            background-color: red;
+            opacity: 0.7;
+            outline: none;
+        }
+        #btn-redirect:hover a {
+            transition: 1s;
+            color: #ffffff;
+        }
+        #btn-redirect a {
+            text-decoration: none;
+            font-weight: 600;
+            color: #ba001f;
+            outline: none;
+        }
+        #btn-redirect img {
+            width: 20px;
+            margin-right: 10px;
+        }
         .nav-list {
             display: flex;
             margin: 10px;
@@ -39,6 +70,7 @@
 </style>
 
 <main class="login-view">
+    <button id="btn-redirect"><img src="<?php echo IMG_PATH?>icon.png"><a href="<?php echo FRONT_ROOT?>Home">Cartelera</a></button>
     <form  action="<?php echo FRONT_ROOT ?>User/processLogin" method="post">
         <nav class="navbar">
             <div class="nav-list">
