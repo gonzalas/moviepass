@@ -22,7 +22,7 @@
                     <div class="col-lg-12">
                         <div class="form-group">
                             <label for="movieSelection">Película (si una película no aparece, probá dándola de alta)</label>
-                            <select class="form-control" id="movieSelection" name="movieID">
+                            <select class="form-control" id="movieSelection" name="movieID" required>
                             <?php foreach($moviesList as $movie){
                                 ?>
                                 <option value="<?=$movie->getID()?>"><?=$movie->getTitle()?></option>
