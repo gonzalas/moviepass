@@ -101,6 +101,24 @@
             return $result[0][0];
         }
 
+        public function ReadShowByMovieID($movieID){
+            $sql = "SELECT * FROM shows WHERE movieID = :movieID";
+
+            $parameters['movieID'] = $movieID;
+
+            try {
+                $this->connection = Connection::getInstance();
+                $result = $this->connection->execute($sql, $parameters);
+            } catch(PDOException $ex){
+                throw $ex;
+            }
+
+            if(!empty($result)) {
+                return $this->mapear($result);
+            } else
+                return false; 
+        }
+
         public function ReadRoomID($showID){
             $sql = "SELECT roomID FROM shows WHERE showID = :showID";
 
@@ -115,6 +133,7 @@
 
             return $result[0][0];
         }
+
 
         public function ReadAll(){
             $sql = "SELECT * FROM shows WHERE isActive = true order by showDate";

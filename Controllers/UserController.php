@@ -7,6 +7,7 @@
     use DAO\ShowDAO as ShowDAO;
     use DAO\MovieDAO as MovieDAO;
     use DAO\GenreMovieDAO as GenreMovieDAO;
+    use DAO\GenreDAO as GenreDAO;
     use Models\User as User;
     use Models\Movie as Movie;
     use Models\Show as Show;
@@ -16,6 +17,7 @@
     use Helpers\UserValidator as UserValidator;
     use Helpers\FilterRepeteadArray as FilterRepeteadArray;
     use Helpers\Carousel as Carousel;
+    use Helpers\FilterMovieByTitle as FilterMovieByTitle;
 
     class UserController {
         private $userDAO;
@@ -24,6 +26,7 @@
         private $showDAO;
         private $movieDAO;
         private $genreMovieDAO;
+        private $genreDAO;
 
         public function __construct(){
             $this->userDAO = new UserDAO();
@@ -32,6 +35,7 @@
             $this->showDAO = new ShowDAO();
             $this->movieDAO = new MovieDAO();
             $this->genreMovieDAO = new GenreMovieDAO();
+            $this->genreDAO = new GenreDAO;
         }
 
         function registerUser($firstName, $lastName, $email, $username, $password, $password2){
@@ -112,9 +116,6 @@
             }
         }
 
-        function buyTicketLogin($movieID){
-            
-        }
        
         public function showMovieListing($cinemaSelected){
 
@@ -180,20 +181,6 @@
             require_once(VIEWS_PATH."movie-details.php");
         }
         
-        public function showRoomsToUser($cinemaSelected){
-
-            //Retrive all rooms from one cinema
-            $roomList = $this->roomDAO->ReadByCinemaID($cinemaSelected);
-
-            //Restore all cinemas to choose again before load views
-            $cinemasList = $this->cinemaDAO->ReadAll();
-
-            require_once(VIEWS_PATH."user-cinema-list.php");
-            require_once(VIEWS_PATH."user-room-list.php");
-           
-        }
-
-
 
         public function showUserProfile($message = ""){
 
@@ -235,9 +222,69 @@
 
         public function showCinemaListMenu(){
             $cinemasList = $this->cinemaDAO->ReadActiveCinemasWithRooms();
+            $genresList = $this->genreDAO->ReadAll();
             require_once(VIEWS_PATH."user-cinema-list.php");            
         }
 
+        public function showMovieGenre($genreID){
+            $moviesXGenres = $this->genreMovieDAO->ReadByGenreID($genreID);
+            $moviesSelected = array();
+            foreach($moviesXGenres as $movie){
+                array_push($moviesSelected, $this->movieDAO->ReadById($movie['movieID']));
+            }
+            $this->showCinemaListMenu();
+            $this->showMoviesByGenre($moviesSelected);
+        }
+
+        public function showMovieTitle($movieTitle){
+            //Get movies and filter by title
+            $moviesAll= $this->movieDAO->ReadActiveMovies();
+            $movieSearched = FilterMovieByTitle::ApplyFilter($moviesAll, $movieTitle);
+            $this->showCinemaListMenu();
+            $this->showMovieSearched($movieSearched);
+        }
+
+        public function showMovieSearchedDetails($movieID){
+            $showsList = $this->showDAO->ReadShowByMovieID($movieID);
+            $this->showViewMovieSearchedDetails($showsList);
+        }
+
+
+        private function showViewMovieSearchedDetails($showsList){
+            $roomList = array();
+            $cinemaList = array();
+            if(is_array($showsList)){
+                $movieID = $this->showDAO->ReadMovieID($showsList[0]->getID());
+                foreach($showsList as $shows){
+                    $roomID = $this->showDAO->ReadRoomID($shows->getID());
+                    $room = $this->roomDAO->ReadByID($roomID);
+                    array_push($roomList, $room);
+                    $cinemaID = $this->roomDAO->ReadCinemaID($roomID);
+                    $cinema = $this->cinemaDAO->ReadByID($cinemaID);
+                    array_push($cinemaList, $cinema);
+                }
+            } else {
+                $roomID = $this->showDAO->ReadRoomID($showsList->getID());
+                $room = $this->roomDAO->ReadByID($roomID);
+                $cinemaID = $this->roomDAO->ReadCinemaID($roomID);
+                $cinema = $this->cinemaDAO->ReadByID($cinemaID); 
+                $movieID = $this->showDAO->ReadMovieID($showsList->getID());   
+            }
+
+            $movieSelected = $this->movieDAO->ReadById($movieID);
+            $genresList = $this-> genreMovieDAO-> ReadByMovieID($movieID);
+            $movieSelected-> setGenres($genresList);
+
+            require_once(VIEWS_PATH."movie-searched-shows.php");
+        }
+
+        private function showMovieSearched($movieSearched){
+            require_once(VIEWS_PATH."user-movie-searched.php");
+        }
+
+        private function showMoviesByGenre($moviesSelected){
+            require_once(VIEWS_PATH."user-movies-genres.php");
+        }
 
         private function welcomeNewUser($user){
             SessionValidatorHelper::ValidateRestrictedUserView();
