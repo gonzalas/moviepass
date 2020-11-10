@@ -85,35 +85,47 @@
 
 <section class="container" style="width: 80%; max-width: 90%; display: none; margin-top: 8%;" id="available-shows">
     <img src="<?php echo API_IMG.$movieSelected->getImage();?>">
-    <div>
-        <h1 class="mt-3 p-4" style="color: white; font-weight: 700; text-align: center;">Funciones disponibles</h1>
-    </div>
-    <table class="table table-hover table-dark" style="text-align: center;">
-        <thead>
-            <tr>
-                <th scope="col">Fecha</th>
-                <th scope="col">Hora</th>
-                <th scope="col">Sala</th>
-                <th scope="col">Precio por entrada</th>
-                <th scope="col"></th>
-            </tr>
-        </thead>
-        <tbody>
-        <?php
-        foreach ($showsList as $show){
+    <?php if (!empty($showsList)){ ?>
+        <div>
+            <h1 class="mt-3 p-4" style="color: white; font-weight: 700; text-align: center;">Funciones disponibles</h1>
+        </div>
+        <table class="table table-hover table-dark" style="text-align: center;">
+            <thead>
+                <tr>
+                    <th scope="col">Fecha</th>
+                    <th scope="col">Hora</th>
+                    <th scope="col">Sala</th>
+                    <th scope="col">Precio por entrada</th>
+                    <th scope="col">Entradas disponibles</th>
+                    <th scope="col"></th>
+                </tr>
+            </thead>
+            <tbody>
+            <?php
+            foreach ($showsList as $show){
+                ?>
+                <tr>
+                    <th scope="row"><?=date("d M Y", strtotime($show->getDate()));?></th>
+                    <td><?=$show->getStartTime()?><br>-<br><?=$show->getEndTime()?></td>
+                    <td><?=$show-> getRoom()-> getName()?></td>
+                    <td>$<?=$show-> getRoom()-> getTicketValue()?></td>
+                    <td><?php if($show->getRoom()->getCapacity()-$show->getSoldTickets() > 10){ ?>Más de 10<?php } else { echo $show->getRoom()->getCapacity()-$show->getSoldTickets(); } ?></td>
+                    <td><a href="<?php echo FRONT_ROOT ?>Ticket/showBuyTicketView/?showId=<?php echo $show->getID();?>" class="btn btn-primary btn-center" style="right-border-radius:20px;">Comprar Entradas</button></td>
+                </tr>
+            <?php
+                }
             ?>
-            <tr>
-                <th scope="row"><?=date("d M Y", strtotime($show->getDate()));?></th>
-                <td><?=$show->getStartTime()?><br>-<br><?=$show->getEndTime()?></td>
-                <td><?=$show-> getRoom()-> getName()?></td>
-                <td>$<?=$show-> getRoom()-> getTicketValue()?></td>
-                <td><a href="<?php echo FRONT_ROOT ?>Ticket/showBuyTicketView/?showId=<?php echo $show->getID();?>" class="btn btn-primary btn-center" style="right-border-radius:20px;">Comprar Entradas</button></td>
-            </tr>
-        <?php
-            }
-        ?>
-        </tbody>
-    </table>
+            </tbody>
+        </table>
+    <?php } else { ?>
+        <div class="jumbotron jumbotron-fluid custom-jumbotron">
+            <div class="container">
+                <h1 class="display-4">En este momento, todas las entradas para <?=$movieSelected->getTitle()?> en el cine seleccionado están agotadas.</h1>
+                <p class="lead">Lamentamos el inconveniente y agradecemos su paciencia. Agregaremos más funciones a la brevedad.</p>
+            </div>
+        </div>
+    <?php } ?>
+    
 </section>
 
 <script>

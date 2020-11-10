@@ -28,6 +28,7 @@
         <hr>
         <p>Cliente: <?php echo $userLogged->getFirstName()." ".$userLogged->getLastName()?></p>
         <p>Película: <?php echo $movieToBuy->getTitle()?></p>
+        <p>Día: <?=date("d M Y", strtotime($showToBuy->getDate()));?></p>
         <p>Horario: <?php echo date('H:i', strtotime($showToBuy->getStartTime()))?></p>
         <p>Entradas: <?php echo $seatsQuantity?></p>
         <p><b>Total: $<?php echo $purchase->getPurchaseTotal()?></b></p>        

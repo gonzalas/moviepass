@@ -152,6 +152,68 @@
 
         }
 
+        public function CountMovieSoldTickets($movieID){
+            $sql = "SELECT count(*) FROM tickets t
+            INNER JOIN purchases p
+            ON t.purchaseID = p.purchaseID
+            INNER JOIN shows s
+            ON s.movieID = :movieID and p.showID = s.showID;";
+
+            $parameters['movieID'] = $movieID;
+
+            try {
+                $this->connection = Connection::getInstance();
+                return $this->connection->execute($sql, $parameters)[0][0];
+            }catch(PDOException $ex){
+                throw $ex;
+            }
+        }
+
+        public function CountMovieTotalCapacity($movieID){
+            $sql = "SELECT sum(r.capacity) FROM rooms r
+            INNER JOIN shows s
+            ON s.roomID = r.roomID AND s.movieID = :movieID;";
+
+            $parameters['movieID'] = $movieID;
+
+            try {
+                $this->connection = Connection::getInstance();
+                return $this->connection->execute($sql, $parameters)[0][0];
+            }catch(PDOException $ex){
+                throw $ex;
+            }
+        }
+
+        public function CountMoviePossibleTotalMoney($movieID){
+            $sql = "SELECT sum(r.ticketValue * r.capacity) FROM rooms r
+            INNER JOIN shows s
+            ON s.roomID = r.roomID AND s.movieID = :movieID;";
+
+            $parameters['movieID'] = $movieID;
+
+            try {
+                $this->connection = Connection::getInstance();
+                return $this->connection->execute($sql, $parameters)[0][0];
+            }catch(PDOException $ex){
+                throw $ex;
+            }
+        }
+
+        public function CountMovieGatheredMoney($movieID){
+            $sql = "SELECT ifnull(sum(p.purchaseTotal), 0) as totalSales from purchases p
+            INNER JOIN shows s
+            ON p.showID = s.showID AND s.movieID = :movieID;";
+
+            $parameters['movieID'] = $movieID;
+
+            try {
+                $this->connection = Connection::getInstance();
+                return $this->connection->execute($sql, $parameters)[0][0];
+            }catch(PDOException $ex){
+                throw $ex;
+            }
+        }
+
         public function Delete($id){
 
         }

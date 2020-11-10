@@ -81,7 +81,7 @@
                         <td><?=$show-> getMovie()-> getTitle()?></td>
                         <td><?=$show-> getRoom()-> getName()?></td>
                         <td><?=$show-> getRoom()-> getCinema()-> getName()?></td>
-                        <td><button type="button" class="btn btn-primary btn-center" data-toggle="modal" data-target="#statisticsModal<?=$show->getID()?>" style="right-border-radius:20px;">Estadísticas</button></td>
+                        <td><button type="button" class="btn btn-warning btn-center" data-toggle="modal" data-target="#statisticsModal<?=$show->getID()?>" style="right-border-radius:20px;">Estadísticas</button></td>
                         <?php
                         if($show->getDate() < $today && $show-> getIsActive()){
                         ?>

@@ -23,6 +23,7 @@
 <div class="container" style="background-color: #f8f9fa !important;">
   <div class="py-5 text-center">
     <img class="d-block mx-auto mb-4" src="https://image.flaticon.com/icons/png/512/126/126083.png" alt="" width="72" height="72">
+    <?php if ($show-> getSoldTickets() < $show-> getRoom()-> getCapacity()){ ?>
     <h2>Información de Pago</h2>
     <p class="lead">Para confirmar su compra en MoviePass, deberá ingresar información de una tarjeta de crédito Visa o Master válida.</p>
     <?php if ($message != ""){ ?>
@@ -38,7 +39,6 @@
     <div class="col-md-4 order-md-2 mb-4">
       <h4 class="d-flex justify-content-between align-items-center mb-3">
         <span class="text-success">Detalles de compra</span>
-        <span class="badge badge-success badge-pill"><?=$seatsQuantity?></span>
       </h4>
       <ul class="list-group mb-3">
         <li class="list-group-item d-flex justify-content-between lh-condensed">
@@ -53,7 +53,7 @@
             <h6 class="my-0"><?=$show-> getRoom()-> getName()?></h6>
             <small class="text-muted"><?=$show-> getRoom()-> getCinema()-> getName()?> | <?=$show-> getRoom()-> getCinema()-> getAddress()?></small>
           </div>
-          <span class="text-muted"><?=$show->getDate()?> | <?=$show->getStartTime()?></span>
+          <span class="text-muted"><?=date("d M Y", strtotime($show->getDate()));?> | <?=$show->getStartTime()?></span>
         </li>
         <?php
           if ($subtotal != $total){
@@ -160,6 +160,15 @@
       </form>
     </div>
   </div>
+  <?php } else { ?>
+    <div class="jumbotron jumbotron-fluid custom-jumbotron" style="background-color: #f8f9fa !important;">
+      <div class="container">
+          <h1 class="display-4">En este momento, todas las entradas para la función elegida están agotadas.</h1>
+          <p class="lead">Lamentamos el inconveniente y agradecemos su paciencia. Agregaremos más funciones a la brevedad.</p>
+          <a href="<?php echo FRONT_ROOT ?>User/showMovieDetails?movieID=<?=$show->getMovie()->getID()?>&cinemaID=<?=$show->getRoom()->getCinema()->getID()?>" class="btn btn-danger ml-auto d-block">Regresar</a>
+      </div>
+    </div>
+  <?php } ?>
 </div>
 
 <!-- Discounts Policies Modal -->
