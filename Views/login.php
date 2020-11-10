@@ -70,7 +70,7 @@
 </style>
 
 <main class="login-view">
-    <button id="btn-redirect"><img src="<?php echo IMG_PATH?>icon.png"><a href="<?php echo FRONT_ROOT?>Home">Cartelera</a></button>
+    <a href="<?php echo FRONT_ROOT?>Home"><button id="btn-redirect"><img src="<?php echo IMG_PATH?>icon.png">Cartelera</button></a>
     <form  action="<?php echo FRONT_ROOT ?>User/processLogin" method="post">
         <nav class="navbar">
             <div class="nav-list">

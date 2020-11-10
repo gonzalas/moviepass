@@ -45,6 +45,28 @@
                 return false; 
         }
 
+        public function ReadByActiveShows() {
+        
+            $sql = "SELECT gxm.genreID, g.name from genresxmovies gxm
+                    join genres g
+                    on gxm.genreID = g.genreID
+                    join shows s
+                    on s.movieID = gxm.movieID and (s.showDate > CURDATE()) OR (s.showDate = CURDATE() AND s.startTime >= CURTIME())
+                    group by g.genreID;";
+
+            try {
+                $this->connection = Connection::getInstance();
+                $result = $this->connection->execute($sql);
+            } catch ( PDOException $ex) {
+                throw $ex;
+            }
+
+            if(!empty($result)) {
+                return $this->mapear($result);
+            } else
+                return false; 
+        }
+
         public function ReadByGenreID($genreID) {
         
             $sql = "SELECT * FROM genresxmovies WHERE genreID = :genreID";

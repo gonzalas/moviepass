@@ -62,8 +62,13 @@
                         //Give a welcome to a new user
                         $this->welcomeNewUser($user);
 
-                        //Show first view for user logged
-                        $this->showCinemaListMenu();
+                        /**Redirect user to the corresponding view */
+                        if (isset($_SESSION['showID'])){
+                            header("location:".FRONT_ROOT."Ticket/showBuyTicketView/?showID=".$_SESSION['showID']);
+                        } else {
+                            //Show first view for user logged
+                            $this->showCinemaListMenu();
+                        }
 
                     } else {
                         $message = "El email ya está registrado.";
@@ -82,6 +87,10 @@
 
         function showLoginView ($message = ""){
             require_once(VIEWS_PATH . "login.php");
+        }
+        
+        public function buyTicketLogin(){
+            $this-> showLoginView();
         }
         
         function processLogin($userName, $userPassword){
@@ -107,8 +116,13 @@
                 if($userValidated){
                     //Initiate session
                     $_SESSION['loggedUser'] = $userValidated;
-                    //Redirect to user menu
-                    $this->showCinemaListMenu();
+                    /**Redirect user to the corresponding view */
+                    if (isset($_SESSION['showID'])){
+                        header("location:".FRONT_ROOT."Ticket/showBuyTicketView/?showID=".$_SESSION['showID']);
+                    } else {
+                        //Redirect to user menu
+                        $this->showCinemaListMenu();
+                    }
                 } else {
                     $this-> showLoginView("El usuario o contraseña ingresados son incorrectos.");
                 }
@@ -225,10 +239,9 @@
             require_once(VIEWS_PATH."login.php");
         }
 
-
         public function showCinemaListMenu(){
             $cinemasList = $this->cinemaDAO->ReadActiveCinemasWithRooms();
-            $genresList = $this->genreDAO->ReadAll();
+            $genresList = $this->genreMovieDAO->ReadByActiveShows();
             require_once(VIEWS_PATH."user-cinema-list.php");            
         }
 

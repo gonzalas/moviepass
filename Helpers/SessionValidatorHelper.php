@@ -9,8 +9,10 @@
         }
 
         public static function ValidateBuyTicketView($showID){
-            if(!isset($_SESSION["loggedUser"]))
-                header ("location:".FRONT_ROOT."User/buyTicketLogin/?showID=$showID");
+            if(!isset($_SESSION["loggedUser"])){
+                $_SESSION['showID'] = $showID;
+                header ("location:".FRONT_ROOT."User/buyTicketLogin");
+            }
         }
 
         public static function ValidateUserNav(){
