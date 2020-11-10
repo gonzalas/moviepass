@@ -55,7 +55,7 @@
         <div style="display: flex; justify-content: space-between; align-items: center;">
             <nav class="navbar navbar-light bg-light" style="border-radius: 5px;">
                 <form class="form-inline" action="<?php echo FRONT_ROOT?>User/showMovieTitle" method="post">
-                    <input class="form-control mr-sm-2" style="width: 400px;" name="movieTitle" type="search" placeholder="Nombre de película" aria-label="Search">
+                    <input class="form-control mr-sm-2" style="width: 400px;" name="movieTitle" type="search" placeholder="Nombre de película" aria-label="Search" required>
                     <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Buscar</button>
                 </form>
             </nav>
@@ -66,7 +66,6 @@
                         <label class="input-group-text" for="inputGroupSelect01">Género</label>
                     </div>
                     <select class="custom-select" id="inputGroupSelect01" name="genreID">
-                        <option selected>Elija...</option>
                         <?php
                             foreach($genresList as $genre){
                         ?>
