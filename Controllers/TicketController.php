@@ -46,22 +46,13 @@
             $movieID = $this-> showDAO-> ReadMovieID($showID);
             $movie = $this-> movieDAO-> ReadByID($movieID);
             $show-> setMovie($movie);
+            $showSoldTickets = $this-> showDAO-> CountShowSoldTickets($show-> getID());
+            $show-> setSoldTickets($showSoldTickets);
             require(VIEWS_PATH."ticket-submission.php");
         }
 
         function viewForm(){
             require(VIEWS_PATH."checkout-form.php");
-        }
-
-        private function hasDiscount ($seatsQuantity, $showDate){
-            if ($seatsQuantity >= 2){
-                //Get the day of the week using PHP's date function.
-                $dayOfWeek = date("l", strtotime($showDate));
-                if (strcmp($dayOfWeek, "Tuesday") == 0 || strcmp($dayOfWeek, "Wednesday") == 0){
-                    return true;
-                }
-            }
-            return false;
         }
 
         public function readCCInformation ($showID, $seatsQuantity, $message = ""){
@@ -76,6 +67,8 @@
             $cinema = $this-> cinemaDAO-> ReadByID($cinemaID);
             $room-> setCinema($cinema);
             $show-> setRoom($room);
+            $showSoldTickets = $this-> showDAO-> CountShowSoldTickets($show-> getID());
+            $show-> setSoldTickets($showSoldTickets);
             $showDate = $show-> getDate();
             $subtotal = $room-> getTicketValue() * $seatsQuantity;
             if ($this-> hasDiscount($seatsQuantity, $showDate)){
@@ -89,28 +82,39 @@
         public function validateCCInformation ($ccName, $ccNumber, $expireMM, $expireYY, $ccCVV, $showID, $seatsQuantity){
             SessionValidatorHelper::ValidateRestrictedUserView();
 
-            /**Validate that the user inserted 16 numbers into the cc numbers field */
-            if (strlen($ccNumber) == 16){
-                /**Validate that the inserted cc numbers belong either to a Visa (first digit = 4) or to a MasterCard card (first digit = 6)*/
-                if (substr($ccNumber, 0, 1) === "4" || substr($ccNumber, 0, 1) === "6"){
-                    $currentYear = date('Y');
-                    $currentMonth = date('m');
-                    /**Validate that the inserted cc hasn't expired */
-                    if ($currentYear < $expireYY || ($currentYear == $expireYY && $currentMonth < $expireMM)){
-                        /** Validate that the inserted ccCVV belongs either to a Visa or to a Mastercard card (CVV is 3 digits long) */
-                        if (strlen($ccCVV) == 3){
-                            $this-> validateTicketPurchase($showID, $seatsQuantity);
+            $show = $this-> showDAO-> ReadByID ($showID);
+            $roomID = $this-> showDAO-> ReadRoomID ($showID);
+            $room = $this-> roomDAO-> ReadByID($roomID);
+            $show-> setRoom($room);
+            $showSoldTickets = $this-> showDAO-> CountShowSoldTickets($show-> getID());
+            $show-> setSoldTickets($showSoldTickets);
+
+            if($show-> getSoldTickets() < $show-> getRoom()-> getCapacity()){
+                /**Validate that the user inserted 16 numbers into the cc numbers field */
+                if (strlen($ccNumber) == 16){
+                    /**Validate that the inserted cc numbers belong either to a Visa (first digit = 4) or to a MasterCard card (first digit = 6)*/
+                    if (substr($ccNumber, 0, 1) === "4" || substr($ccNumber, 0, 1) === "6"){
+                        $currentYear = date('Y');
+                        $currentMonth = date('m');
+                        /**Validate that the inserted cc hasn't expired */
+                        if ($currentYear < $expireYY || ($currentYear == $expireYY && $currentMonth < $expireMM)){
+                            /** Validate that the inserted ccCVV belongs either to a Visa or to a Mastercard card (CVV is 3 digits long) */
+                            if (strlen($ccCVV) == 3){
+                                $this-> validateTicketPurchase($showID, $seatsQuantity);
+                            } else {
+                                $this-> readCCInformation($showID, $seatsQuantity, "El pago no pudo ser procesado el código de seguridad ingresado es incorrecto.");
+                            }
                         } else {
-                            $this-> readCCInformation($showID, $seatsQuantity, "El pago no pudo ser procesado el código de seguridad ingresado es incorrecto.");
+                            $this-> readCCInformation($showID, $seatsQuantity, "El pago no pudo ser procesado porque su tarjeta venció.");
                         }
                     } else {
-                        $this-> readCCInformation($showID, $seatsQuantity, "El pago no pudo ser procesado porque su tarjeta venció.");
+                        $this-> readCCInformation($showID, $seatsQuantity, "El pago no pudo ser procesado porque nuestro sistema sólo acepta tarjetas Visa o MasterCard.");
                     }
                 } else {
-                    $this-> readCCInformation($showID, $seatsQuantity, "El pago no pudo ser procesado porque nuestro sistema sólo acepta tarjetas Visa o MasterCard.");
+                    $this-> readCCInformation($showID, $seatsQuantity, "El pago no pudo ser procesado porque el número de la tarjeta debe contener 16 dígitos.");
                 }
             } else {
-                $this-> readCCInformation($showID, $seatsQuantity, "El pago no pudo ser procesado porque el número de la tarjeta debe contener 16 dígitos.");
+                $this-> readCCInformation($showID, $seatsQuantity);
             }
         }
 
@@ -156,6 +160,17 @@
             
             require_once(VIEWS_PATH."purchase-view.php");
 
+        }
+        
+        private function hasDiscount ($seatsQuantity, $showDate){
+            if ($seatsQuantity >= 2){
+                //Get the day of the week using PHP's date function.
+                $dayOfWeek = date("l", strtotime($showDate));
+                if (strcmp($dayOfWeek, "Tuesday") == 0 || strcmp($dayOfWeek, "Wednesday") == 0){
+                    return true;
+                }
+            }
+            return false;
         }
     }
 

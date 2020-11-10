@@ -14,6 +14,10 @@
         private $genres;
         private $isActive;
         private $voteAverage;
+        private $soldTickets;
+        private $totalCapacity; /**Registers the total capacity of the shows that featured this movie */
+        private $gatheredMoney;
+        private $totalPossibleMoney;
 
         public function setID($id){$this->id = $id;}
         public function getID(){return $this->id;}
@@ -47,6 +51,18 @@
 
         public function setVoteAverage($voteAverage){$this->voteAverage = $voteAverage;}
         public function getVoteAverage(){return $this->voteAverage;}
+
+        public function setSoldTickets($soldTickets){$this->soldTickets = $soldTickets;}
+        public function getSoldTickets(){return $this->soldTickets;}
+
+        public function setTotalCapacity($totalCapacity){$this->totalCapacity = $totalCapacity;}
+        public function getTotalCapacity(){return $this->totalCapacity;}
+
+        public function setGatheredMoney($gatheredMoney){$this->gatheredMoney = $gatheredMoney;}
+        public function getGatheredMoney(){return $this->gatheredMoney;}
+
+        public function setTotalPossibleMoney($totalPossibleMoney){$this->totalPossibleMoney = $totalPossibleMoney;}
+        public function getTotalPossibleMoney(){return $this->totalPossibleMoney;}
         
     }
 

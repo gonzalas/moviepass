@@ -10,7 +10,6 @@
     use Models\User as User;
     use Models\Movie as Movie;
     use Models\Show as Show;
-    use Models\MovieListing as MovieListing;
     use Helpers\SessionValidatorHelper as SessionValidatorHelper;
     use Helpers\EncodePassword as EncodePassword;
     use Helpers\UserValidator as UserValidator;
@@ -127,9 +126,13 @@
                 //Restore all cinemas to choose again before load views
                 $cinemasList = $this->cinemaDAO->ReadActiveCinemasWithRooms();
                 $showsList = $this->showDAO->ReadMovieListingByCinemaID($cinema->getID());
+                if ($showsList instanceof Show){
+                    $aux = $showsList;
+                    $showsList = array();
+                    array_push($showsList, $aux);
+                }
                
                 $movieListing = array();
-               
                 if($showsList){
                     foreach($showsList as $show){
                         $movieID = $this-> showDAO-> ReadMovieID($show-> getID());
@@ -175,7 +178,10 @@
                     $room = $this-> roomDAO-> ReadByID ($roomID);
                     $room-> setCinema($this-> cinemaDAO-> ReadByID($cinemaID));
                     $show-> setRoom($room);
-                }    
+                    $showSoldTickets = $this-> showDAO-> CountShowSoldTickets($show-> getID());
+                    $show-> setSoldTickets($showSoldTickets);
+                }
+                $showsList = $this-> filterByAvailableTickets($showsList);
             }
             require_once(VIEWS_PATH."movie-details.php");
         }
@@ -246,6 +252,16 @@
 
         private function validatePassword($password, $password2){
             return ($password === $password2) ? true : false;
+        }
+
+        private function filterByAvailableTickets($showsList){
+            $auxArray = array();
+            foreach($showsList as $show){
+                if ($show-> getSoldTickets() < $show-> getRoom()-> getCapacity()){
+                    array_push($auxArray, $show);
+                }
+            }
+            return $auxArray;
         }
 
     }

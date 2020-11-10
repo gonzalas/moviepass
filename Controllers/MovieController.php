@@ -97,6 +97,14 @@
                             foreach ($moviesList as $movie){
                                 $movieGenres = $this-> genreMovieDAO-> ReadByMovieID($movie-> getID());
                                 $movie-> setGenres($movieGenres);
+                                $soldTickets = $this-> movieDAO-> CountMovieSoldTickets($movie-> getID());
+                                $movie-> setSoldTickets($soldTickets);
+                                $totalCapacity = $this-> movieDAO-> CountMovieTotalCapacity($movie-> getID());
+                                $movie-> setTotalCapacity($totalCapacity);
+                                $possibleMoney = $this-> movieDAO-> CountMoviePossibleTotalMoney($movie-> getID());
+                                $movie-> setTotalPossibleMoney($possibleMoney);
+                                $gatheredMoney = $this-> movieDAO-> CountMovieGatheredMoney($movie-> getID());
+                                $movie-> setGatheredMoney($gatheredMoney);
                             }
                         }
                         break;
@@ -106,6 +114,14 @@
                             foreach ($moviesList as $movie){
                                 $movieGenres = $this-> genreMovieDAO-> ReadByMovieID($movie-> getID());
                                 $movie-> setGenres($movieGenres);
+                                $soldTickets = $this-> movieDAO-> CountMovieSoldTickets($movie-> getID());
+                                $movie-> setSoldTickets($soldTickets);
+                                $totalCapacity = $this-> movieDAO-> CountMovieTotalCapacity($movie-> getID());
+                                $movie-> setTotalCapacity($totalCapacity);
+                                $possibleMoney = $this-> movieDAO-> CountMoviePossibleTotalMoney($movie-> getID());
+                                $movie-> setTotalPossibleMoney($possibleMoney);
+                                $gatheredMoney = $this-> movieDAO-> CountMovieGatheredMoney($movie-> getID());
+                                $movie-> setGatheredMoney($gatheredMoney);
                             }
                         }
                         break;
@@ -115,6 +131,14 @@
                             foreach ($moviesList as $movie){
                                 $movieGenres = $this-> genreMovieDAO-> ReadByMovieID($movie-> getID());
                                 $movie-> setGenres($movieGenres);
+                                $soldTickets = $this-> movieDAO-> CountMovieSoldTickets($movie-> getID());
+                                $movie-> setSoldTickets($soldTickets);
+                                $totalCapacity = $this-> movieDAO-> CountMovieTotalCapacity($movie-> getID());
+                                $movie-> setTotalCapacity($totalCapacity);
+                                $possibleMoney = $this-> movieDAO-> CountMoviePossibleTotalMoney($movie-> getID());
+                                $movie-> setTotalPossibleMoney($possibleMoney);
+                                $gatheredMoney = $this-> movieDAO-> CountMovieGatheredMoney($movie-> getID());
+                                $movie-> setGatheredMoney($gatheredMoney);
                             }
                         }
                 }
@@ -124,6 +148,14 @@
                     foreach ($moviesList as $movie){
                         $movieGenres = $this-> genreMovieDAO-> ReadByMovieID($movie-> getID());
                         $movie-> setGenres($movieGenres);
+                        $soldTickets = $this-> movieDAO-> CountMovieSoldTickets($movie-> getID());
+                        $movie-> setSoldTickets($soldTickets);
+                        $totalCapacity = $this-> movieDAO-> CountMovieTotalCapacity($movie-> getID());
+                        $movie-> setTotalCapacity($totalCapacity);
+                        $possibleMoney = $this-> movieDAO-> CountMoviePossibleTotalMoney($movie-> getID());
+                        $movie-> setTotalPossibleMoney($possibleMoney);
+                        $gatheredMoney = $this-> movieDAO-> CountMovieGatheredMoney($movie-> getID());
+                        $movie-> setGatheredMoney($gatheredMoney);
                     }
                 }
             }

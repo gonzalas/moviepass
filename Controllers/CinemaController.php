@@ -169,6 +169,14 @@
                         $cinema-> setTotalCapacity (0);
                         $cinema-> setRooms(array());
                     }
+                    $soldTickets = $this-> cinemaDAO-> CountCinemaSoldTickets($cinema-> getID());
+                    $cinema-> setSoldTickets($soldTickets);
+                    $totalShowsCapacity = $this-> cinemaDAO-> CountCinemaTotalShowsCapacity($cinema-> getID());
+                    $cinema-> setTotalShowsCapacity($totalShowsCapacity);
+                    $possibleMoney = $this-> cinemaDAO-> CountCinemaPossibleTotalMoney($cinema-> getID());
+                    $cinema-> setTotalPossibleMoney($possibleMoney);
+                    $gatheredMoney = $this-> cinemaDAO-> CountCinemaGatheredMoney($cinema-> getID());
+                    $cinema-> setGatheredMoney($gatheredMoney);
                 }
             } else {
                 $cinemasList = array();

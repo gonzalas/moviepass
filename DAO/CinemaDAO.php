@@ -126,6 +126,72 @@
                 return false;
         }
 
+        public function CountCinemaSoldTickets($cinemaID){
+            $sql = "select count(*) from tickets t
+            inner join purchases p
+            on t.purchaseID = p.purchaseID
+            inner join shows s
+            on p.showID = s.showID
+            inner join rooms r
+            on s.roomID = r.roomID and r.cinemaID = :cinemaID;";
+
+            $parameters['cinemaID'] = $cinemaID;
+
+            try {
+                $this->connection = Connection::getInstance();
+                return $this->connection->execute($sql, $parameters)[0][0];
+            }catch(PDOException $ex){
+                throw $ex;
+            }
+        }
+
+        public function CountCinemaTotalShowsCapacity($cinemaID){
+            $sql = "select sum(r.capacity) from rooms r
+            inner join shows s
+            on s.roomID = r.roomID and r.cinemaID = :cinemaID;";
+
+            $parameters['cinemaID'] = $cinemaID;
+
+            try {
+                $this->connection = Connection::getInstance();
+                return $this->connection->execute($sql, $parameters)[0][0];
+            }catch(PDOException $ex){
+                throw $ex;
+            }
+        }
+
+        public function CountCinemaPossibleTotalMoney($cinemaID){
+            $sql = "select sum(r.ticketValue * r.capacity) from rooms r
+            inner join shows s
+            on s.roomID = r.roomID and r.cinemaID = :cinemaID;";
+
+            $parameters['cinemaID'] = $cinemaID;
+
+            try {
+                $this->connection = Connection::getInstance();
+                return $this->connection->execute($sql, $parameters)[0][0];
+            }catch(PDOException $ex){
+                throw $ex;
+            }
+        }
+
+        public function CountCinemaGatheredMoney($cinemaID){
+            $sql = "SELECT ifnull(sum(p.purchaseTotal), 0) as totalSales from purchases p
+            INNER JOIN shows s
+            ON p.showID = s.showID 
+            inner join rooms r
+            on s.roomID = r.roomID and r.cinemaID = :cinemaID;";
+
+            $parameters['cinemaID'] = $cinemaID;
+
+            try {
+                $this->connection = Connection::getInstance();
+                return $this->connection->execute($sql, $parameters)[0][0];
+            }catch(PDOException $ex){
+                throw $ex;
+            }
+        }
+
         public function ReadUnactiveCinemas(){
  
             $sql = "SELECT * FROM cinemas WHERE isActive = false";

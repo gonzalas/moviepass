@@ -22,62 +22,73 @@
      <section id="listado" class="mb-5">
         <img id="back-img-movie" src="<?php echo API_IMG.$show-> getMovie()->getImage(); ?>" alt="Poster">
           <div class="container">
-               <h1 class="title">Datos de compra</h1>
-               <form action="<?php echo FRONT_ROOT ?>Ticket/readCCInformation" method="post" class="bg-dark-alpha white-font p-5">                       
-                    <div class="col-lg-12">
-                        <div class="form-group">
-                            <label for="cinemaSelection">Película</label>
-                            <input class="form-control" type="text" value="<?=$show-> getMovie()-> getTitle();?>" readonly>
-                            <input type="hidden" name="showID" value="<?=$show-> getID();?>">
+               <?php if ($show-> getSoldTickets() < $show-> getRoom()-> getCapacity()){ ?>
+                <h1 class="title">Datos de compra</h1>
+                <form action="<?php echo FRONT_ROOT ?>Ticket/readCCInformation" method="post" class="bg-dark-alpha white-font p-5">                       
+                        <div class="col-lg-12">
+                            <div class="form-group">
+                                <label for="cinemaSelection">Película</label>
+                                <input class="form-control" type="text" value="<?=$show-> getMovie()-> getTitle();?>" readonly>
+                                <input type="hidden" name="showID" value="<?=$show-> getID();?>">
+                            </div>
                         </div>
-                    </div>
-                    <div class="col-lg-12">
-                        <div class="form-group">
-                            <label for="cinemaSelection">Duración</label>
-                            <input class="form-control" type="text" value="<?=$movie-> getLength() . ' minutos.';?>" readonly>
+                        <div class="col-lg-12">
+                            <div class="form-group">
+                                <label for="cinemaSelection">Duración</label>
+                                <input class="form-control" type="text" value="<?=$movie-> getLength() . ' minutos.';?>" readonly>
+                            </div>
                         </div>
-                    </div>
-                    <div class="col-lg-12">
-                        <div class="form-group">
-                            <label for="cinemaSelection">Cine</label>
-                            <input class="form-control" type="text" value="<?=$show-> getRoom()-> getCinema()-> getName();?>" readonly>
+                        <div class="col-lg-12">
+                            <div class="form-group">
+                                <label for="cinemaSelection">Cine</label>
+                                <input class="form-control" type="text" value="<?=$show-> getRoom()-> getCinema()-> getName();?>" readonly>
+                            </div>
                         </div>
-                    </div>
-                    <div class="col-lg-12">
-                        <div class="form-group">
-                            <label for="cinemaSelection">Dirección del cine</label>
-                            <input class="form-control" type="text" value="<?=$show-> getRoom()-> getCinema()-> getAddress();?>" readonly>
+                        <div class="col-lg-12">
+                            <div class="form-group">
+                                <label for="cinemaSelection">Dirección del cine</label>
+                                <input class="form-control" type="text" value="<?=$show-> getRoom()-> getCinema()-> getAddress();?>" readonly>
+                            </div>
                         </div>
-                    </div>
-                    <div class="col-lg-12">
-                        <div class="form-group">
-                            <label for="cinemaSelection">Sala</label>
-                            <input class="form-control" type="text" value="<?=$show-> getRoom()-> getName();?>" readonly>
+                        <div class="col-lg-12">
+                            <div class="form-group">
+                                <label for="cinemaSelection">Sala</label>
+                                <input class="form-control" type="text" value="<?=$show-> getRoom()-> getName();?>" readonly>
+                            </div>
                         </div>
-                    </div>
-                    <div class="col-lg-12">
-                        <div class="form-group">
-                            <label for="cinemaSelection">Fecha</label>
-                            <input class="form-control" type="text" value="<?=$show-> getDate()?>" readonly>
+                        <div class="col-lg-12">
+                            <div class="form-group">
+                                <label for="cinemaSelection">Fecha</label>
+                                <input class="form-control" type="text" value="<?=date("d M Y", strtotime($show->getDate()));?>" readonly>
+                            </div>
                         </div>
-                    </div>
-                    <div class="col-lg-12">
-                        <div class="form-group">
-                            <label for="cinemaSelection">Hora</label>
-                            <input class="form-control" type="text" value="<?=$show-> getStartTime();?>" readonly>
+                        <div class="col-lg-12">
+                            <div class="form-group">
+                                <label for="cinemaSelection">Hora</label>
+                                <input class="form-control" type="text" value="<?=$show-> getStartTime();?>" readonly>
+                            </div>
                         </div>
-                    </div>
-                    <div class="col-lg-12">
-                        <div class="form-group">
-                            <label for="seatsQuantity">Cantidad de entradas</label><br>
-                            <input type="number" id="seatsQuantity" value="" name="seatsQuantity" min="1" max="<?=$show-> getRoom()-> getCapacity();?>" required>
+                        <div class="col-lg-12">
+                            <div class="form-group">
+                                <label for="seatsQuantity">Cantidad de entradas (disponibles: <?=$show-> getRoom()-> getCapacity() - $show-> getSoldTickets();?>).</label><br>
+                                <input type="number" id="seatsQuantity" value="" name="seatsQuantity" min="1" max="<?=$show-> getRoom()-> getCapacity() - $show-> getSoldTickets();?>" required>
+                            </div>
                         </div>
+                        <div class="row">
+                            <a href="<?php echo FRONT_ROOT ?>User/showMovieDetails?movieID=<?=$show->getMovie()->getID()?>&cinemaID=<?=$show->getRoom()->getCinema()->getID()?>" class="btn btn-danger ml-auto d-block">Regresar</a>
+                            <button type="submit" class="btn btn-primary ml-3">Confirmar compra</button>
+                        </div>
+                </form>
+               <?php } else { ?>
+                <div class="jumbotron jumbotron-fluid custom-jumbotron">
+                    <div class="container">
+                        <h1 class="display-4">En este momento, todas las entradas para la función elegida están agotadas.</h1>
+                        <p class="lead">Lamentamos el inconveniente y agradecemos su paciencia. Agregaremos más funciones a la brevedad.</p>
+                        <a href="<?php echo FRONT_ROOT ?>User/showMovieDetails?movieID=<?=$show->getMovie()->getID()?>&cinemaID=<?=$show->getRoom()->getCinema()->getID()?>" class="btn btn-danger ml-auto d-block">Regresar</a>
                     </div>
-                    <div class="row">
-                        <a href="<?php echo FRONT_ROOT ?>User/showCinemaListMenu/" class="btn btn-danger ml-auto d-block">Cancelar</a>
-                        <button type="submit" class="btn btn-primary ml-3">Confirmar compra</button>
-                    </div>
-               </form>
+                </div>
+               <?php } ?>
+               
           </div>
      </section>
 </main>
