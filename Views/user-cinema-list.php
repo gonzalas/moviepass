@@ -54,14 +54,14 @@
     <div id="movie-search-filters" class="animate__animated animate__fadeInLeft" style="display: none;">
         <div style="display: flex; justify-content: space-between; align-items: center;">
             <nav class="navbar navbar-light bg-light" style="border-radius: 5px;">
-                <form class="form-inline" action="<?php echo FRONT_ROOT?>User/showMovieTitle" method="post">
+                <form class="form-inline" action="<?php echo FRONT_ROOT?>User/showMovieTitle" method="get">
                     <input class="form-control mr-sm-2" style="width: 400px;" name="movieTitle" type="search" placeholder="Nombre de película" aria-label="Search" required>
                     <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Buscar</button>
                 </form>
             </nav>
 
             <div class="input-group mb-3" style="width: 400px; top: 10px; margin-left: 50px;">
-                <form action="<?php echo FRONT_ROOT?>User/showMovieGenre" method="post" style="display: flex; width: 100%;">
+                <form action="<?php echo FRONT_ROOT?>User/showMovieGenre" method="get" style="display: flex; width: 100%;">
                     <div class="input-group-prepend">
                         <label class="input-group-text" for="inputGroupSelect01">Género</label>
                     </div>
