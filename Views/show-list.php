@@ -59,7 +59,7 @@
         <?php
             if (!$emptyList){
                 ?>
-                <table class="table table-hover table-dark">
+                <table class="table table-hover table-dark" style="text-align: center;">
                 <thead>
                     <tr>
                         <th scope="col">Fecha</th>
@@ -68,7 +68,6 @@
                         <th scope="col">Sala</th>
                         <th scope="col">Cine</th>
                         <th scope="col"></th>
-                        <th scope="col"></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -76,19 +75,19 @@
                 foreach ($showsList as $show){
                     ?>
                     <tr>
-                        <th scope="row"><?=$show->getDate()?></th>
+                        <th scope="row"><?=date("d M Y", strtotime($show->getDate()));?></th>
                         <td ><?=$show->getStartTime()?><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-<br><?=$show->getEndTime()?></td>
                         <td><?=$show-> getMovie()-> getTitle()?></td>
                         <td><?=$show-> getRoom()-> getName()?></td>
                         <td><?=$show-> getRoom()-> getCinema()-> getName()?></td>
                         <td><button type="button" class="btn btn-warning btn-center" data-toggle="modal" data-target="#statisticsModal<?=$show->getID()?>" style="right-border-radius:20px;">Estadísticas</button></td>
-                        <?php
-                        if($show->getDate() < $today && $show-> getIsActive()){
+                        <!-- <?php
+                        /* if($show->getDate() < $today && $show-> getIsActive()){ */
                         ?>
-                            <td><a href="<?php echo FRONT_ROOT ?>Show/removeShow/?showId=<?php echo $show->getID();?>" class="btn btn-danger btn-center" style="right-border-radius:20px;">Eliminar</a></td>
+                            <td><a href="<?php /* echo FRONT_ROOT */ ?>Show/removeShow/?showId=<?php /* echo $show->getID(); */?>" class="btn btn-danger btn-center" style="right-border-radius:20px;">Eliminar</a></td>
                         <?php
-                        }
-                        ?>
+                        /* } */
+                        ?> -->
                     </tr>
                     <div class="modal fade show" id="statisticsModal<?=$show->getID()?>" tabindex="-1" aria-labelledby="statisticsModal<?=$show->getID()?>" style="display: none; padding-right: 17px;" aria-modal="true" role="dialog">
                         <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">

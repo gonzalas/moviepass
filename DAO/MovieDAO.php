@@ -214,6 +214,52 @@
             }
         }
 
+        public function ReadByGenreAndActiveShows($genreID) {
+        
+            $sql = "SELECT * FROM movies m
+            inner join genresxmovies gxm
+            on gxm.movieID = m.movieID and gxm.genreID = :genreID
+            join shows s
+            on s.movieID = m.movieID and (s.showDate > CURDATE()) OR (s.showDate = CURDATE() AND s.startTime >= CURTIME())
+            group by m.movieID";
+
+            $parameters['genreID'] = $genreID;
+
+            try {
+                $this->connection = Connection::getInstance();
+                $result = $this->connection->execute($sql, $parameters);
+            } catch ( PDOException $ex) {
+                throw $ex;
+            }
+
+            if (!empty($result)) {
+                return $result;
+            }else
+            {
+                return false;
+            }
+        }
+
+        public function ReadByActiveShows() {
+        
+            $sql = "SELECT m.movieID, m.title, m.overview, m.dateRelease, m.length, m.posterPath, m.trailerPath, m.language, m.voteAverage, m.isActive FROM movies m
+            join shows s
+            on s.movieID = m.movieID and (s.showDate > CURDATE()) OR (s.showDate = CURDATE() AND s.startTime >= CURTIME())
+            group by m.movieID";
+
+            try {
+                $this->connection = Connection::getInstance();
+                $result = $this->connection->execute($sql);
+            } catch ( PDOException $ex) {
+                throw $ex;
+            }
+
+            if(!empty($result)) {
+                return $this->mapear($result);
+            } else
+                return false;
+        }
+
         public function Delete($id){
 
         }

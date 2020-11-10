@@ -45,6 +45,24 @@
                 return false;    
         }
 
+        public function ReadByPurchaseID($purchaseID){
+            
+            $sql = "SELECT * FROM tickets WHERE purchaseID = :purchaseID";
+
+            $parameters['purchaseID'] = $purchaseID;
+            try {
+                $this->connection = Connection::getInstance();
+                $result = $this->connection->execute($sql, $parameters);
+            } catch(PDOException $ex){
+                throw $ex;
+            }
+
+            if(!empty($result)) {
+                return $this->mapear($result);
+            } else
+                return false;    
+        }
+
         public function ReadShowID($ticketID){
             $sql = "SELECT showID FROM tickets WHERE ticketID = :ticketID";
 

@@ -17,7 +17,7 @@
         ?>
     
         <div class="card mb-3 col-5" style="max-width: 540px; background-color: rgba(10, 0, 0, 0.8); color: #ffffff;">
-            <form action="<?php echo FRONT_ROOT ?>User/showMovieSearchedDetails" method="post">
+            <form action="<?php echo FRONT_ROOT ?>User/showMovieSearchedDetails" method="get">
 
                 <!-- GET MOVIE ATTRIBUTES TO SEND BY FORM -->
                 <input type="hidden" name="movieID" value="<?php echo $movie->getID(); ?>">
