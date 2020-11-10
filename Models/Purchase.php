@@ -10,6 +10,7 @@
         private $hasDiscount;
         private $purchaseTotal;
         private $user;
+        private $ticketsList;
 
         public function setPurchaseID($purchaseID){$this->purchaseID = $purchaseID;}
         public function getPurchaseID(){return $this->purchaseID;}
@@ -31,6 +32,9 @@
 
         public function setUser($user){$this->user = $user;}
         public function getUser(){return $this->user;}  
+
+        public function setTicketsList($ticketsList){$this->ticketsList = $ticketsList;}
+        public function getTicketsList(){return $this->ticketsList;}  
     }
 
 ?>

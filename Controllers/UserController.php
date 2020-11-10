@@ -8,9 +8,13 @@
     use DAO\MovieDAO as MovieDAO;
     use DAO\GenreMovieDAO as GenreMovieDAO;
     use DAO\GenreDAO as GenreDAO;
+    use DAO\PurchaseDAO as PurchaseDAO;
+    use DAO\TicketDAO as TicketDAO;
     use Models\User as User;
     use Models\Movie as Movie;
     use Models\Show as Show;
+    use Models\Ticket as Ticket;
+    use Models\Purchase as Purchase;
     use Helpers\SessionValidatorHelper as SessionValidatorHelper;
     use Helpers\EncodePassword as EncodePassword;
     use Helpers\UserValidator as UserValidator;
@@ -26,6 +30,8 @@
         private $movieDAO;
         private $genreMovieDAO;
         private $genreDAO;
+        private $purchaseDAO;
+        private $ticketDAO;
 
         public function __construct(){
             $this->userDAO = new UserDAO();
@@ -34,7 +40,9 @@
             $this->showDAO = new ShowDAO();
             $this->movieDAO = new MovieDAO();
             $this->genreMovieDAO = new GenreMovieDAO();
-            $this->genreDAO = new GenreDAO;
+            $this->genreDAO = new GenreDAO();
+            $this->purchaseDAO = new PurchaseDAO();
+            $this->ticketDAO = new TicketDAO();
         }
 
         function registerUser($firstName, $lastName, $email, $username, $password, $password2){
@@ -90,7 +98,11 @@
         }
         
         public function buyTicketLogin(){
-            $this-> showLoginView();
+            if(!isset($_SESSION["loggedUser"])){
+                $this-> showLoginView();
+            } else {
+                header("location:javascript://history.go(-1)");
+            }
         }
         
         function processLogin($userName, $userPassword){
@@ -132,7 +144,7 @@
        
         public function showMovieListing($cinemaSelected){
 
-                //If cinemaSelected == -1, was selected the default 'Elija' option on select
+            //If cinemaSelected == -1, was selected the default 'Elija' option on select
             if($cinemaSelected != -1){
 
                 //Retrive cinema selected on database
@@ -163,6 +175,7 @@
                 $moviesOnCarousel = 3;
                 $carousel = Carousel::generateCarouselMovies($movieListing, $moviesOnCarousel);
 
+                $genresList = $this->genreMovieDAO->ReadGenresByActiveShows();
                 require_once(VIEWS_PATH."user-cinema-list.php");
                 require_once(VIEWS_PATH."user-movie-listing.php");
             } else {
@@ -215,6 +228,46 @@
             require_once(VIEWS_PATH."user-info-profile.php");
         }
 
+        public function showUserPurchases(){
+
+            SessionValidatorHelper::ValidateRestrictedUserView();
+
+            //Get user from session
+            $user = $_SESSION['loggedUser'];
+
+            $purchasesList = $this-> purchaseDAO-> ReadByUserID($user-> getID());
+            if ($purchasesList instanceof Purchase){
+                $aux = $purchasesList;
+                $purchasesList = array();
+                array_push($purchasesList, $aux);
+            }
+            if (!empty($purchasesList)){
+                foreach ($purchasesList as $purchase){
+                    $ticketsList = $this-> ticketDAO-> ReadByPurchaseID($purchase-> getPurchaseID());
+                    if ($ticketsList instanceof Ticket){
+                        $aux = $ticketsList;
+                        $ticketsList = array();
+                        array_push($ticketsList, $aux);
+                    }
+                    $purchase-> setTicketsList($ticketsList);
+                    $showID = $this-> purchaseDAO-> ReadShowID($purchase-> getPurchaseID());
+                    $show = $this-> showDAO-> ReadById($showID);
+                    $roomID = $this-> showDAO-> ReadRoomID($showID);
+                    $room = $this-> roomDAO-> ReadByID($roomID);
+                    $cinemaID = $this-> roomDAO-> ReadCinemaID($roomID);
+                    $cinema = $this-> cinemaDAO-> ReadByID($cinemaID);
+                    $room-> setCinema($cinema);
+                    $show-> setRoom($room);
+                    $movieID = $this-> showDAO-> ReadMovieID($showID);
+                    $movie = $this-> movieDAO-> ReadByID($movieID);
+                    $show-> setMovie($movie);
+                    $purchase-> setShow($show);
+                }
+            }
+            
+            require_once(VIEWS_PATH."user-purchases-history.php");
+        }
+
         public function changeInfoUser($userName, $password){
             SessionValidatorHelper::ValidateRestrictedUserView();
 
@@ -241,12 +294,12 @@
 
         public function showCinemaListMenu(){
             $cinemasList = $this->cinemaDAO->ReadActiveCinemasWithRooms();
-            $genresList = $this->genreMovieDAO->ReadByActiveShows();
+            $genresList = $this->genreMovieDAO->ReadGenresByActiveShows();
             require_once(VIEWS_PATH."user-cinema-list.php");            
         }
 
         public function showMovieGenre($genreID){
-            $moviesXGenres = $this->genreMovieDAO->ReadByGenreID($genreID);
+            $moviesXGenres = $this->movieDAO->ReadByGenreAndActiveShows($genreID);
             $moviesSelected = array();
             foreach($moviesXGenres as $movie){
                 array_push($moviesSelected, $this->movieDAO->ReadById($movie['movieID']));
@@ -257,14 +310,19 @@
 
         public function showMovieTitle($movieTitle){
             //Get movies and filter by title
-            $moviesAll= $this->movieDAO->ReadActiveMovies();
+            $moviesAll= $this->movieDAO->ReadByActiveShows();
+            if ($moviesAll instanceof Movie){
+                $aux = $moviesAll;
+                $moviesAll = array();
+                array_push($moviesAll, $aux);
+            }
             $movieSearched = FilterMovieByTitle::ApplyFilter($moviesAll, $movieTitle);
             $this->showCinemaListMenu();
             $this->showMovieSearched($movieSearched);
         }
 
         public function showMovieSearchedDetails($movieID){
-            $showsList = $this->showDAO->ReadShowByMovieID($movieID);
+            $showsList = $this->showDAO->ReadUpcomingByMovie($movieID);
             $this->showViewMovieSearchedDetails($showsList);
         }
 

@@ -75,7 +75,7 @@
                             </div>
                         </div>
                         <div class="row">
-                            <a href="<?php echo FRONT_ROOT ?>User/showMovieDetails?movieID=<?=$show->getMovie()->getID()?>&cinemaID=<?=$show->getRoom()->getCinema()->getID()?>" class="btn btn-danger ml-auto d-block">Regresar</a>
+                            <a type="button" onClick="goBack()" class="btn btn-danger ml-auto d-block">Regresar</a>
                             <button type="submit" class="btn btn-primary ml-3">Confirmar compra</button>
                         </div>
                 </form>
@@ -84,11 +84,17 @@
                     <div class="container">
                         <h1 class="display-4">En este momento, todas las entradas para la función elegida están agotadas.</h1>
                         <p class="lead">Lamentamos el inconveniente y agradecemos su paciencia. Agregaremos más funciones a la brevedad.</p>
-                        <a href="<?php echo FRONT_ROOT ?>User/showMovieDetails?movieID=<?=$show->getMovie()->getID()?>&cinemaID=<?=$show->getRoom()->getCinema()->getID()?>" class="btn btn-danger ml-auto d-block">Regresar</a>
+                        <a type="button" onClick="goBack()" class="btn btn-danger ml-auto d-block">Regresar</a>
                     </div>
                 </div>
                <?php } ?>
                
           </div>
      </section>
+
+    <script>
+        function goBack() {
+            window.history.back();
+        }
+    </script>
 </main>

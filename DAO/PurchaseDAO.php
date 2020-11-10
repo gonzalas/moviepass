@@ -49,7 +49,8 @@
 
         public function ReadByUserID($userID){
             
-            $sql = "SELECT * FROM purchases WHERE userID = :userID";
+            $sql = "SELECT * FROM purchases WHERE userID = :userID
+            ORDER BY purchaseDate desc;";
 
             $parameters['userID'] = $userID;
             try {
@@ -104,7 +105,22 @@
         public function ReadUserID($purchaseID){
             $sql = "SELECT userID FROM purchases WHERE purchaseID = :purchaseID";
 
-            $parameters['shpurchaseID'] = $purchaseID;
+            $parameters['purchaseID'] = $purchaseID;
+            
+            try {
+                $this->connection = Connection::getInstance();
+                $result = $this->connection->execute($sql, $parameters);
+            } catch ( PDOException $ex) {
+                throw $ex;
+            }
+
+            return $result[0][0];
+        }
+
+        public function ReadShowID($purchaseID){
+            $sql = "SELECT showID FROM purchases WHERE purchaseID = :purchaseID";
+
+            $parameters['purchaseID'] = $purchaseID;
             
             try {
                 $this->connection = Connection::getInstance();

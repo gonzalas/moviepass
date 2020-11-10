@@ -25,6 +25,7 @@
           </a>
           <div class="dropdown-menu" aria-labelledby="navbarDropdown">
             <a class="nav-link" href="<?php echo FRONT_ROOT ?>User/showUserProfile">Ver perfil</a>
+            <a class="nav-link" href="<?php echo FRONT_ROOT ?>User/showUserPurchases">Mis compras</a>
             <a class="nav-link" href="<?php echo FRONT_ROOT ?>User/userLogOut">Cerrar Sesión</a>
           </div>
         </li>
