@@ -13,6 +13,7 @@
     use Models\Ticket as Ticket;
     use Models\Purchase as Purchase;
     use Helpers\SessionValidatorHelper as SessionValidatorHelper;
+    use Helpers\MyPHPMailer as MyPHPMailer;
 
     class TicketController {
         private $userDAO;
@@ -116,6 +117,9 @@
             } else {
                 $this-> readCCInformation($showID, $seatsQuantity);
             }
+
+            //Sent Mail feature
+            $this->sentMailToClient($show, $room);
         }
 
         public function validateTicketPurchase($showID, $seatsQuantity){
@@ -147,7 +151,7 @@
             //Save in DB
             $userInDB = $this->userDAO->Read($userLogged->getUserName(), $userLogged->getPassword());
             $this->purchaseDAO->Create($purchase, $userInDB->getID());
-            $purchaseFromDAO = $this->purchaseDAO->ReadOneByUserID($userLogged->getID());
+            $purchaseFromDAO = $this->purchaseDAO->ReadOneByUserID($userInDB->getID());
 
             $showSoldTickets = $this-> showDAO-> CountShowSoldTickets($showID);
             for ($i = 0; $i<$seatsQuantity; $i++){
@@ -171,6 +175,28 @@
                 }
             }
             return false;
+        }
+
+        private function sentMailToClient($show, $room){
+            //GET USER EMAIL
+            $userLogged = $_SESSION['loggedUser'];
+
+            //GET MOVIE
+            $movie = $this->movieDAO->ReadById($show->getMovie());
+
+            //GET SHOW DATA
+            $showDate = $show->getDate();
+            $showStartTime = $show->getStartTime();
+            $showEndTime = $show->getEndTime();
+
+            //GET CINEMA DATA
+            $cinema = $this->cinemaDAO->ReadById($room->getCinema());
+
+            //GET PURCHASE DATA
+            $purchase = $this->purchaseDAO->ReadOneByUserID($userLogged->getID());
+
+            //CALL TO SEND MAILER FUNCTION TO NOTIFY THE CLIENT ABOUT THE TICKET BOUGHT
+            MyPHPMailer::SendMail($userLogged->getEmail(), $room, $movie, $showDate, $showStartTime, $showEndTime, $cinema, $purchase);
         }
     }
 

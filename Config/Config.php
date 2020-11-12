@@ -24,6 +24,11 @@
     define("DB_NAME", "moviepass");
     define("DB_USER", "root");
     define("DB_PASS", "");
+
+    //PHPMailer
+    define("MAILER_EMAIL", "cinemamoviepass@gmail.com");
+    define("MAILER_PASSWORD", "fercas2020");
+    define("MAILER_NAME", "Cinema Moviepass");
 ?>
 
 
