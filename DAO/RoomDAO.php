@@ -188,6 +188,7 @@
             $resp = array_map(function($p){
                     $room = new Room();
                     $room->setID($p["roomID"]);
+                    $room->setCinema($p["cinemaID"]);
                     $room->setName($p["name"]);
                     $room->setTicketValue($p['ticketValue']);
                     $room->setCapacity($p["capacity"]);
