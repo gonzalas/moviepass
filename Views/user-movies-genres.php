@@ -9,7 +9,7 @@
         if(!empty($moviesSelected)){
     ?>
     
-    <div class="row" style="justify-content: center;">
+    <div class="row" style="justify-content: center; margin-top: 5%;">
 
         <?php
     

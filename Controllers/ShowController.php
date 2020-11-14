@@ -55,12 +55,8 @@
             require_once(VIEWS_PATH."show-add.php");
         }
 
-        function addShowSecondForm (){
+        function addShowSecondForm ($movieID, $showDate){
             SessionValidatorHelper::ValidateSessionAdmin();
-            if (isset($_POST['movieID']) && isset($_POST['showDate'])){
-                $movieID = $_POST['movieID'];
-                $showDate = $_POST['showDate'];
-            }
             $dateOccupied = $this-> showDAO-> ReadByDateAndMovie($showDate, $movieID);
             if ($dateOccupied){
                 $roomID = $dateOccupied;
