@@ -21,6 +21,7 @@
     use Helpers\FilterRepeteadArray as FilterRepeteadArray;
     use Helpers\Carousel as Carousel;
     use Helpers\FilterMovieByTitle as FilterMovieByTitle;
+    use Helpers\GetMovies as GetMovies;
 
     class UserController {
         private $userDAO;
@@ -176,10 +177,11 @@
                 $carousel = Carousel::generateCarouselMovies($movieListing, $moviesOnCarousel);
 
                 $genresList = $this->genreMovieDAO->ReadGenresByActiveShows();
+   
                 require_once(VIEWS_PATH."user-cinema-list.php");
                 require_once(VIEWS_PATH."user-movie-listing.php");
             } else {
-                $this->showCinemaListMenu();
+                $this->showCinemaListMenu(true);
             }
 
         }
@@ -292,10 +294,19 @@
             require_once(VIEWS_PATH."login.php");
         }
 
-        public function showCinemaListMenu(){
+        public function showCinemaListMenu($filtered = false){
             $cinemasList = $this->cinemaDAO->ReadActiveCinemasWithRooms();
             $genresList = $this->genreMovieDAO->ReadGenresByActiveShows();
-            require_once(VIEWS_PATH."user-cinema-list.php");            
+            $movieListing = GetMovies::GetAll();
+            if($filtered){
+                require_once(VIEWS_PATH."user-cinema-list.php");
+            } else {
+                //Create Carrousel
+                $moviesOnCarousel = 3;
+                $carousel = Carousel::generateCarouselMovies($movieListing, $moviesOnCarousel);
+                require_once(VIEWS_PATH."user-cinema-list.php");
+                require_once(VIEWS_PATH."general-movie-listing.php"); 
+            }           
         }
 
         public function showMovieGenre($genreID){
@@ -304,7 +315,7 @@
             foreach($moviesXGenres as $movie){
                 array_push($moviesSelected, $this->movieDAO->ReadById($movie['movieID']));
             }
-            $this->showCinemaListMenu();
+            $this->showCinemaListMenu(true);
             $this->showMoviesByGenre($moviesSelected);
         }
 
@@ -316,8 +327,9 @@
                 $moviesAll = array();
                 array_push($moviesAll, $aux);
             }
-            $movieSearched = FilterMovieByTitle::ApplyFilter($moviesAll, $movieTitle);
-            $this->showCinemaListMenu();
+            $movieSearched = null;
+            if($moviesAll) $movieSearched = FilterMovieByTitle::ApplyFilter($moviesAll, $movieTitle);
+            $this->showCinemaListMenu(true);
             $this->showMovieSearched($movieSearched);
         }
 
