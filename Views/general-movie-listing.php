@@ -107,7 +107,7 @@
         if(!empty($movieListing)){
     ?>
     
-    <div class="row" style="justify-content: center;">
+    <div class="row" style="justify-content: center; padding-top: 20px;">
 
         <?php
     

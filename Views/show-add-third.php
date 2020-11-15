@@ -57,7 +57,7 @@
                     ?>
                     <div class="col-lg-12">
                         <div class="form-group">
-                            <label for="timeSelection">Horario (recordá que debe haber 15 minutos entre funciones)</label><br>
+                            <label for="timeSelection">Horario (tener en cuenta que al horario de finalización se le agregan 15 minutos)</label><br>
                             <input type="time" id="timeSelection" name="showTime" min="11:00" max="23:30" required>
                         </div>
                     </div>

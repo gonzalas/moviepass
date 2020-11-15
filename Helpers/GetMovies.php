@@ -3,6 +3,7 @@
 
     use DAO\ShowDAO as ShowDAO;
     use DAO\MovieDAO as MovieDAO;
+    use Models\Show as Show;
 
     class GetMovies {
 
@@ -12,7 +13,12 @@
             $movieDAO = new MovieDAO();
 
             //Get shows to know about active movies
-            $showsList = $showDAO->ReadAll();
+            $showsList = $showDAO->ReadUpcomingNoRepeatedMovies();
+            if ($showsList instanceof Show){
+                $aux = $showsList;
+                $showsList = array();
+                array_push($showsList, $aux);
+            }
 
             //Instatiate arrays
             $moviesIDList = array();

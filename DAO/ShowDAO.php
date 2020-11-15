@@ -195,6 +195,24 @@
                 return false;
         }
 
+        public function ReadUpcomingNoRepeatedMovies(){
+            $sql = "SELECT * FROM shows WHERE (showDate > CURDATE() OR (showDate = CURDATE() AND startTime >= CURTIME())) group by movieID order by showDate";
+
+            try {
+
+                $this->connection = Connection::getInstance();
+                $result = $this->connection->execute($sql);
+
+            } catch(PDOException $ex){
+                throw $ex;
+            }
+
+            if(!empty($result)){
+                return $this->mapear($result);
+            } else
+                return false;
+        }
+
         public function ReadAllByRoomID($roomID){
             $sql = "SELECT * FROM shows WHERE roomID = :roomID order by showDate";
 

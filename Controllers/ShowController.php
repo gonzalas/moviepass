@@ -30,24 +30,6 @@
             $this-> genreDAO = new GenreDAO();
         }
 
-        function addShow($name, $address) {
-            SessionValidatorHelper::ValidateSessionAdmin();
-            if (!empty($this-> cinemaDAO-> ReadByName($name))){
-                $this-> showAddView("Nombre de cine ya existente. Intente con otro.");
-            } else {
-                if (!empty($this-> cinemaDAO-> ReadByAddress($address))){
-                    $this-> showAddView("Dirección ya existente. Intente con otra.");
-                } else {
-                    $cinema = new Cinema();
-                    $cinema-> setName($name);
-                    $cinema-> setAddress($address);
-                    $cinema-> setIsActive(true);
-                    $this-> cinemaDAO-> Create($cinema);
-                    $this-> showListView();
-                }
-            }
-        }
-
         function showAddView ($message = "", $messageCode = 0){
             SessionValidatorHelper::ValidateSessionAdmin();
             $moviesList = $this-> movieDAO-> ReadActiveMovies();
@@ -80,13 +62,8 @@
             }
         }
 
-        function addShowThirdForm (){
+        function addShowThirdForm ($roomID, $showDate, $movieID){
             SessionValidatorHelper::ValidateSessionAdmin();
-            if (isset($_POST['movieID']) && isset($_POST['showDate']) && isset($_POST['roomID'])){
-                $movieID = $_POST['movieID'];
-                $showDate = $_POST['showDate'];
-                $roomID = $_POST['roomID'];
-            }
             $cinemaID = $this-> roomDAO-> ReadCinemaID($roomID);
             $movie = $this-> movieDAO-> ReadByID($movieID);
             $room = $this-> roomDAO-> ReadByID($roomID);
@@ -100,32 +77,24 @@
             require_once(VIEWS_PATH."show-add-third.php");
         }
 
-        function validateAddShow(){
-            if (isset($_POST['movieID']) && isset($_POST['showDate']) && isset($_POST['roomID']) && isset($_POST['showTime'])){
-                $roomID = $_POST['roomID'];
-                $movieID = $_POST['movieID'];
-                $showDate = $_POST['showDate'];
-                $showTime = $_POST['showTime'];
-                $movie = $this-> movieDAO-> ReadByID($movieID);
-                $endTime = date('H:i', strtotime($showTime) + TIME_AFTER_SHOW + $movie-> getLength() * 60);
-                $showsList = $this-> showDAO-> ReadByDateAndRoom ($showDate, $roomID);
-                if ($showsList instanceof Show){
-                    $aux = $showsList;
-                    $showsList = array();
-                    array_push($showsList, $aux);
-                }
-                if ($this-> validateShowTime($showTime, $endTime, $showsList)){
-                    $show = new Show();
-                    $show-> setDate($showDate);
-                    $show-> setStartTime($showTime);
-                    $show-> setEndTime($endTime);
-                    $this-> showDAO-> Create($show, $roomID, $movieID);
-                    $this-> showAddView("Función agregada con éxito.", 1);
-                } else {
-                    $this-> showAddView("La función no pudo ser agregada porque coincide con los horarios de otra función.", 2);
-                }
+        function validateAddShow($movieID, $cinemaID, $roomID, $showDate, $showTime){
+            $movie = $this-> movieDAO-> ReadByID($movieID);
+            $endTime = date('H:i', strtotime($showTime) + TIME_AFTER_SHOW + $movie-> getLength() * 60);
+            $showsList = $this-> showDAO-> ReadByDateAndRoom ($showDate, $roomID);
+            if ($showsList instanceof Show){
+                $aux = $showsList;
+                $showsList = array();
+                array_push($showsList, $aux);
+            }
+            if ($this-> validateShowTime($showTime, $endTime, $showsList)){
+                $show = new Show();
+                $show-> setDate($showDate);
+                $show-> setStartTime($showTime);
+                $show-> setEndTime($endTime);
+                $this-> showDAO-> Create($show, $roomID, $movieID);
+                $this-> showAddView("Función agregada con éxito.", 1);
             } else {
-                $this-> showAddView("Hubo un error en el envio de los datos.", 2);
+                $this-> showAddView("La función no pudo ser agregada porque coincide con los horarios de otra función.", 2);
             }
         }
 
