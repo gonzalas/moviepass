@@ -2,7 +2,7 @@
     Helpers\SessionValidatorHelper::ValidateUserNav();
 ?>
 
-<section class="container">
+<section class="container" style="margin-top: 5%;">
 
     <!-- MOVIES SEARCHED -->
     <?php
