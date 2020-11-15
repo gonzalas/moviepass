@@ -102,6 +102,8 @@
                             /** Validate that the inserted ccCVV belongs either to a Visa or to a Mastercard card (CVV is 3 digits long) */
                             if (strlen($ccCVV) == 3){
                                 $this-> validateTicketPurchase($showID, $seatsQuantity);
+                                //Sent Mail feature
+                                $this->sentMailToClient($show, $room);
                             } else {
                                 $this-> readCCInformation($showID, $seatsQuantity, "El pago no pudo ser procesado el código de seguridad ingresado es incorrecto.");
                             }
@@ -117,9 +119,6 @@
             } else {
                 $this-> readCCInformation($showID, $seatsQuantity);
             }
-
-            //Sent Mail feature
-            $this->sentMailToClient($show, $room);
         }
 
         public function validateTicketPurchase($showID, $seatsQuantity){
@@ -182,7 +181,8 @@
             $userLogged = $_SESSION['loggedUser'];
 
             //GET MOVIE
-            $movie = $this->movieDAO->ReadById($show->getMovie());
+            $movieID = $this-> showDAO-> ReadMovieID($show-> getID());
+            $movie = $this->movieDAO->ReadById($movieID);
 
             //GET SHOW DATA
             $showDate = $show->getDate();

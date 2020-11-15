@@ -62,7 +62,7 @@
             }
         }
 
-        function addShowThirdForm ($movieID, $showDate, $roomID){
+        function addShowThirdForm ($roomID, $showDate, $movieID){
             SessionValidatorHelper::ValidateSessionAdmin();
             $cinemaID = $this-> roomDAO-> ReadCinemaID($roomID);
             $movie = $this-> movieDAO-> ReadByID($movieID);
@@ -77,7 +77,7 @@
             require_once(VIEWS_PATH."show-add-third.php");
         }
 
-        function validateAddShow($movieID, $showDate, $roomID, $showTime){
+        function validateAddShow($movieID, $cinemaID, $roomID, $showDate, $showTime){
             $movie = $this-> movieDAO-> ReadByID($movieID);
             $endTime = date('H:i', strtotime($showTime) + TIME_AFTER_SHOW + $movie-> getLength() * 60);
             $showsList = $this-> showDAO-> ReadByDateAndRoom ($showDate, $roomID);
