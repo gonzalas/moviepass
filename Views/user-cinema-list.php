@@ -55,7 +55,7 @@
                         <div class="input-group-prepend">
                             <label title="Filtrar películas por género" class="input-group-text" for="inputGroupSelect01">Género</label>
                         </div>
-                        <select class="custom-select" id="inputGroupSelect01" name="genreID">
+                        <select class="custom-select" id="inputGroupSelect01" name="genreID" required>
                             <?php
                                 foreach($genresList as $genre){
                             ?>
