@@ -16,6 +16,7 @@
             } ?>
           <div class="container">
           <?php if($cinemaList != null){
+                    if ($moviesList != null){
           ?>
                <h1 class="title">Agregar nueva Función</h1>
                <form action="<?php echo FRONT_ROOT ?>Show/addShowSecondForm" method="post" class="bg-light-alpha white-font p-5">                       
@@ -41,6 +42,16 @@
                     <button type="submit" class="btn btn-dark ml-auto d-block">Continuar</button>
                </form>
           </div>
+          <?php } else { ?>
+                    <div class="jumbotron jumbotron-fluid custom-jumbotron">
+                         <div class="container">
+                         <h1 class="display-4">No hay películas activas cargadas en el sistema.</h1>
+                         <p class="lead">Lamentamos el inconveniente. Intenta agregando películas al sistema.</p>
+                         </div>
+                    </div>
+                <?php
+                    }
+                ?>
           <?php } else { ?>
                     <div class="jumbotron jumbotron-fluid custom-jumbotron">
                          <div class="container">
