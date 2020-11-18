@@ -14,6 +14,7 @@
     use Models\Purchase as Purchase;
     use Helpers\SessionValidatorHelper as SessionValidatorHelper;
     use Helpers\MyPHPMailer as MyPHPMailer;
+    use Helpers\QR as QR;
 
     class TicketController {
         private $userDAO;
@@ -195,8 +196,11 @@
             //GET PURCHASE DATA
             $purchase = $this->purchaseDAO->ReadOneByUserID($userLogged->getID());
 
+            //GENERATE QR CODE TO ATTACH TO EMAIL
+            include("C:\wamp64\www\UTN\Moviepass\Helpers\QR.php");
+
             //CALL TO SEND MAILER FUNCTION TO NOTIFY THE CLIENT ABOUT THE TICKET BOUGHT
-            MyPHPMailer::SendMail($userLogged->getEmail(), $room, $movie, $showDate, $showStartTime, $showEndTime, $cinema, $purchase);
+            MyPHPMailer::SendMail($userLogged->getEmail(), $room, $movie, $showDate, $showStartTime, $showEndTime, $cinema, $purchase, $show->getID());
         }
     }
 

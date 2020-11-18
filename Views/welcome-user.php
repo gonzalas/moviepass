@@ -17,7 +17,7 @@
         <p>Se ha registrado con el email <b><?php echo $user->getEmail()?></b>.</p>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" onClick="closeWelcomeModal()">Close</button>
+        <button type="button" class="btn btn-secondary" onClick="closeWelcomeModal()">Cerrar</button>
       </div>
     </div>
   </div>

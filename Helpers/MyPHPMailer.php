@@ -10,7 +10,7 @@
 
     class MyPHPMailer {
 
-        public static function SendMail($clientEmail, $room, $movie, $showDate, $showStartTime, $showEndTime, $cinema, $purchase){
+        public static function SendMail($clientEmail, $room, $movie, $showDate, $showStartTime, $showEndTime, $cinema, $purchase, $showID){
             $mail = new PHPMailer(true);
 
             $mailBody = "<b>¡Gracias por elegirnos!</b>
@@ -45,7 +45,7 @@
                 $mail->addAddress($clientEmail);     
             
                 // Attachments --> attach here the qr code
-                // $mail->addAttachment("");         
+                $mail->addAttachment(FRONT_ROOT.VIEWS_PATH."qrcodes/".$clientEmail."-show".$showID.".png");         
             
                 // Content
                 $mail->isHTML(true);                                 
