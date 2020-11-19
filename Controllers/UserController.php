@@ -64,6 +64,7 @@
 
                         //Add user into DB
                         $this->userDAO->Create($user);
+                        $user = $this->userDAO->ReadByUserName($username);
 
                         //Create session with user data
                         $_SESSION['loggedUser'] = $user;
