@@ -14,6 +14,7 @@
     use Models\Purchase as Purchase;
     use Helpers\SessionValidatorHelper as SessionValidatorHelper;
     use Helpers\MyPHPMailer as MyPHPMailer;
+    use Helpers\QR as QR;
 
     class TicketController {
         private $userDAO;
@@ -194,9 +195,20 @@
 
             //GET PURCHASE DATA
             $purchase = $this->purchaseDAO->ReadOneByUserID($userLogged->getID());
+            $ticketsList = $this-> ticketDAO-> ReadByPurchaseID($purchase-> getPurchaseID());
+
+            $email = $userLogged-> getEmail();
+            $data = array();
+            
+            foreach ($ticketsList as $ticket){
+                $datePrettyPrint = date("d M Y", strtotime($show->getDate()));
+                $data['text'] = "Película: ".$movie->getTitle().".\nCine: ".$cinema->getName().".\nSala: ".$room->getName().".\nUbicación: ".$ticket-> getSeatLocation().".\nDía y hora: ".$datePrettyPrint.", ".$show->getStartTime().".";
+                $data['id'] = $ticket-> getTicketID();
+                QR::generateQR($data);
+            }
 
             //CALL TO SEND MAILER FUNCTION TO NOTIFY THE CLIENT ABOUT THE TICKET BOUGHT
-            MyPHPMailer::SendMail($userLogged->getEmail(), $room, $movie, $showDate, $showStartTime, $showEndTime, $cinema, $purchase);
+            MyPHPMailer::SendMail($userLogged->getEmail(), $room, $movie, $showDate, $showStartTime, $showEndTime, $cinema, $purchase, $show->getID(), $ticketsList);
         }
     }
 
