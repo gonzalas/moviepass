@@ -1,14 +1,20 @@
 <?php
+
     namespace Helpers;
 
-    // require_once("C:\wamp64\www\UTN\Moviepass\QRCode\phpqrcode\qrlib.php");
-    require_once("C:\wamp64\www\UTN\Moviepass\QRCode\phpqrcode\phpqrcode.php");
+    use Helpers\QR\QR_BarCode;
+    define('QR_SIZE', 300);
 
-            $path = FRONT_ROOT.VIEWS_PATH."qrcodes/";
-            $file = $path.$email."-show".$show->getID().".png";
+    abstract class QR{
+        static function generateQR($data){
 
-            $data = "Ticket comprado.";
-
-            QRcode::png($data, $file);
+            $qr = new QR_BarCode();
+    
+            $qr->text($data['text']); //Almacena en el QR el texto asignado a la variable text del array data
+    
+            $qr->qrCode(QR_SIZE, ROOT."Helpers\QR\assets\\".$data['id'].".png");
+        }
+    }
+    
 
 ?>

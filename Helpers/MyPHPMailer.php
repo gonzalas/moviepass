@@ -10,7 +10,7 @@
 
     class MyPHPMailer {
 
-        public static function SendMail($clientEmail, $room, $movie, $showDate, $showStartTime, $showEndTime, $cinema, $purchase, $showID){
+        public static function SendMail($clientEmail, $room, $movie, $showDate, $showStartTime, $showEndTime, $cinema, $purchase, $showID, $ticketsList){
             $mail = new PHPMailer(true);
 
             $mailBody = "<b>¡Gracias por elegirnos!</b>
@@ -23,9 +23,10 @@
                             <li>Reseña: ".$movie->getOverview()."</li>
                             <li>Fecha: ".date("d M Y", strtotime($showDate))."</li>
                             <li>Empieza: ".$showStartTime." - Termina: ".$showEndTime."</li>
+                            <li>Se le han enviado códigos QR con la información de cada ticket. Los mismos serán usados por los acomodadores al momento de la función.</li>
                         </ul>
                         <br>
-                        <p><b>Total abonado: $".$purchase->getPurchaseTotal()."</b></p>";
+                        <p><b>Total abonado: $".$purchase->getPurchaseTotal().". Ver más detalles de compra iniciando sesión en nuestro sitio (Mi Perfil-> Mis Compras).</b></p>";
 
             $mailBodyAlter = '¡Gracias por elegirnos! Se registró correctamente su compra de ticket.';
 
@@ -44,8 +45,10 @@
                 $mail->setFrom(MAILER_EMAIL, MAILER_NAME);
                 $mail->addAddress($clientEmail);     
             
-                // Attachments --> attach here the qr code
-                $mail->addAttachment(FRONT_ROOT.VIEWS_PATH."qrcodes/".$clientEmail."-show".$showID.".png");         
+                // Attachments --> attach here the qr codes
+                foreach($ticketsList as $ticket){
+                    $mail->addAttachment(ROOT."Helpers\QR\assets\\".$ticket->getTicketID().".png");
+                }      
             
                 // Content
                 $mail->isHTML(true);                                 
@@ -55,7 +58,7 @@
             
                 $mail->send();
                 // echo 'Message has been sent';
-                echo '<script>alert("Compra realizada: ¡Le hemos enviado un mail con la información de su compra!")</script>';
+                echo '<script>alert("Compra realizada: ¡Le hemos enviado un mail con la información de su compra y códigos QR para cada uno de sus tickets!")</script>';
             } catch (Exception $e) {
                 // echo "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
                 echo '<script>alert("No pudimos enviarle un mail, pero su compra fue realizada.")</script>';
